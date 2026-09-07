@@ -342,8 +342,17 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
       <div class="field" style="max-width:130px"><label>Fecha de requerimiento</label><input type="text" id="pf-fecha-requerimiento" inputmode="numeric" maxlength="10" placeholder="" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
       <div class="field"><label>Requerimiento</label><textarea id="pf-requerimiento" placeholder="Descripción del requerimiento o falla reportada..." style="min-height:60px"></textarea></div>
       <div class="field" id="pf-presupuesto-box" style="display:none">
-        <label>Monto del presupuesto ($)</label>
-        <input type="text" id="pf-presupuesto-monto" inputmode="numeric" placeholder="0" onblur="formatearInputDinero(this)">
+        <label>Monto del presupuesto</label>
+        <div class="row2">
+          <input type="text" id="pf-presupuesto-monto" inputmode="numeric" placeholder="0" onblur="formatearInputDinero(this)">
+          <select id="pf-presupuesto-moneda">
+            <option value="ARS">Peso argentino ($)</option>
+            <option value="USD">Dólar (US$)</option>
+          </select>
+        </div>
+        <div class="foto-drop pf-edit-action" onclick="document.getElementById('pf-presupuesto-archivo-input').click()" style="margin-top:8px">📎 Adjuntar presupuesto</div>
+        <input type="file" id="pf-presupuesto-archivo-input" style="display:none" onchange="manejarArchivoPresupuesto(event)">
+        <div id="pf-presupuesto-archivo-list"></div>
       </div>
       <div class="field">
         <label>Cliente *</label>
@@ -474,6 +483,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión">👷 <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
+    <div id="ad-resumen-box"></div>
     <div id="ad-facturar-box"></div>
     <div class="search-bar">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -535,11 +545,29 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="field" style="max-width:130px;margin-bottom:0"><label>Facturación</label><input type="text" id="af-ffact" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
         <div class="field" style="max-width:130px;margin-bottom:0"><label>Pago / Cobro</label><input type="text" id="af-fpago" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
       </div>
+      <div class="row2" style="margin-top:12px">
+        <div class="field"><label>Monto pagado ($)</label><input type="text" id="af-monto-pagado" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
+        <div class="field" style="margin-bottom:0"><label>Saldo pendiente</label><input type="text" id="af-saldo-pendiente" readonly style="background:var(--bg);font-weight:700"></div>
+      </div>
     </div>
 
     <div class="box">
       <div class="section-head" style="margin-bottom:10px">Facturación y costos</div>
-      <div class="field"><label>Nº Factura</label><input type="text" id="af-nrofact" placeholder="FC-0001" style="font-family:var(--mono)"></div>
+      <div class="row2">
+        <div class="field"><label>Nº Factura</label><input type="text" id="af-nrofact" placeholder="FC-0001" style="font-family:var(--mono)"></div>
+        <div class="field" style="margin-bottom:0"><label>Tipo de factura</label>
+          <select id="af-tipo-factura" onchange="calcularCostoHoraAdmin()">
+            <option value="">Sin especificar</option>
+            <option value="A">Factura A (+ IVA 21%)</option>
+            <option value="B">Factura B</option>
+            <option value="C">Factura C</option>
+          </select>
+        </div>
+      </div>
+      <div class="box" id="af-iva-box" style="display:none;background:var(--bg);margin-bottom:12px">
+        <div class="costo-preview"><span>IVA (21%)</span><b id="af-iva-monto">$0</b></div>
+        <div class="costo-preview" style="margin-top:6px"><span>Total + IVA</span><b id="af-total-con-iva" style="color:var(--accent);font-size:16px">$0</b></div>
+      </div>
       <div class="row2">
         <div class="field"><label>Costo de hora ($)</label><input type="text" id="af-costohora" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
         <div class="field"><label>Horas × Índice</label><input type="text" id="af-horas-ponderadas" readonly style="background:var(--bg);font-weight:700"></div>
@@ -562,6 +590,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="field"><label>Descuento (%)</label><input type="text" id="af-descuento" inputmode="decimal" placeholder="0" oninput="calcularCostoHoraAdmin()"></div>
         <div class="field" style="margin-bottom:0"><label>Total con descuento</label><input type="text" id="af-total-neto" readonly style="background:var(--bg);font-weight:700;color:var(--accent)"></div>
       </div>
+      <div style="font-size:11px;color:var(--text2);margin:-6px 0 12px">Costo/hora efectivo (con descuento, usado para repartir entre operarios): <b id="af-costohora-efectivo">$0</b></div>
     </div>
 
     <div class="box" id="af-detalle-box" style="display:none">
@@ -1514,6 +1543,26 @@ function renderProyectos(filtroTexto){
 
 /* ==================== PROYECTO: FORM ==================== */
 let editProyectoId = null;
+let pf_presupuestoArchivo = null;
+function manejarArchivoPresupuesto(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  leerArchivoComoAdjunto(file, adj => { pf_presupuestoArchivo = adj; renderArchivoPresupuesto(); });
+  event.target.value = '';
+}
+function renderArchivoPresupuesto(){
+  const cont = document.getElementById('pf-presupuesto-archivo-list');
+  if(!cont) return;
+  if(!pf_presupuestoArchivo){ cont.innerHTML = ''; return; }
+  const a = pf_presupuestoArchivo;
+  cont.innerHTML = `
+    <div class="archivo-row">
+      <span class="archivo-icono">${iconoArchivo(a.tipo,a.nombre)}</span>
+      <span class="archivo-nombre" onclick="descargarArchivoAdjunto(pf_presupuestoArchivo.data, pf_presupuestoArchivo.nombre)" title="Descargar">${a.nombre}</span>
+      <span class="archivo-tam">${formatTamano(a.tamano)}</span>
+      <button class="mini-del" type="button" onclick="pf_presupuestoArchivo=null;renderArchivoPresupuesto()">✕</button>
+    </div>`;
+}
 let pf_ots = [];
 let pf_informes = [];
 let pf_fotos = [];
@@ -1547,6 +1596,9 @@ function abrirNuevoProyecto(){
   pf_informes = [];
   pf_fotos = [];
   pf_archivos = [];
+  pf_presupuestoArchivo = null;
+  document.getElementById('pf-presupuesto-moneda').value = 'ARS';
+  renderArchivoPresupuesto();
   renderOTList();
   renderInformeList();
   renderFotosProyecto();
@@ -1633,8 +1685,11 @@ function abrirProyecto(id){
   poblarSelectContacto(p.clienteId||'', p.contacto||'');
   pf_ots = (p.ots||[]).map(o=>({...o}));
   pf_informes = (p.informes||[]).map(i=>({...i, operarios:(i.operarios||[]).map(o=>({...o})), gastos:(i.gastos||[]).map(g=>({...g})), materiales:(i.materiales||[]).map(m=>({...m}))}));
+  document.getElementById('pf-presupuesto-moneda').value = p.presupuestoMoneda || 'ARS';
   pf_fotos = (p.fotos||[]).slice();
   pf_archivos = (p.archivos||[]).map(a=>({...a}));
+  pf_presupuestoArchivo = p.presupuestoArchivo ? {...p.presupuestoArchivo} : null;
+  renderArchivoPresupuesto();
   renderOTList();
   renderInformeList();
   renderFotosProyecto();
@@ -1706,6 +1761,8 @@ function snapshotProyectoForm(){
     fechaReq: document.getElementById('pf-fecha-requerimiento')?.value,
     requerimiento: document.getElementById('pf-requerimiento')?.value,
     presupuesto: document.getElementById('pf-presupuesto-monto')?.value,
+    presupuestoMoneda: document.getElementById('pf-presupuesto-moneda')?.value,
+    presupuestoArchivo: pf_presupuestoArchivo,
     clienteId: document.getElementById('pf-cliente-select')?.value,
     contacto: document.getElementById('pf-contacto-select')?.value,
     tipo: document.getElementById('pf-tipo')?.value,
@@ -2453,6 +2510,8 @@ async function guardarProyecto(){
   obj.fechaRequerimiento = document.getElementById('pf-fecha-requerimiento').value;
   obj.requerimiento = document.getElementById('pf-requerimiento').value;
   obj.presupuestoMonto = parseDineroInput(document.getElementById('pf-presupuesto-monto'));
+  obj.presupuestoMoneda = document.getElementById('pf-presupuesto-moneda').value;
+  obj.presupuestoArchivo = pf_presupuestoArchivo;
   obj.nombre = nombre;
   obj.clienteId = clienteId;
   obj.cliente = clienteObj?.nombre || obj.cliente || '';
@@ -2493,6 +2552,16 @@ function agruparParaPdf(lista, obtenerNombre, obtenerCosto, obtenerCantidad){
     grupos[nombre].total += obtenerCosto(item) || 0;
   });
   return Object.values(grupos);
+}
+/* Estima cuánto espacio (mm) va a ocupar un valor si se dibuja con pdfFila, para poder decidir
+   de antemano si un bloque entero (una OT o un Informe) entra en lo que queda de hoja o no. */
+function estimarAlturaValor(doc, valor){
+  const lineas = doc.splitTextToSize(String(valor && String(valor).trim() ? valor : '—'), 105);
+  return 6.5 + (lineas.length-1)*4.6;
+}
+function estimarAlturaFotos(cantidad){
+  if(!cantidad) return 0;
+  return 5 + Math.ceil(cantidad/4)*45;
 }
 function pdfChecarSalto(doc, y, necesita=10){
   if(y + necesita > 282){ doc.addPage(); return 20; }
@@ -2742,9 +2811,15 @@ let st_expandido = new Set();
 /* Estado "real" del proyecto para reportes: si Administración ya registró el cobro (fpago)
    o la facturación (ffact), eso prevalece sobre el estado manual del proyecto (que muchas veces
    se queda en "cerrado" aunque después se facturó y se cobró). */
+/* Estado de cobro de un registro de Administración: usa el campo nuevo (estadoCobro) si existe;
+   si es un registro viejo que no lo tiene, cae en la lógica anterior basada en la fecha de pago. */
+function estadoCobroDe(a){
+  if(a.estadoCobro) return a.estadoCobro;
+  return (a.fpago && a.fpago.trim()) ? 'cobrado' : 'pendiente';
+}
 function estadoEfectivoProyecto(p){
   const a = STATE.administracion.find(x=>x.proyectoId===p.id);
-  if(a && a.fpago && a.fpago.trim()) return 'cobrado';
+  if(a && estadoCobroDe(a)==='cobrado') return 'cobrado';
   if(a && a.ffact && a.ffact.trim()) return 'facturado';
   return p.estado;
 }
@@ -3151,13 +3226,34 @@ function renderAdmin(filtroTexto){
   filtroTexto = (filtroTexto||'').toLowerCase();
   renderFacturarBox();
   document.getElementById('ad-count').textContent = STATE.administracion.length + ' registro' + (STATE.administracion.length===1?'':'s');
+
+  // Resumen general: cuánto realmente se cobró vs cuánto falta cobrar (sobre TODOS los registros)
+  let totalCobrado = 0, totalPendiente = 0;
+  STATE.administracion.forEach(a=>{
+    const totalFinal = Number(a.totalConIva!=null ? a.totalConIva : (a.totalNeto!=null ? a.totalNeto : a.total)) || 0;
+    const pagado = a.montoPagado!=null ? Number(a.montoPagado)||0 : (estadoCobroDe(a)==='cobrado' ? totalFinal : 0);
+    totalCobrado += Math.min(pagado, totalFinal);
+    totalPendiente += Math.max(0, totalFinal - pagado);
+  });
+  document.getElementById('ad-resumen-box').innerHTML = `
+    <div class="stat-grid" style="margin-bottom:14px">
+      <div class="stat-card" style="background:var(--greenlt);border-color:transparent">
+        <div class="num" style="color:var(--green)">${formatDinero(totalCobrado)}</div>
+        <div class="lbl">✅ Total cobrado</div>
+      </div>
+      <div class="stat-card" style="background:#fef3c7;border-color:transparent">
+        <div class="num" style="color:#7a4d00">${formatDinero(totalPendiente)}</div>
+        <div class="lbl">⏳ Pendiente de cobro</div>
+      </div>
+    </div>`;
+
   document.getElementById('ad-filtro-cobro').innerHTML = `
     <button class="chip ${ad_filtroCobro==='todos'?'active':''}" onclick="ad_filtroCobro='todos';renderAdmin(document.getElementById('ad-search-input').value)">Todos</button>
     <button class="chip ${ad_filtroCobro==='cobrado'?'active':''}" onclick="ad_filtroCobro='cobrado';renderAdmin(document.getElementById('ad-search-input').value)">✅ Cobrados</button>
+    <button class="chip ${ad_filtroCobro==='parcial'?'active':''}" onclick="ad_filtroCobro='parcial';renderAdmin(document.getElementById('ad-search-input').value)">🔶 Pago parcial</button>
     <button class="chip ${ad_filtroCobro==='pendiente'?'active':''}" onclick="ad_filtroCobro='pendiente';renderAdmin(document.getElementById('ad-search-input').value)">⏳ Pendientes de cobro</button>`;
   let lista = STATE.administracion.slice();
-  if(ad_filtroCobro==='cobrado') lista = lista.filter(a=>!!(a.fpago && a.fpago.trim()));
-  else if(ad_filtroCobro==='pendiente') lista = lista.filter(a=>!(a.fpago && a.fpago.trim()));
+  if(ad_filtroCobro!=='todos') lista = lista.filter(a=>estadoCobroDe(a)===ad_filtroCobro);
   if(filtroTexto){
     lista = lista.filter(a=>{
       const p = STATE.proyectos.find(x=>x.id===a.proyectoId);
@@ -3165,10 +3261,11 @@ function renderAdmin(filtroTexto){
     });
   }
   // No cobrados primero, cobrados al final; dentro de cada grupo, más reciente fecha de facturación arriba
+  const ordenEstado = {pendiente:0, parcial:1, cobrado:2};
   lista.sort((a,b)=>{
-    const cobradoA = !!(a.fpago && a.fpago.trim());
-    const cobradoB = !!(b.fpago && b.fpago.trim());
-    if(cobradoA !== cobradoB) return cobradoA ? 1 : -1;
+    const oa = ordenEstado[estadoCobroDe(a)] ?? 0;
+    const ob = ordenEstado[estadoCobroDe(b)] ?? 0;
+    if(oa !== ob) return oa - ob;
     return (parseFechaDMY(b.ffact)||0) - (parseFechaDMY(a.ffact)||0);
   });
   ad_listaActual = lista;
@@ -3179,7 +3276,10 @@ function renderAdmin(filtroTexto){
   }
   cont.innerHTML = lista.map(a=>{
     const p = STATE.proyectos.find(x=>x.id===a.proyectoId);
-    const cobrado = !!(a.fpago && a.fpago.trim());
+    const estCobro = estadoCobroDe(a);
+    const cobrado = estCobro==='cobrado';
+    const colorBadge = estCobro==='cobrado' ? '#1e3a5f' : estCobro==='parcial' ? '#b3781f' : '#c9903c';
+    const textoBadge = estCobro==='cobrado' ? '✅ Cobrado' : estCobro==='parcial' ? '🔶 Pago parcial' : '⏳ Pendiente de cobro';
     return `
     <div class="card estado-${cobrado?'cobrado':'abierto'}" onclick="abrirAdmin('${a.id}')">
       <div class="card-top">
@@ -3190,8 +3290,9 @@ function renderAdmin(filtroTexto){
           <div style="font-size:11.5px;font-weight:700;color:#007b00;margin-top:3px">👷 ${p && p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable'}</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">
-          <span class="badge" style="background:var(--greenlt);color:var(--green)">${formatDinero(a.totalNeto!=null ? a.totalNeto : a.total)}${a.descuentoPct>0?` <span style="opacity:.7;font-weight:600">(-${a.descuentoPct}%)</span>`:''}</span>
-          <span class="badge" style="background:${cobrado?'#1e3a5f':'#c9903c'};color:#fff">${cobrado?'✅ Cobrado':'⏳ Pendiente de cobro'}</span>
+          <span class="badge" style="background:var(--greenlt);color:var(--green)">${formatDinero(a.tipoFactura==='A' ? a.totalConIva : (a.totalNeto!=null ? a.totalNeto : a.total))}${a.descuentoPct>0?` <span style="opacity:.7;font-weight:600">(-${a.descuentoPct}%)</span>`:''}${a.tipoFactura==='A'?' <span style="opacity:.7;font-weight:600">c/IVA</span>':''}</span>
+          <span class="badge" style="background:${colorBadge};color:#fff">${textoBadge}</span>
+          ${estCobro==='parcial' ? `<span style="font-size:10.5px;color:var(--text3)">Saldo: ${formatDinero(a.saldoPendiente)}</span>` : ''}
           ${(!cobrado && a.ffact) ? `<span style="font-size:10.5px;color:var(--text3)">${diasDesde(a.ffact)} días facturado</span>` : ''}
         </div>
       </div>
@@ -3573,7 +3674,8 @@ function abrirNuevoAdmin(proyectoIdPreseleccionado){
   af_horasPonderadas = 0;
   poblarSelectorProyectos(proyectoIdPreseleccionado||'');
   document.getElementById('af-proyecto').value = proyectoIdPreseleccionado || '';
-  ['af-freq','af-fejec','af-ffact','af-fpago','af-nrofact','af-obs'].forEach(id=>document.getElementById(id).value='');
+  ['af-freq','af-fejec','af-ffact','af-fpago','af-nrofact','af-obs','af-monto-pagado'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('af-tipo-factura').value = '';
   ['af-costohora','af-costohoras-total','af-horas-ponderadas','af-precio-combustible','af-costo-km','af-km-traslado','af-total','af-traslado','af-materiales','af-gastos','af-horas','af-descuento'].forEach(id=>document.getElementById(id).value='');
   onCambiaProyectoAdmin();
   document.getElementById('af-pdf-btn').style.display = 'none';
@@ -3597,7 +3699,9 @@ function abrirAdmin(id){
   document.getElementById('af-fejec').value = a.fejec||'';
   document.getElementById('af-ffact').value = a.ffact||'';
   document.getElementById('af-fpago').value = a.fpago||'';
+  document.getElementById('af-monto-pagado').value = a.montoPagado ? formatDinero(a.montoPagado) : '';
   document.getElementById('af-nrofact').value = a.nrofact||'';
+  document.getElementById('af-tipo-factura').value = a.tipoFactura||'';
   document.getElementById('af-costohora').value = a.costoHora ? formatDinero(a.costoHora) : '';
   document.getElementById('af-precio-combustible').value = a.precioCombustible ? formatDinero(a.precioCombustible) : '';
   document.getElementById('af-km-traslado').value = a.kmTraslado || '';
@@ -3671,6 +3775,18 @@ function autoDistribuirPctAdmin(){
   renderOperariosAdmin();
   toast('Porcentajes calculados: 5% fijo para el técnico a cargo + 95% a prorrata de horas (incluye las suyas si cargó)');
 }
+function calcularIvaAdmin(totalNeto){
+  const tipoFactura = document.getElementById('af-tipo-factura').value;
+  const box = document.getElementById('af-iva-box');
+  if(tipoFactura==='A'){
+    const iva = Math.round(totalNeto * 0.21);
+    document.getElementById('af-iva-monto').textContent = formatDinero(iva);
+    document.getElementById('af-total-con-iva').textContent = formatDinero(totalNeto + iva);
+    box.style.display = 'block';
+  } else {
+    box.style.display = 'none';
+  }
+}
 function calcularCostoHoraAdmin(){
   const costoHora = parseDineroInput(document.getElementById('af-costohora'));
   document.getElementById('af-horas-ponderadas').value = formatHorasComa(af_horasPonderadas);
@@ -3693,9 +3809,22 @@ function calcularCostoHoraAdmin(){
   const totalNeto = Math.round(total * (1 - descuentoPct/100));
   document.getElementById('af-total-neto').value = formatDinero(totalNeto);
 
-  af_operarios.forEach(o=> o.costoHora = costoHora );
-  document.getElementById('af-costo-preview').textContent = formatDinero(costoHora);
+  const totalFinal = document.getElementById('af-tipo-factura').value==='A' ? (totalNeto + Math.round(totalNeto*0.21)) : totalNeto;
+  const montoPagado = parseDineroInput(document.getElementById('af-monto-pagado'));
+  const saldoPendiente = Math.max(0, totalFinal - montoPagado);
+  const campoSaldo = document.getElementById('af-saldo-pendiente');
+  campoSaldo.value = formatDinero(saldoPendiente);
+  campoSaldo.style.color = saldoPendiente>0 ? '#c0362c' : 'var(--green)';
+
+  // El descuento al cliente se toma también como un costo de la obra: reduce el costo/hora
+  // "efectivo" que se usa para repartir entre los operarios (menos plata entrando por hora trabajada).
+  const costoHoraEfectivo = Math.round(costoHora * (1 - descuentoPct/100));
+  document.getElementById('af-costohora-efectivo').textContent = formatDinero(costoHoraEfectivo);
+  af_operarios.forEach(o=> o.costoHora = costoHoraEfectivo );
+  document.getElementById('af-costo-preview').textContent = formatDinero(costoHoraEfectivo);
   renderOperariosAdmin();
+
+  calcularIvaAdmin(totalNeto);
 }
 function eliminarAdminActual(){
   if(!editAdminId) return;
@@ -3724,7 +3853,9 @@ async function guardarAdmin(){
   obj.fejec = document.getElementById('af-fejec').value;
   obj.ffact = document.getElementById('af-ffact').value;
   obj.fpago = document.getElementById('af-fpago').value;
+  obj.montoPagado = parseDineroInput(document.getElementById('af-monto-pagado'));
   obj.nrofact = document.getElementById('af-nrofact').value;
+  obj.tipoFactura = document.getElementById('af-tipo-factura').value;
   obj.costoHora = parseDineroInput(document.getElementById('af-costohora'));
   obj.horasPonderadas = af_horasPonderadas;
   obj.precioCombustible = parseDineroInput(document.getElementById('af-precio-combustible'));
@@ -3738,6 +3869,10 @@ async function guardarAdmin(){
   obj.total = Math.round(obj.costoHorasTotal + obj.traslado + obj.materiales + obj.gastos);
   obj.descuentoPct = Math.min(100, Math.max(0, parseFloat((document.getElementById('af-descuento').value||'0').replace(',','.')) || 0));
   obj.totalNeto = Math.round(obj.total * (1 - obj.descuentoPct/100));
+  obj.iva = obj.tipoFactura==='A' ? Math.round(obj.totalNeto * 0.21) : 0;
+  obj.totalConIva = obj.totalNeto + obj.iva;
+  obj.saldoPendiente = Math.max(0, obj.totalConIva - obj.montoPagado);
+  obj.estadoCobro = obj.montoPagado<=0 ? 'pendiente' : (obj.montoPagado>=obj.totalConIva ? 'cobrado' : 'parcial');
   obj.obs = document.getElementById('af-obs').value;
   obj.operarios = af_operarios;
   obj.eliminado = false;
@@ -3795,6 +3930,17 @@ function exportarPdfAdmin(accion){
     y = pdfFila(doc, y, 'Descuento', a.descuentoPct + '%');
     y = pdfFila(doc, y, 'Total con descuento', formatDinero(a.totalNeto));
   }
+  if(a.tipoFactura){
+    y = pdfFila(doc, y, 'Tipo de factura', 'Factura ' + a.tipoFactura);
+    if(a.tipoFactura==='A'){
+      y = pdfFila(doc, y, 'IVA (21%)', formatDinero(a.iva));
+      y = pdfFila(doc, y, 'Total + IVA', formatDinero(a.totalConIva));
+    }
+  }
+  if(a.montoPagado>0){
+    y = pdfFila(doc, y, 'Monto pagado', formatDinero(a.montoPagado));
+    y = pdfFila(doc, y, 'Saldo pendiente', formatDinero(a.saldoPendiente));
+  }
   y += 4;
 
   if(p && p.ots && p.ots.length){
@@ -3802,17 +3948,27 @@ function exportarPdfAdmin(accion){
     y = 20;
     y = pdfSeccion(doc, y, 4, 'Detalle de OT');
     p.ots.forEach((ot, idx)=>{
+      const horasTotalesOt = (ot.operarios||[]).reduce((s,o)=>s+(Number(o.horas)||0),0);
+      const horariosOt = (ot.operarios||[]).filter(o=>o.desde && o.hasta);
+      const horaInicioOt = horariosOt.length ? horariosOt.map(o=>o.desde).sort()[0] : '';
+      const horaFinOt = horariosOt.length ? horariosOt.map(o=>o.hasta).sort().slice(-1)[0] : '';
+      const operariosTexto = (ot.operarios||[]).filter(o=>o.nombre).map(o=>`${o.nombre} (${nombreCargo(o.cargo)})`).join(', ');
+      const equiposTexto = (ot.equipos||[]).map(e=>e.nombre).join(', ');
+      let alturaEstimada = 6 + estimarAlturaValor(doc, operariosTexto) + estimarAlturaValor(doc, equiposTexto)
+        + estimarAlturaValor(doc, ot.traslado?.kmCliente ? `${ot.traslado.kmCliente} km` : '')
+        + (horaInicioOt||horaFinOt ? estimarAlturaValor(doc, `${horaInicioOt||'-'} a ${horaFinOt||'-'}`) : 0)
+        + (horasTotalesOt>0 ? estimarAlturaValor(doc, formatHoras(horasTotalesOt)) : 0)
+        + estimarAlturaValor(doc, ot.trabajo) + 3
+        + estimarAlturaFotos((ot.fotosInicio||[]).length) + estimarAlturaFotos((ot.fotosFin||[]).length);
+      // Si el bloque entero no entra en lo que queda de la hoja, arrancamos hoja nueva (no lo cortamos a la mitad)
+      if(y + alturaEstimada > 282 && alturaEstimada <= 262){ doc.addPage(); y = 20; }
       y = pdfChecarSalto(doc, y, 10);
       doc.setFont(undefined,'bold'); doc.setFontSize(10); doc.setTextColor(26,86,219);
       doc.text(`OT ${idx+1}${ot.fecha?' — '+ot.fecha:''}`, 18, y);
       doc.setFont(undefined,'normal'); doc.setTextColor(20,26,43);
       y += 6;
-      const horasTotalesOt = (ot.operarios||[]).reduce((s,o)=>s+(Number(o.horas)||0),0);
-      const horariosOt = (ot.operarios||[]).filter(o=>o.desde && o.hasta);
-      const horaInicioOt = horariosOt.length ? horariosOt.map(o=>o.desde).sort()[0] : '';
-      const horaFinOt = horariosOt.length ? horariosOt.map(o=>o.hasta).sort().slice(-1)[0] : '';
-      y = pdfFila(doc, y, 'Operarios', (ot.operarios||[]).filter(o=>o.nombre).map(o=>`${o.nombre} (${nombreCargo(o.cargo)})`).join(', '));
-      y = pdfFila(doc, y, 'Equipo', (ot.equipos||[]).map(e=>e.nombre).join(', '));
+      y = pdfFila(doc, y, 'Operarios', operariosTexto);
+      y = pdfFila(doc, y, 'Equipo', equiposTexto);
       y = pdfFila(doc, y, 'Km al cliente', ot.traslado?.kmCliente ? `${ot.traslado.kmCliente} km` : '');
       if(horaInicioOt || horaFinOt) y = pdfFila(doc, y, 'Horario', `${horaInicioOt||'-'} a ${horaFinOt||'-'}`);
       if(horasTotalesOt>0) y = pdfFila(doc, y, 'Horas totales', formatHoras(horasTotalesOt));
@@ -3841,17 +3997,24 @@ function exportarPdfAdmin(accion){
     y = 20;
     y = pdfSeccion(doc, y, 5, 'Detalle de Informes');
     p.informes.forEach((inf, idx)=>{
+      const horasTotalesInf = (inf.operarios||[]).reduce((s,o)=>s+(Number(o.horas)||0),0);
+      const horariosInf = (inf.operarios||[]).filter(o=>o.desde && o.hasta);
+      const horaInicioInf = horariosInf.length ? horariosInf.map(o=>o.desde).sort()[0] : '';
+      const horaFinInf = horariosInf.length ? horariosInf.map(o=>o.hasta).sort().slice(-1)[0] : '';
+      const operariosTextoInf = (inf.operarios||[]).filter(o=>o.nombre).map(o=>o.nombre).join(', ');
+      let alturaEstimadaInf = 6 + estimarAlturaValor(doc, operariosTextoInf) + estimarAlturaValor(doc, inf.tecnico)
+        + (horaInicioInf||horaFinInf ? estimarAlturaValor(doc, `${horaInicioInf||'-'} a ${horaFinInf||'-'}`) : 0)
+        + estimarAlturaValor(doc, formatHoras(horasTotalesInf))
+        + estimarAlturaValor(doc, inf.trabajo) + 3
+        + estimarAlturaFotos((inf.fotosInicio||[]).length) + estimarAlturaFotos((inf.fotosFin||[]).length);
+      if(y + alturaEstimadaInf > 282 && alturaEstimadaInf <= 262){ doc.addPage(); y = 20; }
       y = pdfChecarSalto(doc, y, 10);
       doc.setFont(undefined,'bold'); doc.setFontSize(10); doc.setTextColor(26,86,219);
       doc.text(`Informe ${idx+1}${inf.fecha?' — '+inf.fecha:''}`, 18, y);
       doc.setFont(undefined,'normal'); doc.setTextColor(20,26,43);
       y += 6;
-      const horasTotalesInf = (inf.operarios||[]).reduce((s,o)=>s+(Number(o.horas)||0),0);
-      const horariosInf = (inf.operarios||[]).filter(o=>o.desde && o.hasta);
-      const horaInicioInf = horariosInf.length ? horariosInf.map(o=>o.desde).sort()[0] : '';
-      const horaFinInf = horariosInf.length ? horariosInf.map(o=>o.hasta).sort().slice(-1)[0] : '';
-      y = pdfFila(doc, y, 'Operarios', (inf.operarios||[]).filter(o=>o.nombre).map(o=>`${o.nombre} (${nombreCargo(o.cargo)}) ${o.desde&&o.hasta?`${o.desde}-${o.hasta}`:''}`).join(', '));
       y = pdfFila(doc, y, 'Técnico responsable', inf.tecnico);
+      y = pdfFila(doc, y, 'Operarios', operariosTextoInf);
       if(horaInicioInf || horaFinInf) y = pdfFila(doc, y, 'Horario', `${horaInicioInf||'-'} a ${horaFinInf||'-'}`);
       y = pdfFila(doc, y, 'Horas totales', formatHoras(horasTotalesInf));
       y = pdfFila(doc, y, 'Trabajo realizado', inf.trabajo);
@@ -3909,13 +4072,15 @@ function exportarExcelFacturacion(){
   // Hoja 1: Facturación (respeta el filtro y la búsqueda actual en pantalla)
   const filasFact = ad_listaActual.map(a=>{
     const p = STATE.proyectos.find(x=>x.id===a.proyectoId);
-    const cobrado = !!(a.fpago && a.fpago.trim());
+    const estCobro = estadoCobroDe(a);
     return {
       'Nº Proyecto': p?.nro || '',
       'Cliente': p?.cliente || '',
       'Proyecto': p?.nombre || '',
       'Responsable': p && p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable',
-      'Estado cobro': cobrado ? 'Cobrado' : 'Pendiente de cobro',
+      'Estado cobro': estCobro==='cobrado'?'Cobrado':estCobro==='parcial'?'Pago parcial':'Pendiente de cobro',
+      'Monto pagado': Number(a.montoPagado) || 0,
+      'Saldo pendiente': Number(a.saldoPendiente!=null ? a.saldoPendiente : (Number(a.totalConIva!=null?a.totalConIva:a.total)||0)) || 0,
       'Fecha requerimiento': a.freq || '',
       'Fecha ejecución': a.fejec || '',
       'Fecha facturación': a.ffact || '',
@@ -3928,6 +4093,9 @@ function exportarExcelFacturacion(){
       'Total facturado': Number(a.total) || 0,
       'Descuento %': Number(a.descuentoPct) || 0,
       'Total con descuento': Number(a.totalNeto!=null ? a.totalNeto : a.total) || 0,
+      'Tipo de factura': a.tipoFactura ? 'Factura '+a.tipoFactura : '',
+      'IVA (21%)': Number(a.iva) || 0,
+      'Total + IVA': Number(a.totalConIva) || 0,
       'Traslado': Number(a.traslado) || 0,
       'Precio combustible': Number(a.precioCombustible) || 0,
       'Km al cliente (traslado)': Number(a.kmTraslado) || 0,
