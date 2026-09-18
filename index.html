@@ -246,6 +246,227 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .usermenu button{width:100%;text-align:left;background:none;border:none;padding:11px 14px;font-size:13px;color:var(--text);display:flex;align-items:center;gap:8px}
 .usermenu button:hover{background:var(--surface2)}
 .usermenu button.danger{color:var(--red)}
+
+/* ======================================================= */
+/* ===============  PLANIFICACIÓN (escopado)  =============== */
+/* ======================================================= */
+
+/* ===== Planificación: colores propios, escopados a su pantalla. Los radios (--r/--r2/--r3) NO se pisan: usa los mismos que el resto de la app para que se vea integrada ===== */
+#scr-planificacion{
+  --teal:#5f7a3d; --teallt:#eef2e3;
+  --violet:#c0362c; --violetlt:#fbe6e4;
+}
+#scr-planificacion button{font-family:var(--sans);cursor:pointer;border:none;background:none}
+#scr-planificacion input, #scr-planificacion select{font-family:var(--sans)}
+
+#scr-planificacion .topbar{display:flex;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;flex-shrink:0}
+#scr-planificacion .menu-btn{display:flex;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.16);color:#fff;font-size:16px;align-items:center;justify-content:center}
+#scr-planificacion .icon-btn{background:rgba(255,255,255,0.16);color:#fff;border-radius:9px;padding:7px 11px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+#scr-planificacion .icon-grande{font-size:20px;padding:6px 13px}
+#scr-planificacion .icono-obrero{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:var(--amber);border-radius:50%;font-size:13px}
+#scr-planificacion .brand{font-family:var(--mono);font-weight:600;letter-spacing:.04em;font-size:14px;white-space:nowrap}
+#scr-planificacion .title{font-size:15px;font-weight:700;white-space:nowrap}
+
+#scr-planificacion .nav-bar{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 10px;background:var(--surface);border-bottom:1.5px solid var(--border);flex-shrink:0}
+#scr-planificacion .nav-bar button{padding:7px 14px;border-radius:99px;background:var(--surface2);color:var(--text2);font-size:13px;font-weight:800;border:1.5px solid var(--border)}
+#scr-planificacion .nav-bar button:hover{border-color:var(--border2)}
+#scr-planificacion .nav-bar button.hoy{background:var(--accent);color:#fff;border-color:var(--accent);padding:7px 16px}
+#scr-planificacion .nav-bar input[type=month]{padding:6px 10px;border-radius:99px;border:1.5px solid var(--border);font-size:12.5px;font-weight:700;color:var(--text2);background:var(--surface2)}
+#scr-planificacion .vista-switch{display:flex;border:1.5px solid var(--border);border-radius:99px;overflow:hidden;margin-left:auto}
+#scr-planificacion .vista-switch button{padding:7px 12px;border-radius:0;background:var(--surface2);border:none}
+#scr-planificacion .vista-switch button.activo{background:var(--accent);color:#fff}
+#scr-planificacion #btn-filtro-mios.activo{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+#scr-planificacion .app{flex:1;display:flex;min-height:0}
+
+/* SIDEBAR: en pantallas anchas empuja el contenido (no lo tapa), para poder arrastrar viendo ambos */
+#scr-planificacion .sidebar{width:0;flex-shrink:0;background:var(--surface);border-right:0 solid var(--border);display:flex;flex-direction:column;min-height:0;overflow:hidden;transition:width .2s}
+#scr-planificacion .sidebar.open{width:280px;border-right-width:1.5px}
+#scr-planificacion .sidebar > *{width:280px;flex-shrink:0}
+#scr-planificacion .backdrop{display:none}
+#scr-planificacion .sidebar-head{padding:14px 14px 8px;flex-shrink:0}
+#scr-planificacion .sidebar-head h2{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);margin-bottom:8px}
+#scr-planificacion .search-bar{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r);padding:8px 10px}
+#scr-planificacion .search-bar svg{width:15px;height:15px;fill:none;stroke:var(--text3);stroke-width:2}
+#scr-planificacion .search-bar input{flex:1;border:none;background:none;outline:none;font-size:13.5px;color:var(--text)}
+#scr-planificacion .demo-btns{display:flex;gap:6px;padding:8px 14px 0}
+#scr-planificacion .btn-demo{flex:1;padding:7px 6px;border-radius:var(--r);font-size:10.5px;font-weight:700;border:1.5px solid var(--border);color:var(--text2);background:var(--surface)}
+#scr-planificacion .btn-demo.quitar{color:var(--red)}
+#scr-planificacion .sidebar-list{flex:1;overflow-y:auto;padding:8px 12px 16px}
+#scr-planificacion .obra-card{background:var(--surface);border:1.5px solid var(--border);border-left:4px solid var(--green);border-radius:var(--r2);padding:10px 12px;margin-bottom:8px;cursor:grab;transition:.12s;box-shadow:var(--shadow)}
+#scr-planificacion .obra-card:active{cursor:grabbing}
+#scr-planificacion .obra-card.dragging{opacity:.4}
+#scr-planificacion .obra-card.seleccionada{outline:2.5px solid var(--accent);outline-offset:1px;background:var(--accentlt)}
+#scr-planificacion .obra-cliente{font-weight:800;font-size:13.5px}
+#scr-planificacion .obra-nro{font-family:var(--mono);font-size:11.5px;color:var(--text2);margin-top:2px}
+#scr-planificacion .obra-nombre{font-size:11.5px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#scr-planificacion .obra-resp{font-size:11px;color:var(--accent2);margin-top:4px;font-weight:700}
+#scr-planificacion .obra-hint{font-size:10.5px;color:var(--accent);margin-top:6px;font-weight:700}
+#scr-planificacion .empty-mini{padding:20px 8px;text-align:center;color:var(--text3);font-size:12.5px}
+#scr-planificacion .sidebar-tip{margin:0 12px 12px;padding:10px 12px;background:var(--accentlt);border-radius:var(--r2);font-size:11.5px;color:var(--accent2);line-height:1.5}
+
+/* MAIN / SEMANAS APILADAS */
+#scr-planificacion .main{flex:1;display:flex;flex-direction:column;min-width:0}
+#scr-planificacion .cal-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;padding:14px;display:flex;flex-direction:column;gap:0}
+#scr-planificacion .cal-scroll::-webkit-scrollbar{width:7px}
+#scr-planificacion .cal-scroll::-webkit-scrollbar-track{background:transparent}
+#scr-planificacion .cal-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+#scr-planificacion .cal-scroll::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+#scr-planificacion .grilla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#scr-planificacion .grilla-wrap::-webkit-scrollbar{height:7px}
+#scr-planificacion .grilla-wrap::-webkit-scrollbar-track{background:transparent}
+#scr-planificacion .grilla-wrap::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+#scr-planificacion .grilla-encabezado{display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));min-width:980px;background:var(--surface2);border:1.5px solid var(--border);position:sticky;top:0;z-index:3}
+#scr-planificacion .grilla-encabezado span{padding:8px 10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--text2);border-right:1px solid var(--border)}
+#scr-planificacion .grilla-encabezado span:last-child{border-right:none}
+#scr-planificacion .week-block{background:var(--surface);border:1.5px solid var(--border);border-top:none}
+#scr-planificacion .week-block-head{padding:5px 12px;font-size:10.5px;color:var(--text3);border-bottom:1px solid var(--border);background:var(--bg)}
+#scr-planificacion .week-block.actual .week-block-head{color:var(--accent2);font-weight:700}
+#scr-planificacion .week-row{display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));min-width:980px}
+#scr-planificacion .day-col{background:var(--surface);border-right:1px solid var(--border);border-bottom:1px solid var(--border);height:290px;overflow:hidden;position:relative;scroll-margin-top:42px}
+#scr-planificacion .day-col.hoy{background:var(--accentlt);box-shadow:inset 0 0 0 2px var(--accent)}
+#scr-planificacion .day-col.hoy .day-fecha{color:var(--accent2);font-weight:900}
+#scr-planificacion .day-col.hoy .day-head::after{content:'HOY';font-size:8.5px;font-weight:900;color:#fff;background:var(--accent);padding:1px 5px;border-radius:99px;margin-left:2px}
+#scr-planificacion .day-col.dragover{background:var(--accentlt);outline:2px solid var(--accent);outline-offset:-2px}
+#scr-planificacion .day-head{padding:6px 8px;display:flex;align-items:center;gap:4px;cursor:pointer}
+#scr-planificacion .day-fecha{font-size:13px;font-weight:800}
+#scr-planificacion .day-col.hoy .day-fecha{color:var(--accent2)}
+#scr-planificacion .badge-cantidad{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;background:var(--accent);color:#fff;font-size:9.5px;font-weight:800;border-radius:99px;vertical-align:middle}
+#scr-planificacion .badge-ausencia{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;background:var(--red);color:#fff;font-size:9.5px;font-weight:800;border-radius:99px;vertical-align:middle}
+#scr-planificacion .dot-incompleto{width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0;display:inline-block;margin-left:3px}
+#scr-planificacion .btn-add-dia{width:20px;height:20px;border-radius:5px;background:var(--surface2);color:var(--text2);font-size:13px;line-height:1;flex-shrink:0;margin-left:auto}
+#scr-planificacion .btn-add-dia:hover{background:var(--accentlt);color:var(--accent)}
+#scr-planificacion .day-body{padding:4px 6px}
+#scr-planificacion .scroll-controls{display:flex;align-items:center;justify-content:center;gap:6px;padding:4px 0}
+#scr-planificacion .scroll-controls button{width:24px;height:20px;border-radius:4px;background:var(--accentlt);color:var(--accent);font-size:11px;font-weight:800;border:1px solid var(--border2)}
+#scr-planificacion .scroll-controls button:active{background:var(--accent);color:#fff}
+#scr-planificacion .pagina-txt{font-size:9.5px;font-weight:700;color:var(--text2)}
+#scr-planificacion .btn-ver-mas{font-size:12px;font-weight:800;color:#fff;padding:9px;text-align:center;background:var(--accent);border-radius:var(--r);margin-top:2px;flex-shrink:0}
+#scr-planificacion .asig-card{position:relative;background:var(--surface);border:1.5px solid var(--border);border-left:4px solid var(--accent);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:.12s;height:160px;overflow:hidden;display:flex;flex-direction:column}
+#scr-planificacion .asig-card:hover{border-color:var(--border2)}
+#scr-planificacion .asig-card.tipo-servicio{border-left-color:var(--teal)}
+#scr-planificacion .asig-card.tipo-ausencia{border-left-color:var(--violet)}
+#scr-planificacion .asig-cliente{font-size:15px;font-weight:800;line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+#scr-planificacion .asig-nro{font-family:var(--mono);font-size:10.5px;color:var(--text2);margin-top:2px}
+#scr-planificacion .asig-motivo{font-size:11px;color:var(--text2);margin-top:5px;font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#scr-planificacion .asig-horario{display:inline-block;margin-top:5px;font-size:10px;font-weight:700;background:var(--surface);border:1px solid var(--border2);border-radius:5px;padding:2px 6px;color:var(--text2)}
+#scr-planificacion .asig-dias{display:inline-block;margin-top:0;margin-left:5px;font-size:9.5px;font-weight:700;background:var(--surface);border:1px solid var(--border2);border-radius:5px;padding:1px 6px;color:var(--text2);vertical-align:middle}
+#scr-planificacion .asig-personas{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;max-height:19px;overflow:hidden}
+#scr-planificacion .chip-persona{background:var(--accent);color:#fff;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:99px;flex-shrink:0}
+#scr-planificacion .chip-persona.operario{background:var(--teal)}
+#scr-planificacion .chip-persona.mas{background:var(--text3)}
+#scr-planificacion .dot-card-incompleto{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--amber)}
+#scr-planificacion .badge-nuevo{position:absolute;top:5px;left:5px;background:var(--accent);color:#fff;font-size:9px;font-weight:800;padding:1.5px 6px;border-radius:20px;letter-spacing:.2px;animation:pulso 1.6s infinite;z-index:1}
+#scr-planificacion .notif-item.nuevo{background:var(--accentlt);border-color:var(--border2)}
+#scr-planificacion .asig-compacta{font-size:11px;padding:5px 7px;border-radius:6px;background:var(--surface);border:1px solid var(--border);cursor:pointer;line-height:1.35;height:26px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#scr-planificacion .asig-compacta.tipo-servicio{border-left:3px solid var(--teal)}
+#scr-planificacion .asig-compacta.tipo-ausencia{border-left:3px solid var(--violet)}
+#scr-planificacion .asig-compacta.tipo-obra{border-left:3px solid var(--accent)}
+#scr-planificacion .banner-seleccion{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--accent);color:#fff;padding:10px 16px;font-size:13px;font-weight:700}
+#scr-planificacion .banner-seleccion button{background:rgba(255,255,255,.2);color:#fff;padding:6px 12px;border-radius:var(--r);font-size:12px;font-weight:700}
+#scr-planificacion .day-drop-hint{margin:0 6px 6px;text-align:center;font-size:9.5px;color:var(--text3);border:1.5px dashed var(--border2);border-radius:var(--r);padding:4px}
+#scr-planificacion .lista-vista{display:flex;flex-direction:column;gap:6px}
+#scr-planificacion .lista-dia{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r)}
+#scr-planificacion .lista-dia.hoy{border-color:var(--accent);border-width:2px}
+#scr-planificacion .lista-dia-head{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1.5px solid var(--border);cursor:pointer}
+#scr-planificacion .lista-dia-nombre{font-size:11px;font-weight:800;text-transform:uppercase;color:var(--text2);letter-spacing:.03em}
+#scr-planificacion .lista-dia-fecha{font-size:13.5px;font-weight:800}
+#scr-planificacion .lista-dia-items{padding:2px 0}
+#scr-planificacion .lista-item{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;padding:8px 12px;border-left:4px solid var(--accent);cursor:pointer}
+#scr-planificacion .lista-item:hover{background:var(--surface2)}
+#scr-planificacion .lista-item.tipo-servicio{border-left-color:var(--teal)}
+#scr-planificacion .lista-item.tipo-ausencia{border-left-color:var(--violet)}
+#scr-planificacion .lista-item-titulo{font-weight:800;font-size:13px}
+#scr-planificacion .lista-item-sub{font-size:12px;color:var(--text2)}
+#scr-planificacion .lista-vacio{padding:9px 12px;font-size:12px;color:var(--text3);font-style:italic}
+#scr-planificacion .ver-todo-hint{margin-top:auto;text-align:center;font-size:9.5px;color:var(--accent);font-weight:700;padding:3px 0 1px;cursor:pointer}
+
+/* MODAL */
+#scr-planificacion .modal-overlay{position:fixed;inset:0;background:rgba(10,15,30,0.5);display:none;align-items:flex-end;justify-content:center;z-index:1000}
+#scr-planificacion .modal-overlay.open{display:flex}
+@media (min-width:640px){ #scr-planificacion .modal-overlay{align-items:center} }
+#scr-planificacion .modal-box{background:#fff;width:100%;max-width:440px;border-radius:20px 20px 0 0;max-height:92vh;display:flex;flex-direction:column;overflow:hidden}
+@media (min-width:640px){ #scr-planificacion .modal-box{border-radius:18px} }
+#scr-planificacion .modal-head{padding:16px 18px 12px;border-bottom:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+#scr-planificacion .modal-head-txt{min-width:0;flex:1}
+#scr-planificacion .btn-cerrar-x{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--surface2);color:var(--text2);font-size:15px;font-weight:800}
+#scr-planificacion .btn-cerrar-x:hover{background:var(--redlt);color:var(--red)}
+#scr-planificacion .modal-head h3{font-size:15px}
+#scr-planificacion .modal-head .sub{font-size:12px;color:var(--text2);margin-top:3px}
+#scr-planificacion .modal-body{padding:14px 18px;overflow-y:auto;flex:1;min-height:0}
+#scr-planificacion #md-body .asig-card{padding:13px 15px;height:auto;min-height:0;max-height:none;overflow:visible;margin-bottom:10px}
+#scr-planificacion #md-body .asig-cliente{-webkit-line-clamp:unset;display:block;overflow:visible}
+#scr-planificacion #md-body .asig-cliente{font-size:16px}
+#scr-planificacion #md-body .asig-nro{font-size:12.5px}
+#scr-planificacion #md-body .asig-horario, #scr-planificacion #md-body .asig-dias{font-size:12px;padding:3px 9px;margin-top:8px}
+#scr-planificacion #md-body .asig-personas{max-height:none;overflow:visible;gap:6px;margin-top:9px}
+#scr-planificacion #md-body .chip-persona{font-size:12px;padding:4px 10px}
+#scr-planificacion #md-body .asig-motivo{font-size:12.5px;margin-top:8px}
+#scr-planificacion .modal-foot{padding:12px 18px 18px;display:flex;gap:8px;border-top:1.5px solid var(--border);flex-wrap:wrap;flex-shrink:0}
+#scr-planificacion .btn{flex:1;min-width:90px;padding:11px 14px;background:var(--accent);border-radius:var(--r);color:#fff;font-size:13px;font-weight:700}
+#scr-planificacion .btn.secondary{background:var(--accentlt);color:var(--accent);border:1.5px solid var(--border2)}
+#scr-planificacion .btn.danger{background:var(--redlt);color:var(--red)}
+#scr-planificacion .btn.violet{background:var(--violet)}
+#scr-planificacion .responsable-box{display:flex;align-items:center;gap:8px;background:var(--accentlt);border-radius:var(--r);padding:9px 11px;margin-bottom:14px}
+#scr-planificacion .responsable-box .ic{font-size:18px}
+#scr-planificacion .responsable-box .txt{font-size:12.5px;color:var(--accent2)}
+#scr-planificacion .responsable-box .txt b{display:block;font-size:13.5px;color:var(--text)}
+#scr-planificacion .field{margin-bottom:14px}
+#scr-planificacion .field label{display:block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text2);margin-bottom:6px}
+#scr-planificacion .field input, #scr-planificacion .field select{width:100%;padding:9px 11px;border:1.5px solid var(--border2);border-radius:var(--r);font-size:14px;color:var(--text);background:#fff}
+#scr-planificacion .field .hint{font-size:10.5px;color:var(--text3);margin-top:5px;text-transform:none;font-weight:500;letter-spacing:0}
+#scr-planificacion .field-check{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text);text-transform:none}
+#scr-planificacion .preset-horario{display:flex;gap:6px;margin-bottom:12px}
+#scr-planificacion .tab-activo{background:var(--accent) !important;color:#fff !important;border-color:var(--accent) !important}
+#scr-planificacion .preset-horario button{flex:1;padding:8px 4px;border-radius:var(--r);border:1.5px solid var(--border2);background:var(--surface2);color:var(--text2);font-size:11.5px;font-weight:700}
+#scr-planificacion .preset-horario button:hover{border-color:var(--accent);color:var(--accent)}
+#scr-planificacion .field-check input{width:16px;height:16px;flex-shrink:0}
+#scr-planificacion .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#scr-planificacion .grupo-personas h4{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text2);margin-bottom:6px}
+#scr-planificacion .persona-row{display:flex;align-items:center;gap:9px;padding:7px 4px;border-bottom:1px solid var(--border)}
+#scr-planificacion .persona-row input{width:17px;height:17px;flex-shrink:0}
+#scr-planificacion .persona-row label{font-size:13.5px;flex:1}
+#scr-planificacion .persona-row.ocupado label{color:var(--text3)}
+#scr-planificacion .persona-row.ocupado input{opacity:.4}
+#scr-planificacion .finde-row{margin-bottom:10px;padding:9px 10px;background:var(--amberlt);border-radius:var(--r);border:1px solid #f2dca8}
+#scr-planificacion .finde-horario{display:flex;gap:8px;margin-top:8px}
+#scr-planificacion .finde-horario input{flex:1;padding:8px 9px;border:1.5px solid var(--border2);border-radius:var(--r);font-size:13px}
+#scr-planificacion .resumen-fila{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}
+#scr-planificacion .resumen-fila:last-child{border-bottom:none}
+#scr-planificacion .resumen-fila span{color:var(--text2);flex-shrink:0}
+#scr-planificacion .resumen-fila b{text-align:right;font-weight:700}
+#scr-planificacion .est-titulo{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text2);margin:16px 0 6px}
+#scr-planificacion .est-fila{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--surface2);border-radius:var(--r);margin-bottom:6px;font-size:12.5px}
+#scr-planificacion .notif-item{background:var(--amberlt);border:1px solid #f2dca8;border-radius:var(--r2);padding:12px;margin-bottom:12px}
+#scr-planificacion .notif-item.respuesta{background:var(--accentlt);border-color:var(--border2)}
+#scr-planificacion .notif-item.equipo{background:var(--surface2);border-color:var(--border)}
+#scr-planificacion .info-parrafo{font-size:13.5px;line-height:1.5;margin-bottom:12px}
+#scr-planificacion .info-lista{list-style:none;margin-bottom:12px}
+#scr-planificacion .info-lista li{background:var(--surface2);border-radius:var(--r);padding:9px 11px;margin-bottom:6px;font-size:13px}
+#scr-planificacion .info-lista li b{display:block;font-size:12.5px}
+#scr-planificacion .info-badge{display:inline-block;padding:5px 12px;border-radius:99px;background:var(--amberlt);color:var(--amber);font-weight:800;font-size:12px;margin-bottom:12px}
+#scr-planificacion .notif-texto{font-size:13px;line-height:1.4;margin-bottom:10px}
+#scr-planificacion .notif-acciones{display:flex;gap:8px}
+#scr-planificacion .notif-acciones .btn{padding:9px 8px;font-size:12px}
+#scr-planificacion #btn-notificaciones.con-alerta{background:var(--red);animation:pulso 1.4s infinite}
+@keyframes pulso{0%,100%{opacity:1}50%{opacity:.6}}
+#scr-planificacion .est-fila .nom{font-weight:700}
+#scr-planificacion .est-fila .datos{display:flex;gap:10px;color:var(--text2);font-size:11.5px}
+#scr-planificacion .est-fila .datos b{color:var(--text)}
+#scr-planificacion .chooser-btn{width:100%;display:flex;align-items:center;gap:12px;padding:14px 14px;border:1.5px solid var(--border);border-radius:var(--r2);margin-bottom:10px;background:var(--surface);text-align:left}
+#scr-planificacion .chooser-btn .ic{font-size:22px}
+#scr-planificacion .chooser-btn .tt{font-size:14px;font-weight:800}
+#scr-planificacion .chooser-btn .dd{font-size:11.5px;color:var(--text2);margin-top:1px}
+#scr-planificacion .chooser-btn.servicio{border-color:#cddcb4}
+#scr-planificacion .chooser-btn.ausencia{border-color:#f3c6c2}
+
+@media (max-width:859px){
+  #scr-planificacion .sidebar{position:fixed;top:0;left:0;bottom:0;width:280px;transform:translateX(-100%);border-right-width:1.5px;box-shadow:0 0 30px rgba(0,0,0,.25);z-index:500}
+  #scr-planificacion .sidebar.open{transform:translateX(0);width:280px}
+  #scr-planificacion .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:400;display:none}
+  #scr-planificacion .backdrop.show{display:block}
+}
+
 </style>
 </head>
 <body>
@@ -632,6 +853,413 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
   </div>
 </div>
 
+<!-- PLANIFICACIÓN -->
+<div class="screen" id="scr-planificacion">
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="menu-btn" onclick="alternarSidebar()">☰</button>
+    <div>
+      <div class="topbar-name">Planificación</div>
+      <div class="topbar-sub">Calendario de trabajo</div>
+    </div>
+  </div>
+  <button class="icon-btn icon-grande" style="margin-left:auto" onclick="actualizarDatos()" title="Actualizar">🔄</button>
+  <button class="icon-btn icon-grande" id="btn-notificaciones" onclick="abrirNotificaciones()" title="Avisos">📣</button>
+  <button class="icon-btn icon-grande" id="btn-papelera-plan" onclick="abrirPapeleraPlan()" title="Papelera">🗑️</button>
+  <button class="icon-btn" id="btn-usuario-actual" onclick="abrirSelectorUsuarioActual(event)"><span class="icono-obrero">👷</span> ¿Quién sos?</button>
+</div>
+
+<div class="modal-overlay" id="modal-notificaciones">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-txt">
+        <h3>🔔 Avisos pendientes</h3>
+      <div class="sub">Trabajos tuyos afectados por una ausencia — elegí qué hacer con cada uno.
+      </div>
+      </div>
+      <button class="btn-cerrar-x" onclick="cerrarModales()">✕</button>
+    </div>
+    <div class="modal-body" id="notif-lista"></div>
+    <div class="modal-foot">
+      <button class="btn secondary" onclick="cerrarModales()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-papelera-plan">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-txt">
+        <h3>🗑️ Papelera de planificación</h3>
+        <div class="sub">Trabajos, servicios y ausencias eliminados. Se pueden restaurar o borrar para siempre.</div>
+      </div>
+      <button class="btn-cerrar-x" onclick="cerrarPapeleraPlan()">✕</button>
+    </div>
+    <div class="modal-body" id="papelera-plan-list"></div>
+    <div class="modal-foot" style="flex-wrap:wrap">
+      <button class="btn secondary sm" id="btn-vaciar-papelera-plan" style="width:100%;color:var(--red);display:none" onclick="vaciarPapeleraPlan()">🗑️ Vaciar papelera</button>
+      <button class="btn secondary" style="width:100%" onclick="cerrarPapeleraPlan()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-info">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-txt">
+        <h3 id="mi-titulo">Aviso</h3>
+      </div>
+      <button class="btn-cerrar-x" onclick="cerrarModales()">✕</button>
+    </div>
+    <div class="modal-body" id="mi-cuerpo"></div>
+    <div class="modal-foot">
+      <button class="btn" onclick="cerrarModales()">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-usuario-plan">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-txt">
+        <h3>¿Quién sos?</h3>
+      <div class="sub">Elegí tu perfil para que la app te reconozca en este celular/computadora. Solo el responsable de cada trabajo puede editarlo.
+      </div>
+      </div>
+      <button class="btn-cerrar-x" onclick="cerrarModales()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="preset-horario">
+        <button type="button" id="tab-rol-usuario" class="tab-activo" onclick="cambiarTabRol('usuario')">🧑‍💼 Soy responsable/usuario</button>
+        <button type="button" id="tab-rol-operario" onclick="cambiarTabRol('operario')">👷 Soy operario</button>
+      </div>
+      <div class="field" id="campo-rol-usuario">
+        <label>Tu usuario</label>
+        <select id="sel-usuario-actual"></select>
+      </div>
+      <div class="field" id="campo-rol-operario" style="display:none">
+        <label>Tu nombre (operario)</label>
+        <select id="sel-operario-actual"></select>
+        <div class="hint">Con este perfil podés ver tu agenda y cargar tus propias ausencias. No vas a poder editar obras ni servicios — eso lo hace el responsable.</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn secondary" onclick="cerrarModales()">Cancelar</button>
+      <button class="btn" onclick="guardarUsuarioActual()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <button onclick="irSemanas(-1)">‹</button>
+  <button class="hoy" onclick="irAHoy()">Hoy</button>
+  <button onclick="irSemanas(1)">›</button>
+  <input type="month" id="selector-mes" onchange="irAMes(this.value)">
+  <button onclick="abrirEstadisticas()">📊</button>
+  <button id="btn-filtro-mios" onclick="alternarFiltroMios()" style="min-width:118px">🌐 Todo el equipo</button>
+  <span class="vista-switch">
+    <button id="btn-vista-calendario" class="activo" onclick="cambiarVista('calendario')">🗓</button>
+    <button id="btn-vista-lista" onclick="cambiarVista('lista')">📋</button>
+  </span>
+</div>
+
+<div class="app">
+  <div class="backdrop" id="backdrop" onclick="toggleSidebar(false)"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <h2>Obras abiertas</h2>
+      <div class="search-bar">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Buscar por cliente o N° obra..." oninput="filtrarObras(this.value)">
+      </div>
+    </div>
+    <div class="demo-btns">
+      <button class="btn-demo" onclick="agregarObrasPrueba()">➕ Obras de prueba</button>
+      <button class="btn-demo quitar" onclick="quitarObrasPrueba()">🗑 Quitar</button>
+    </div>
+    <div class="sidebar-list" id="obras-lista"></div>
+    <div class="sidebar-tip">💡 Arrastrá una obra a un día, o tocala y después tocá el día. El "+" de cada día carga un servicio o una ausencia.</div>
+  </aside>
+
+  <main class="main">
+    <div class="banner-seleccion" id="banner-seleccion" style="display:none">
+      <span id="banner-seleccion-texto"></span>
+      <button onclick="cancelarSeleccionObra()">✕ Cancelar</button>
+    </div>
+    <div class="cal-scroll" id="cal-scroll"></div>
+  </main>
+</div>
+
+<!-- MODAL: elegir tipo de entrada -->
+<div class="modal-overlay" id="modal-tipo">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-txt">
+        <h3>Nueva entrada</h3>
+      <div class="sub" id="mt-fecha-lbl">
+      </div>
+      </div>
+      <button class="btn-cerrar-x" onclick="cerrarModales()">✕</button>
+    </div>
+    <div class="modal-body">
+      <button class="chooser-btn servicio" onclick="elegirTipo('servicio')">
+        <span class="ic">🔧</span>
+        <div><div class="tt">Servicio</div><div class="dd">Un trabajo puntual, no ligado a una obra abierta</div></div>
+      </button>
+      <button class="chooser-btn ausencia" onclick="elegirTipo('ausencia')">
+        <span class="ic">🚫</span>
+        <div><div class="tt">Ausencia</div><div class="dd">Marcar a alguien como no disponible (todo el día o un horario)</div></div>
+      </button>
+    </div>
+    <div class="modal-foot">
+      <button class="btn secondary" onclick="cerrarModales()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: estadísticas -->
+<div class="modal-overlay" id="modal-estadisticas">
+  <div class="modal-box" style="max-width:520px">
+    <div class="modal-head">
+      <div class="modal-head-txt">
+        <h3>📊 Estadísticas</h3>
+      <div class="sub">Horas y trabajos cargados en la planificación
+      </div>
+      </div>
+      <button class="btn-cerrar-x" onclick="cerrarModales()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Ver por</label>
+        <select id="est-tipo" onchange="onCambioTipoEstadistica()">
+          <option value="mes">Mes</option>
+          <option value="trimestre">Trimestre</option>
+          <option value="anio">Año</option>
+          <option value="personalizado">Rango personalizado</option>
+        </select>
+      </div>
+      <div id="est-campo-mes" class="field">
+        <label>Elegí el mes</label>
+        <input type="month" id="est-mes-valor">
+      </div>
+      <div id="est-campo-trimestre" class="row2" style="display:none">
+        <div class="field">
+          <label>Trimestre</label>
+          <select id="est-trimestre-valor">
+            <option value="0">1° (Ene-Mar)</option>
+            <option value="1">2° (Abr-Jun)</option>
+            <option value="2">3° (Jul-Sep)</option>
+            <option value="3">4° (Oct-Dic)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Año</label>
+          <input type="number" id="est-trimestre-anio" min="2020" max="2100">
+        </div>
+      </div>
+      <div id="est-campo-anio" class="field" style="display:none">
+        <label>Elegí el año</label>
+        <input type="number" id="est-anio-valor" min="2020" max="2100">
+      </div>
+      <div id="est-campo-personalizado" class="row2" style="display:none">
+        <div class="field">
+          <label>Desde</label>
+          <input type="date" id="est-desde">
+        </div>
+        <div class="field">
+          <label>Hasta</label>
+          <input type="date" id="est-hasta">
+        </div>
+      </div>
+      <button class="btn" style="width:100%;margin-bottom:16px" onclick="aplicarPeriodoEstadistica()">Ver</button>
+      <div id="est-resumen" class="resumen-fila" style="font-weight:800"></div>
+      <h4 class="est-titulo">Por operario</h4>
+      <div id="est-operarios"></div>
+      <h4 class="est-titulo">Por responsable</h4>
+      <div id="est-responsables"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn secondary" onclick="cerrarModales()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: todos los trabajos de un día -->
+<div class="modal-overlay" id="modal-dia">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-txt">
+        <h3 id="md-titulo">Día</h3>
+      </div>
+      <button class="btn-cerrar-x" onclick="cerrarModales()">✕</button>
+    </div>
+    <div class="modal-body" id="md-body"></div>
+    <div class="modal-foot">
+      <button class="btn secondary" onclick="cerrarModales()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: resumen (antes de editar) -->
+<div class="modal-overlay" id="modal-resumen">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-txt">
+        <h3 id="mr-titulo">Detalle</h3>
+      </div>
+      <button class="btn-cerrar-x" onclick="cerrarModales()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="mr-body"></div>
+      <div id="mr-mover-wrap" style="display:none;margin-top:14px;padding-top:14px;border-top:1.5px solid var(--border)">
+        <div class="field">
+          <label>Pasar este día al</label>
+          <input type="date" id="mr-mover-fecha">
+        </div>
+        <button class="btn" style="width:100%" onclick="confirmarMoverDia()">Confirmar cambio de día</button>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn secondary" onclick="mostrarMoverDia()">📅 Mover</button>
+      <button class="btn danger" id="mr-btn-quitar-dia" onclick="quitarDiaDesdeResumen()">Quitar este día</button>
+      <button class="btn danger" id="mr-btn-eliminar-todo" style="display:none" onclick="eliminarTodoDesdeResumen()">Eliminar todo</button>
+      <button class="btn secondary" onclick="cerrarModales()">Cerrar</button>
+      <button class="btn" onclick="editarDesdeResumen()">✏️ Editar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: asignar obra / servicio -->
+<div class="modal-overlay" id="modal-asignar">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-txt">
+        <h3 id="ma-titulo">Asignar obra</h3>
+      <div class="sub" id="ma-sub">
+      </div>
+      </div>
+      <button class="btn-cerrar-x" onclick="cerrarModales()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="responsable-box" id="ma-responsable-box">
+        <span class="ic">🧑‍💼</span>
+        <div class="txt">Responsable (automático)<b id="ma-responsable">—</b></div>
+      </div>
+      <div class="field" id="ma-servicio-cliente-field" style="display:none">
+        <label>Cliente / lugar</label>
+        <input type="text" id="ma-servicio-cliente" placeholder="Ej: Cliente García">
+      </div>
+      <div class="field" id="ma-servicio-desc-field" style="display:none">
+        <label>Detalle del servicio</label>
+        <input type="text" id="ma-servicio-desc" placeholder="Ej: Revisión de garantía">
+      </div>
+      <div class="field" id="ma-servicio-resp-field" style="display:none">
+        <label>Responsable</label>
+        <select id="ma-servicio-resp"></select>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Cantidad de días</label>
+          <input type="number" id="ma-dias" min="1" value="1">
+          <div class="hint">Días hábiles (lunes a viernes).</div>
+        </div>
+        <div class="field">
+          <label>Fecha de inicio</label>
+          <input type="text" id="ma-fecha-lbl" readonly>
+        </div>
+      </div>
+      <div class="preset-horario">
+        <button type="button" onclick="setPresetHorarioObra('08:00','13:00')">🌅 Mañana</button>
+        <button type="button" onclick="setPresetHorarioObra('13:00','18:00')">🌇 Tarde</button>
+        <button type="button" onclick="setPresetHorarioObra('08:00','17:00')">🕐 Todo el día</button>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Horario desde</label>
+          <input type="text" id="ma-hora-desde" inputmode="numeric" placeholder="Ej: 8" value="08:00" onblur="this.value=formatearHora(this.value)||'08:00'">
+        </div>
+        <div class="field">
+          <label>Horario hasta</label>
+          <input type="text" id="ma-hora-hasta" inputmode="numeric" placeholder="Ej: 17" value="17:00" onblur="this.value=formatearHora(this.value)||'17:00'">
+        </div>
+      </div>
+      <div id="ma-findes" style="display:none">
+        <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text2);margin-bottom:8px">Este rango incluye sábado y/o domingo</label>
+        <div id="ma-findes-lista"></div>
+      </div>
+      <div class="grupo-personas">
+        <h4>Operarios <span style="color:var(--red)">*</span> (obligatorio)</h4>
+        <div id="ma-operarios"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn danger" id="ma-btn-quitar-dia" style="display:none" onclick="quitarSoloEsteDia()">Quitar este día</button>
+      <button class="btn danger" id="ma-btn-eliminar-todo" style="display:none" onclick="eliminarBloqueCompleto()">Eliminar todo</button>
+      <button class="btn secondary" onclick="reemplazandoAusente=null;cerrarModales()">Cancelar</button>
+      <button class="btn" onclick="guardarAsignacion()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ausencia -->
+<div class="modal-overlay" id="modal-ausencia">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-txt">
+        <h3>🚫 Ausencia</h3>
+      <div class="sub" id="mau-fecha-lbl">
+      </div>
+      </div>
+      <button class="btn-cerrar-x" onclick="cerrarModales()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Persona</label>
+        <select id="mau-persona"></select>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Cantidad de días</label>
+          <input type="number" id="mau-dias" min="1" value="1">
+        </div>
+        <div class="field">
+          <label>Fecha de inicio</label>
+          <input type="text" id="mau-fecha-lbl-input" readonly>
+        </div>
+      </div>
+      <div class="preset-horario">
+        <button type="button" onclick="setPresetHorarioAusencia('08:00','13:00')">🌅 Mañana</button>
+        <button type="button" onclick="setPresetHorarioAusencia('13:00','18:00')">🌇 Tarde</button>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Desde (opcional)</label>
+          <input type="text" id="mau-hora-desde" inputmode="numeric" placeholder="Ej: 8" onblur="this.value=formatearHora(this.value)">
+        </div>
+        <div class="field">
+          <label>Hasta (opcional)</label>
+          <input type="text" id="mau-hora-hasta" inputmode="numeric" placeholder="Ej: 12" onblur="this.value=formatearHora(this.value)">
+        </div>
+      </div>
+      <div class="field">
+        <label class="hint" style="display:block;margin-bottom:8px">Dejá el horario en blanco si va a faltar todo el día.</label>
+      </div>
+      <div class="field">
+        <label>Motivo (opcional)</label>
+        <input type="text" id="mau-motivo" placeholder="Ej: turno médico, trámite...">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn danger" id="mau-btn-quitar-dia" style="display:none" onclick="quitarSoloEsteDiaAusencia()">Quitar este día</button>
+      <button class="btn danger" id="mau-btn-eliminar-todo" style="display:none" onclick="eliminarBloqueCompletoAusencia()">Eliminar todo</button>
+      <button class="btn secondary" onclick="cerrarModales()">Cancelar</button>
+      <button class="btn violet" onclick="guardarAusencia()">Guardar</button>
+    </div>
+  </div>
+</div>
+</div>
+
 <!-- BOTTOM NAV -->
 <div class="bottomnav" id="bottomnav" style="display:none">
   <button id="nav-proyectos" onclick="irA('proyectos')">
@@ -641,6 +1269,10 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
   <button id="nav-stats" onclick="irA('stats')">
     <svg viewBox="0 0 24 24"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
     Estadísticas
+  </button>
+  <button id="nav-planificacion" onclick="irA('planificacion')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+    Planificación
   </button>
   <button id="nav-facturacion" onclick="irA('facturacion')" style="display:none;position:relative">
     <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
@@ -806,13 +1438,16 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     </div>
     <div class="modal-sub">Administración puede corregir el nombre y aprobarlo.</div>
     <div class="field"><label>Nombre del operario *</label><input type="text" id="op-modal-nombre" placeholder="Ej: García, Juan"></div>
-    <div class="field" style="margin-bottom:16px">
+    <div class="field">
       <label>Estado</label>
       <select id="op-modal-estado">
         <option value="pendiente">Pendiente</option>
         <option value="aceptado">Aceptado</option>
       </select>
     </div>
+    <div class="modal-sub" style="margin-top:6px">Acceso a la app (opcional) — para que pueda entrar desde su celular y ver sus trabajos asignados.</div>
+    <div class="field"><label>Usuario (para iniciar sesión)</label><input type="text" id="op-modal-usuario" placeholder="jgarcia" style="font-family:var(--mono)"></div>
+    <div class="field" style="margin-bottom:16px"><label>Contraseña</label><input type="text" id="op-modal-pass" placeholder="Contraseña" style="font-family:var(--mono)"></div>
     <div style="display:flex;gap:10px">
       <button class="btn" onclick="guardarModalOperario()">Guardar</button>
       <button class="btn secondary" onclick="cerrarModalOperario()">Cancelar</button>
@@ -900,7 +1535,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     <div class="rl" id="um-rol">—</div>
   </div>
   <div id="um-opciones">
-    <button onclick="abrirModalPassword()">🔑 Cambiar contraseña</button>
+    <button id="um-btn-pass" onclick="abrirModalPassword()">🔑 Cambiar contraseña</button>
     <button onclick="mostrarConfirmUserMenu()">🔁 Cambiar de usuario / Cerrar sesión</button>
   </div>
   <div id="um-confirmar" style="display:none;padding:12px 14px">
@@ -928,6 +1563,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 let STATE = { proyectos: [], administracion: [], clientes: [], equipos: [], operarios: [] };
 let currentUser = null;
 let currentUserRol = null;
+let currentOperarioId = null; // si el que inició sesión es un operario, acá queda su id
 function bloqueadoPorSoloLectura(){
   if(currentUserRol==='gerente'){ toast('Tu usuario es de solo lectura: puede ver todo pero no modificar nada'); return true; }
   return false;
@@ -945,14 +1581,19 @@ function buscarCuenta(u){
   else{
     const db = USUARIOS_DB.find(x=>x.usuario===u);
     if(db) cuenta = { pass:db.pass, rol:db.rol, nombre:db.nombre };
+    else{
+      const op = OPERARIOS_LOGIN.find(x=>x.usuario===u);
+      if(op) cuenta = { pass:op.pass, rol:'operario', nombre:op.nombre, operarioId:op.id };
+    }
   }
-  if(cuenta && PASSWORD_OVERRIDES[u]) cuenta.pass = PASSWORD_OVERRIDES[u];
+  if(cuenta && cuenta.rol!=='operario' && PASSWORD_OVERRIDES[u]) cuenta.pass = PASSWORD_OVERRIDES[u];
   return cuenta;
 }
 function nombreUsuario(u){
   const c = buscarCuenta(u);
   return c ? c.nombre : (u||'—');
 }
+let OPERARIOS_LOGIN = []; // operarios con usuario/contraseña propios, precargados para poder loguearse
 async function precargarUsuarios(){
   try{
     if(window.db){
@@ -960,6 +1601,8 @@ async function precargarUsuarios(){
       USUARIOS_DB = us.filter(x=>!x.eliminado);
       const overrides = await window.db.getAll('password_overrides');
       overrides.forEach(o=> PASSWORD_OVERRIDES[o.id] = o.pass);
+      const op = await window.db.getAll('operarios');
+      OPERARIOS_LOGIN = op.filter(x=>!x.eliminado && x.usuario && x.pass);
     }
   }catch(e){ console.warn('No se pudieron precargar usuarios', e); }
 }
@@ -1169,10 +1812,11 @@ async function hacerLogin(){
   if(!u || !p){ err.textContent = 'Completá usuario y contraseña.'; return; }
   let cuenta = buscarCuenta(u);
   if(!cuenta && window.db){
-    // Puede que el usuario se haya creado hace poco y todavía no se haya sincronizado: reintentamos
+    // Puede que el usuario/operario se haya creado hace poco y todavía no se haya sincronizado: reintentamos
     try{
-      const us = await window.db.getAll('usuarios');
+      const [us, op] = await Promise.all([window.db.getAll('usuarios'), window.db.getAll('operarios')]);
       USUARIOS_DB = us.filter(x=>!x.eliminado);
+      OPERARIOS_LOGIN = op.filter(x=>!x.eliminado && x.usuario && x.pass);
       cuenta = buscarCuenta(u);
     }catch(e){ console.warn('No se pudo re-sincronizar usuarios', e); }
   }
@@ -1180,8 +1824,18 @@ async function hacerLogin(){
   err.textContent = '';
   currentUser = u;
   currentUserRol = cuenta.rol;
+  currentOperarioId = cuenta.rol==='operario' ? cuenta.operarioId : null;
+  if(currentUserRol==='operario'){
+    // El operario ya se identificó al loguearse: no hace falta que elija "¿quién sos?" en Planificación
+    operarioActual = currentOperarioId;
+    usuarioActual = null;
+    localStorage.setItem('planif_operario_actual', operarioActual);
+    localStorage.removeItem('planif_usuario_actual');
+  }
   document.querySelectorAll('.user-btn-nombre').forEach(el=> el.textContent = nombreUsuario(currentUser));
   document.getElementById('bottomnav').style.display = 'flex';
+  document.getElementById('nav-proyectos').style.display = currentUserRol==='operario' ? 'none' : 'flex';
+  document.getElementById('nav-stats').style.display = currentUserRol==='operario' ? 'none' : 'flex';
   document.getElementById('nav-facturacion').style.display = (currentUserRol==='administracion'||currentUserRol==='gerente') ? 'flex' : 'none';
   document.getElementById('nav-gestion').style.display = (currentUserRol==='administracion'||currentUserRol==='gerente') ? 'flex' : 'none';
   cargarDatos();
@@ -1191,7 +1845,8 @@ function toggleUserMenu(e){
   const menu = document.getElementById('user-menu');
   const abrir = !menu.classList.contains('open');
   document.getElementById('um-nombre').textContent = nombreUsuario(currentUser);
-  document.getElementById('um-rol').textContent = currentUserRol==='administracion' ? 'Administración' : currentUserRol==='gerente' ? 'Gerente (solo lectura)' : 'Usuario';
+  document.getElementById('um-rol').textContent = currentUserRol==='administracion' ? 'Administración' : currentUserRol==='gerente' ? 'Gerente (solo lectura)' : currentUserRol==='operario' ? 'Operario' : 'Usuario';
+  document.getElementById('um-btn-pass').style.display = currentUserRol==='operario' ? 'none' : 'block';
   ocultarConfirmUserMenu();
   menu.classList.toggle('open', abrir);
 }
@@ -1283,8 +1938,16 @@ function ejecutarCierreSesion(){
   document.getElementById('user-menu').classList.remove('open');
   currentUser = null;
   currentUserRol = null;
+  currentOperarioId = null;
+  // Limpiamos también la identidad de Planificación: cada sesión nueva en este dispositivo debe elegir la suya
+  usuarioActual = null;
+  operarioActual = null;
+  localStorage.removeItem('planif_usuario_actual');
+  localStorage.removeItem('planif_operario_actual');
   STATE = { proyectos: [], administracion: [], clientes: [], equipos: [], operarios: [] };
   document.getElementById('bottomnav').style.display = 'none';
+  document.getElementById('nav-proyectos').style.display = 'flex';
+  document.getElementById('nav-stats').style.display = 'flex';
   document.getElementById('nav-facturacion').style.display = 'none';
   document.getElementById('nav-gestion').style.display = 'none';
   document.getElementById('lg-user').value = '';
@@ -1322,7 +1985,7 @@ async function cargarDatos(){
   }
   actualizarBadgeGestion();
   actualizarBadgeFacturacion();
-  irA('proyectos');
+  irA(currentUserRol==='operario' ? 'planificacion' : 'proyectos');
   setTimeout(chequearBorradoresPendientes, 400);
   iniciarMonitorInactividad();
 }
@@ -1427,10 +2090,12 @@ function irA(seccion){
   }
   document.getElementById('nav-proyectos').classList.toggle('active', seccion==='proyectos');
   document.getElementById('nav-stats').classList.toggle('active', seccion==='stats');
+  document.getElementById('nav-planificacion').classList.toggle('active', seccion==='planificacion');
   document.getElementById('nav-facturacion').classList.toggle('active', seccion==='facturacion');
   document.getElementById('nav-gestion').classList.toggle('active', seccion==='gestion');
   if(seccion==='proyectos'){ showScreen('scr-proyectos'); renderProyectos(); }
   if(seccion==='stats'){ showScreen('scr-stats'); renderStats(); }
+  if(seccion==='planificacion'){ showScreen('scr-planificacion'); if(typeof cargarTodo==='function') cargarTodo(); }
   if(seccion==='facturacion'){ showScreen('scr-facturacion'); renderAdmin(); }
   if(seccion==='gestion'){ showScreen('scr-gestion'); renderGestion(); }
 }
@@ -3429,7 +4094,7 @@ function filtrarListaOperarios(filtroTexto){
   if(filtroTexto) lista = lista.filter(o=>(o.nombre||'').toLowerCase().includes(filtroTexto));
   document.getElementById('operarios-lista-inner').innerHTML = lista.map(o=>`
         <div class="link-row">
-          <span>👷 ${o.nombre}${o.estado==='pendiente'?'<span class="pend-tag">Pendiente</span>':''}</span>
+          <span>👷 ${o.nombre}${o.estado==='pendiente'?'<span class="pend-tag">Pendiente</span>':''}${o.usuario?' <span class="pend-tag" style="background:var(--accentlt);color:var(--accent)">📱 Con acceso</span>':''}</span>
           <div style="display:flex;gap:6px">
             <button class="btn secondary sm" onclick="abrirModalOperario('${o.id}')">Editar</button>
             <button class="btn secondary sm" style="color:var(--red)" onclick="eliminarOperario('${o.id}')">Eliminar</button>
@@ -3442,6 +4107,8 @@ function abrirModalOperario(id){
   const o = id ? STATE.operarios.find(x=>x.id===id) : null;
   document.getElementById('op-modal-nombre').value = o?.nombre || '';
   document.getElementById('op-modal-estado').value = o?.estado || (currentUserRol==='administracion' ? 'aceptado' : 'pendiente');
+  document.getElementById('op-modal-usuario').value = o?.usuario || '';
+  document.getElementById('op-modal-pass').value = o?.pass || '';
   document.getElementById('modal-operario').classList.add('open');
 }
 function cerrarModalOperario(){ document.getElementById('modal-operario').classList.remove('open'); }
@@ -3449,6 +4116,15 @@ async function guardarModalOperario(){
   if(bloqueadoPorSoloLectura()) return;
   const nombre = document.getElementById('op-modal-nombre').value.trim();
   if(!nombre){ toast('Completá el nombre del operario'); return; }
+  const usuarioLogin = document.getElementById('op-modal-usuario').value.trim();
+  const pass = document.getElementById('op-modal-pass').value.trim();
+  if(usuarioLogin && !pass){ toast('Si le das usuario, también necesita una contraseña'); return; }
+  if(!usuarioLogin && pass){ toast('Si le das contraseña, también necesita un usuario'); return; }
+  if(usuarioLogin){
+    const yaExiste = USUARIOS[usuarioLogin] || USUARIOS_DB.some(x=>x.usuario===usuarioLogin) ||
+      STATE.operarios.some(x=>x.usuario===usuarioLogin && x.id!==operario_editId);
+    if(yaExiste){ toast('Ese usuario ya existe, elegí otro'); return; }
+  }
   let o;
   if(operario_editId){
     o = STATE.operarios.find(x=>x.id===operario_editId);
@@ -3459,6 +4135,8 @@ async function guardarModalOperario(){
   }
   o.nombre = nombre;
   o.estado = document.getElementById('op-modal-estado').value;
+  o.usuario = usuarioLogin || null;
+  o.pass = pass || null;
   await guardarEnDB('operarios', o);
   document.getElementById('modal-operario').classList.remove('open');
   renderPendientes();
@@ -4186,6 +4864,1563 @@ async function restaurarProyecto(i){
   cerrarPapelera();
   renderProyectos();
 }
+</script>
+
+<!-- ===== SCRIPT: PLANIFICACIÓN ===== -->
+<script>
+/* ==================== ESTADO ==================== */
+let PROYECTOS = [];
+let USUARIOS_PLAN = [];
+let OPERARIOS = [];
+let ASIGNACIONES = [];
+let PAPELERA_PLAN = [];
+let obraSeleccionadaId = null;
+let editandoAsignacionId = null;
+let fechaModalYMD = null;        // día exacto que se tocó/soltó (para "quitar este día")
+let fechaInicioCalculo = null;   // primera fecha real del bloque (para recalcular el rango)
+let proyectoModalId = null;
+let modalTipoActual = 'obra';
+let fechaNuevaEntrada = null;
+let marcadosOperarios = new Set();
+let decisionesFinde = {};
+let resumenActualId = null;
+let reemplazandoAusente = null;
+let resumenActualFecha = null;
+let volverAModalDia = null; // si el resumen se abrió desde "ver el día", guarda la fecha para volver ahí
+
+let paginaDia = {};
+function paginarDia(f, dir, total){
+  const actual = paginaDia[f] || 0;
+  paginaDia[f] = ((actual + dir) % total + total) % total;
+  renderCalendario();
+}
+function mostrarInfo(titulo, cuerpoHtml){
+  document.getElementById('mi-titulo').textContent = titulo;
+  document.getElementById('mi-cuerpo').innerHTML = cuerpoHtml;
+  document.getElementById('modal-info').classList.add('open');
+}
+
+/* ==================== HORARIOS (formato Argentina) ==================== */
+function setPresetHorarioObra(desde,hasta){
+  document.getElementById('ma-hora-desde').value = desde;
+  document.getElementById('ma-hora-hasta').value = hasta;
+  renderOperariosCheckboxes();
+}
+function setPresetHorarioAusencia(desde,hasta){
+  document.getElementById('mau-hora-desde').value = desde;
+  document.getElementById('mau-hora-hasta').value = hasta;
+}
+function formatearHora(v){
+  if(!v) return '';
+  v = v.trim().replace(/[^0-9:]/g,'');
+  if(!v) return '';
+  let h, m;
+  if(v.includes(':')){
+    [h,m] = v.split(':');
+    m = m||'0';
+  } else if(v.length<=2){
+    h = v; m = '0';
+  } else if(v.length===3){
+    h = v.slice(0,1); m = v.slice(1);
+  } else {
+    h = v.slice(0,2); m = v.slice(2,4);
+  }
+  let hh = Math.min(23, Math.max(0, parseInt(h,10)||0));
+  let mm = Math.min(59, Math.max(0, parseInt(m,10)||0));
+  return String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0');
+}
+function mostrarHora(v){ return v ? v+'hs' : '--:--'; }
+
+/* ==================== CARGA DE DATOS ==================== */
+/* ==================== IDENTIDAD (quién sos) ==================== */
+let usuarioActual = localStorage.getItem('planif_usuario_actual') || null;
+let operarioActual = localStorage.getItem('planif_operario_actual') || null;
+function actualizarLabelUsuarioActual(){
+  const btn = document.getElementById('btn-usuario-actual');
+  const icono = '<span class="icono-obrero">👷</span>';
+  if(currentUserRol==='operario'){
+    const nombre = nombreOperario(operarioActual) || operarioActual;
+    btn.innerHTML = '🔒 ' + nombre;
+    return;
+  }
+  if(usuarioActual){
+    const nombre = nombreResponsable(usuarioActual) || usuarioActual;
+    btn.innerHTML = icono + ' ' + nombre;
+  } else if(operarioActual){
+    const nombre = nombreOperario(operarioActual) || operarioActual;
+    btn.innerHTML = icono + ' ' + nombre + ' (operario)';
+  } else {
+    btn.innerHTML = icono + ' ¿Quién sos?';
+  }
+}
+function cambiarTabRol(rol){
+  document.getElementById('tab-rol-usuario').classList.toggle('tab-activo', rol==='usuario');
+  document.getElementById('tab-rol-operario').classList.toggle('tab-activo', rol==='operario');
+  document.getElementById('campo-rol-usuario').style.display = rol==='usuario' ? 'block' : 'none';
+  document.getElementById('campo-rol-operario').style.display = rol==='operario' ? 'block' : 'none';
+}
+function abrirSelectorUsuarioActual(event){
+  if(currentUserRol==='operario'){
+    toggleUserMenu(event);
+    return;
+  }
+  const sel = document.getElementById('sel-usuario-actual');
+  sel.innerHTML = USUARIOS_PLAN.slice().sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||''))
+    .map(u=>`<option value="${u.usuario}" ${u.usuario===usuarioActual?'selected':''}>${u.nombre}</option>`).join('');
+  const selOp = document.getElementById('sel-operario-actual');
+  selOp.innerHTML = OPERARIOS.slice().sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||''))
+    .map(o=>`<option value="${o.id}" ${o.id===operarioActual?'selected':''}>${o.nombre}</option>`).join('');
+  cambiarTabRol(operarioActual && !usuarioActual ? 'operario' : 'usuario');
+  document.getElementById('modal-usuario-plan').classList.add('open');
+}
+function guardarUsuarioActual(){
+  const esOperario = document.getElementById('tab-rol-operario').classList.contains('tab-activo');
+  if(esOperario){
+    const valor = document.getElementById('sel-operario-actual').value;
+    if(!valor){ toast('Elegí tu nombre'); return; }
+    operarioActual = valor;
+    usuarioActual = null;
+    localStorage.setItem('planif_operario_actual', valor);
+    localStorage.removeItem('planif_usuario_actual');
+  } else {
+    const valor = document.getElementById('sel-usuario-actual').value;
+    if(!valor){ toast('Elegí un usuario'); return; }
+    usuarioActual = valor;
+    operarioActual = null;
+    localStorage.setItem('planif_usuario_actual', valor);
+    localStorage.removeItem('planif_operario_actual');
+  }
+  actualizarLabelUsuarioActual();
+  actualizarBadgeNotificaciones();
+  cerrarModales();
+  toast('Listo, ya sabemos quién sos');
+}
+function loginResponsableDe(a){
+  if(a.tipo==='obra') return PROYECTOS.find(x=>x.id===a.proyectoId)?.usuario || null;
+  if(a.tipo==='servicio') return a.responsableId || null;
+  return null;
+}
+function rolActualPlan(){
+  if(!usuarioActual) return null;
+  const u = USUARIOS_PLAN.find(x=>x.usuario===usuarioActual);
+  return u ? u.rol : null;
+}
+function puedeEliminarAsignacion(a){
+  if(a.tipo==='ausencia') return {ok:true};
+  if(rolActualPlan()==='administracion') return {ok:true};
+  const loginResp = loginResponsableDe(a);
+  if(operarioActual && !usuarioActual){
+    return {ok:false, msg:'Los operarios no pueden eliminar obras ni servicios — eso lo hace el responsable'};
+  }
+  if(!usuarioActual){
+    return {ok:false, msg:'Primero elegí quién sos (👷 arriba) para poder eliminar'};
+  }
+  if(loginResp && loginResp!==usuarioActual){
+    return {ok:false, msg:'Solo puede eliminar esto ' + (nombreResponsable(loginResp)||loginResp) + ', el responsable del trabajo'};
+  }
+  return {ok:true};
+}
+/* ==================== AVISO: TRABAJO NUEVO ASIGNADO ==================== */
+function esNuevoParaMi(a){
+  if(a.tipo==='ausencia') return false;
+  // El responsable no recibe aviso: es quien programa el trabajo. Solo avisa a los operarios asignados.
+  const vistoPor = a.vistoPor||[];
+  if(operarioActual && (a.operarios||[]).includes(operarioActual) && !vistoPor.includes(operarioActual)) return true;
+  return false;
+}
+async function marcarVistoParaMi(a){
+  const quien = usuarioActual || operarioActual;
+  if(!quien) return;
+  a.vistoPor = a.vistoPor || [];
+  if(!a.vistoPor.includes(quien)){
+    a.vistoPor.push(quien);
+    try{ if(window.db) await window.db.set('planificacion_bloques', a.id, a); }catch(e){ console.warn(e); }
+  }
+}
+function contarPendientesPropios(){
+  if(!usuarioActual && !operarioActual) return 0;
+  let n = 0;
+  ASIGNACIONES.forEach(a=>{
+    if(a.tipo==='ausencia'){
+      if((usuarioActual && a.solicitadoPor===usuarioActual) || (operarioActual && a.solicitadoPorOperario===operarioActual)) n += (a.respuestas||[]).length;
+      return;
+    }
+    if(usuarioActual && loginResponsableDe(a)===usuarioActual) n += (a.pendientes||[]).length;
+    if(esNuevoParaMi(a)) n += 1;
+  });
+  return n;
+}
+function actualizarBadgeNotificaciones(){
+  const n = contarPendientesPropios();
+  const btn = document.getElementById('btn-notificaciones');
+  btn.textContent = n>0 ? `📣 ${n}` : '📣';
+  btn.classList.toggle('con-alerta', n>0);
+}
+function abrirNotificaciones(){
+  const cont = document.getElementById('notif-lista');
+  const items = [];
+  const respuestas = [];
+  const nuevos = [];
+  let totalPendientesEnSistema = 0;
+  ASIGNACIONES.forEach(a=>{
+    if(a.tipo==='ausencia'){
+      if((usuarioActual && a.solicitadoPor===usuarioActual) || (operarioActual && a.solicitadoPorOperario===operarioActual)){
+        (a.respuestas||[]).forEach(r=>respuestas.push({a,r}));
+      }
+      return;
+    }
+    totalPendientesEnSistema += (a.pendientes||[]).length;
+    if(esNuevoParaMi(a)) nuevos.push(a);
+    if(!usuarioActual || loginResponsableDe(a)!==usuarioActual) return;
+    (a.pendientes||[]).forEach((p)=>items.push({a,p}));
+  });
+
+  const hoy = ymd(new Date());
+  let html = '';
+  if(!usuarioActual && !operarioActual){
+    html += `<div class="empty-mini">Elegí quién sos (👷 arriba) para recibir avisos personalizados. Igual podés ver acá abajo las ausencias cargadas por todo el equipo.</div>`;
+  }
+  if(nuevos.length){
+    html += `<h4 class="est-titulo" style="margin-top:0">🆕 Trabajos nuevos asignados a vos</h4>`;
+    html += nuevos.map(a=>{
+      const {titulo, sub} = tituloYSub(a);
+      const fechasOrdenadas = (a.fechas||[]).slice().sort();
+      const f = fechasOrdenadas[0];
+      const rango = fechasOrdenadas.length>1 ? `${fechaLegible(fechasOrdenadas[0])} a ${fechaLegible(fechasOrdenadas[fechasOrdenadas.length-1])}` : fechaLegible(fechasOrdenadas[0]);
+      return `<div class="notif-item nuevo">
+        <div class="notif-texto">📌 Te asignaron <b>${titulo}</b> (${sub}) · ${rango}</div>
+        <div class="notif-acciones">
+          <button class="btn secondary" onclick="cerrarModales();irAFechaEnCalendario('${f}');abrirResumen('${a.id}','${f}')">Ver</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  if(respuestas.length){
+    html += `<h4 class="est-titulo">Sobre tus ausencias</h4>`;
+    html += respuestas.map(({a,r})=>`<div class="notif-item respuesta">
+      <div class="notif-texto">📨 ${r.mensaje}</div>
+      <div class="notif-acciones">
+        <button class="btn secondary" onclick="marcarRespuestaVista('${a.id}','${r.id}')">Entendido</button>
+      </div>
+    </div>`).join('');
+  }
+  if(items.length){
+    html += `<h4 class="est-titulo">Trabajos tuyos afectados</h4>`;
+    html += items.map(({a,p})=>{
+      const nombreOp = nombreOperario(p.operarioId);
+      const titulo = a.tipo==='obra' ? (PROYECTOS.find(x=>x.id===a.proyectoId)?.cliente||'Obra') : (a.clienteServicio||'Servicio');
+      return `<div class="notif-item">
+        <div class="notif-texto">🚫 <b>${nombreOp}</b> va a estar ausente el <b>${fechaLegible(p.fecha)}</b>${p.motivo?` (${p.motivo})`:''} y está asignado a <b>${titulo}</b> ese día.</div>
+        <div class="notif-acciones">
+          <button class="btn secondary" onclick="resolverPendiente('${a.id}','${p.id}','reemplazar')">🔁 Reemplazar</button>
+          <button class="btn secondary" onclick="resolverPendiente('${a.id}','${p.id}','reprogramar')">📅 Reprogramar</button>
+          <button class="btn danger" onclick="resolverPendiente('${a.id}','${p.id}','eliminar')">🚫 Denegar</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  const ausenciasEquipo = ASIGNACIONES.filter(a=>a.tipo==='ausencia' && (a.fechas||[]).some(f=>f>=hoy))
+    .sort((x,y)=> (x.fechas.slice().sort()[0]||'').localeCompare(y.fechas.slice().sort()[0]||''));
+  html += `<h4 class="est-titulo">📋 Ausencias del equipo (hoy en adelante)</h4>`;
+  html += ausenciasEquipo.length ? ausenciasEquipo.map(a=>{
+    const nombre = a.personaTipo==='usuario' ? (nombreResponsable(a.personaId)||a.personaId) : nombreOperario(a.personaId);
+    const fechasOrdenadas = a.fechas.slice().sort();
+    const rango = fechasOrdenadas.length>1 ? `${fechaLegible(fechasOrdenadas[0])} a ${fechaLegible(fechasOrdenadas[fechasOrdenadas.length-1])}` : fechaLegible(fechasOrdenadas[0]);
+    const horario = (a.horaDesde||a.horaHasta) ? `${mostrarHora(a.horaDesde)} a ${mostrarHora(a.horaHasta)}` : 'Todo el día';
+    return `<div class="notif-item equipo">
+      <div class="notif-texto">🚫 <b>${nombre}</b> no va a estar disponible: <b>${rango}</b> · ${horario}${a.motivo?` — ${a.motivo}`:''}</div>
+    </div>`;
+  }).join('') : `<div class="empty-mini">No hay ausencias cargadas de hoy en adelante.</div>`;
+
+  cont.innerHTML = html;
+  document.getElementById('modal-notificaciones').classList.add('open');
+}
+async function marcarRespuestaVista(ausenciaId, respuestaId){
+  const a = ASIGNACIONES.find(x=>x.id===ausenciaId);
+  if(!a) return;
+  a.respuestas = (a.respuestas||[]).filter(r=>r.id!==respuestaId);
+  try{ if(window.db) await window.db.set('planificacion_bloques', a.id, a); }catch(e){ console.warn(e); }
+  actualizarBadgeNotificaciones();
+  abrirNotificaciones();
+}
+async function avisarAlSolicitante(pendiente, accion, tituloTrabajo){
+  const ausencia = ASIGNACIONES.find(x=>x.id===pendiente.ausenciaId && x.tipo==='ausencia');
+  if(!ausencia || (!ausencia.solicitadoPor && !ausencia.solicitadoPorOperario)) return;
+  const textos = {
+    reemplazar: `El responsable eligió reemplazarte en "${tituloTrabajo}" del ${fechaLegible(pendiente.fecha)}. Ya podés dar por confirmada tu ausencia ese día.`,
+    reprogramar: `El responsable va a reprogramar "${tituloTrabajo}" a otra fecha. Tu ausencia del ${fechaLegible(pendiente.fecha)} queda confirmada.`,
+    eliminar: `El responsable denegó/sacó "${tituloTrabajo}" del ${fechaLegible(pendiente.fecha)}. Tu ausencia queda confirmada para ese día.`
+  };
+  ausencia.respuestas = ausencia.respuestas || [];
+  ausencia.respuestas.push({ id: uid('resp'), accion, fecha: pendiente.fecha, mensaje: textos[accion] || 'Tu ausencia fue procesada.', creado: Date.now() });
+  try{ if(window.db) await window.db.set('planificacion_bloques', ausencia.id, ausencia); }catch(e){ console.warn(e); }
+}
+
+async function resolverPendiente(assignmentId, pendienteId, accion){
+  const a = ASIGNACIONES.find(x=>x.id===assignmentId);
+  if(!a) return;
+  const p = (a.pendientes||[]).find(x=>x.id===pendienteId);
+  if(!p) return;
+  const tituloTrabajo = a.tipo==='obra' ? (PROYECTOS.find(x=>x.id===a.proyectoId)?.cliente||'este trabajo') : (a.clienteServicio||'este trabajo');
+
+  if(accion==='eliminar'){
+    if(!confirm(`¿Denegar y sacar "${tituloTrabajo}" del ${fechaLegible(p.fecha)}? Esta acción no se puede deshacer.`)) return;
+    a.pendientes = (a.pendientes||[]).filter(x=>x.id!==pendienteId);
+    cerrarModales();
+    await quitarFechaDeAsignacion(a.id, p.fecha);
+    await avisarAlSolicitante(p, 'eliminar', tituloTrabajo);
+    actualizarBadgeNotificaciones();
+    return;
+  }
+
+  a.pendientes = (a.pendientes||[]).filter(x=>x.id!==pendienteId);
+  try{ if(window.db) await window.db.set('planificacion_bloques', a.id, a); }catch(e){ console.warn(e); }
+  await avisarAlSolicitante(p, accion, tituloTrabajo);
+  cerrarModales();
+  actualizarBadgeNotificaciones();
+  if(accion==='reemplazar'){
+    reemplazandoAusente = { nombreAusente: nombreOperario(p.operarioId), fecha: p.fecha };
+    abrirModalAsignar(p.fecha, a.tipo==='obra'?a.proyectoId:null, a.id);
+    toast('Elegí otro operario y guardá para confirmar el cambio');
+  } else {
+    abrirResumen(a.id, p.fecha);
+    mostrarMoverDia();
+  }
+}
+
+async function actualizarDatos(){
+  await cargarTodo();
+  toast('Datos actualizados');
+}
+async function cargarTodo(){
+  toast('Cargando...');
+  try{
+    if(window.db){
+      const [pr, us, op, pl] = await Promise.all([
+        window.db.getAll('proyectos'),
+        window.db.getAll('usuarios'),
+        window.db.getAll('operarios'),
+        window.db.getAll('planificacion_bloques')
+      ]);
+      PROYECTOS = pr.filter(p=>!p.eliminado && (p.estado==='abierto' || p.estado==='presupuesto'));
+      USUARIOS_PLAN = us.filter(u=>!u.eliminado);
+      OPERARIOS = op.filter(o=>!o.eliminado && o.estado!=='pendiente');
+      const todasAsig = pl.map(a=>({ operarios:[], tipo:a.tipo||'obra', fechas:a.fechas||(a.fechaInicio?[a.fechaInicio]:[]), horariosPorFecha:a.horariosPorFecha||{}, decisionesFinde:a.decisionesFinde||{}, pendientes:a.pendientes||[], respuestas:a.respuestas||[], ...a }));
+      ASIGNACIONES = todasAsig.filter(a=>!a.eliminado);
+      PAPELERA_PLAN = todasAsig.filter(a=>a.eliminado).sort((a,b)=>(b.eliminadoEn||0)-(a.eliminadoEn||0));
+    }
+  }catch(e){
+    console.warn('No se pudo conectar a Firebase', e);
+    toast('Sin conexión — revisá tu internet');
+  }
+  renderObras();
+  renderCalendario();
+  actualizarLabelUsuarioActual();
+  actualizarBadgeNotificaciones();
+  document.getElementById('selector-mes').value = ymd(fechaBase).slice(0,7);
+}
+
+/* ==================== OBRAS DE PRUEBA (solo en memoria, no se guardan) ==================== */
+function agregarObrasPrueba(){
+  const clientes = ['Constructora Rioja','Metalúrgica Sur','Estancia La Elena','Frigorífico Andino','Bodega Cuyana','Cerealera Belgrano','Textil Norte','Vivero Primavera','Aceitera Rosario','Automotores Delta','Panificados Trigal','Ferretería Central','Agro Insumos SRL','Transporte Litoral','Química Paraná'];
+  const nombres = ['Obra tinglado','Ampliación galpón','Tendido eléctrico','Cerco perimetral','Instalación silo','Reforma oficinas','Montaje estructura','Cableado planta','Obra vial interna','Techado nave'];
+  const logins = USUARIOS_PLAN.length ? USUARIOS_PLAN.map(u=>u.usuario) : ['demo_user'];
+  const nuevas = clientes.map((c,i)=>({
+    id:'demo_'+i, cliente:c, nro:'DEMO-'+(1000+i), nombre:nombres[i%nombres.length],
+    usuario: logins[i%logins.length], estado:'abierto', demo:true
+  }));
+  PROYECTOS = PROYECTOS.filter(p=>!p.demo).concat(nuevas);
+  renderObras();
+
+  const hoy = ymd(new Date());
+  ASIGNACIONES = ASIGNACIONES.filter(a=>!a.demo);
+  nuevas.slice(0,6).forEach((p,i)=>{
+    ASIGNACIONES.push({
+      id: 'demoasig_'+i, tipo:'obra', proyectoId:p.id, fechas:[hoy],
+      horaDesde:'08:00', horaHasta:'17:00',
+      operarios: OPERARIOS.length ? [OPERARIOS[i%OPERARIOS.length].id] : [],
+      demo:true
+    });
+  });
+  renderCalendario();
+  toast('Se agregaron '+nuevas.length+' obras de prueba y 6 quedaron cargadas hoy (no se guardan en la nube)');
+}
+function quitarObrasPrueba(){
+  PROYECTOS = PROYECTOS.filter(p=>!p.demo);
+  ASIGNACIONES = ASIGNACIONES.filter(a=>!a.demo);
+  renderObras();
+  renderCalendario();
+  toast('Obras de prueba eliminadas');
+}
+
+/* ==================== FECHAS ==================== */
+const DIAS_NOMBRE = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+function lunesDeSemana(offsetSemanas){
+  const hoy = new Date();
+  const dow = (hoy.getDay()+6)%7;
+  const l = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() - dow + offsetSemanas*7);
+  l.setHours(0,0,0,0);
+  return l;
+}
+function ymd(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function parseYMD(s){ const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
+function addDays(d,n){ const r = new Date(d); r.setDate(r.getDate()+n); return r; }
+function esHoy(d){ return ymd(d)===ymd(new Date()); }
+function formatoCorto(d){ return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'); }
+function fechaLegible(f){ const [y,m,d]=f.split('-').map(Number); return String(d).padStart(2,'0')+'/'+String(m).padStart(2,'0')+'/'+y; }
+function calcularFechasConsecutivas(fechaInicioStr, cantidad){
+  const fechas = [];
+  for(let i=0;i<cantidad;i++) fechas.push(ymd(addDays(parseYMD(fechaInicioStr), i)));
+  return fechas;
+}
+
+/* ==================== NAVEGACIÓN ==================== */
+let fechaBase;
+let cantidadSemanas;
+function primerLunesDelMes(y, m){ // m: 0-indexado
+  const d = new Date(y, m, 1);
+  const dow = (d.getDay()+6)%7;
+  d.setDate(d.getDate()-dow);
+  d.setHours(0,0,0,0);
+  return d;
+}
+function semanasParaMes(y, m){
+  const inicio = primerLunesDelMes(y, m);
+  const finMes = new Date(y, m+1, 0); // último día del mes
+  const dias = Math.round((finMes - inicio)/86400000) + 1;
+  return Math.ceil(dias/7);
+}
+function irAMesActual(){
+  const hoy = new Date();
+  fechaBase = primerLunesDelMes(hoy.getFullYear(), hoy.getMonth());
+  cantidadSemanas = semanasParaMes(hoy.getFullYear(), hoy.getMonth());
+  document.getElementById('selector-mes').value = hoy.getFullYear()+'-'+String(hoy.getMonth()+1).padStart(2,'0');
+}
+irAMesActual();
+function irSemanas(n){ fechaBase = addDays(fechaBase, n*7); renderCalendario(); document.getElementById('selector-mes').value = ymd(fechaBase).slice(0,7); }
+function irAMes(valor){
+  if(!valor) return;
+  const [y,m] = valor.split('-').map(Number);
+  fechaBase = primerLunesDelMes(y, m-1);
+  cantidadSemanas = semanasParaMes(y, m-1);
+  renderCalendario();
+}
+function irAHoy(){
+  irAMesActual();
+  renderCalendario();
+  setTimeout(()=>{
+    const el = document.getElementById('col-'+ymd(new Date()));
+    if(el) el.scrollIntoView({behavior:'smooth', block:'start', inline:'center'});
+  }, 60);
+}
+function irAFechaEnCalendario(f){
+  const d = parseYMD(f);
+  fechaBase = primerLunesDelMes(d.getFullYear(), d.getMonth());
+  cantidadSemanas = semanasParaMes(d.getFullYear(), d.getMonth());
+  document.getElementById('selector-mes').value = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  renderCalendario();
+  setTimeout(()=>{
+    const el = document.getElementById('col-'+f);
+    if(el) el.scrollIntoView({behavior:'smooth', block:'start', inline:'center'});
+  }, 60);
+}
+function labelSemana(lunesBloque){
+  const real = lunesDeSemana(0);
+  const diff = Math.round((lunesBloque-real)/(7*86400000));
+  if(diff===0) return 'Esta semana';
+  if(diff===-1) return 'Semana pasada';
+  if(diff===1) return 'Próxima semana';
+  if(diff===2) return 'En 2 semanas';
+  return diff<0 ? `Hace ${-diff} semanas` : `En ${diff} semanas`;
+}
+
+/* ==================== SIDEBAR (OBRAS) ==================== */
+function toggleSidebar(abrir){
+  document.getElementById('sidebar').classList.toggle('open', abrir);
+  document.getElementById('backdrop').classList.toggle('show', abrir);
+}
+function alternarSidebar(){
+  const abierto = document.getElementById('sidebar').classList.contains('open');
+  toggleSidebar(!abierto);
+}
+function nombreResponsable(loginUsuario){
+  if(!loginUsuario) return null;
+  if(loginUsuario==='Administracion') return 'Administración';
+  const u = USUARIOS_PLAN.find(x=>x.usuario===loginUsuario);
+  return u ? u.nombre : loginUsuario;
+}
+function tarjetaObraHTML(p){
+  const sel = p.id===obraSeleccionadaId ? ' seleccionada' : '';
+  const resp = nombreResponsable(p.usuario);
+  return `
+    <div class="obra-card${sel}" draggable="true" data-id="${p.id}"
+         ondragstart="onDragStartObra(event,'${p.id}')" ondragend="onDragEndObra(event)"
+         onclick="onClickObra('${p.id}')">
+      <div class="obra-cliente">${p.cliente||'(sin cliente)'}</div>
+      <div class="obra-nro">${p.nro||''}</div>
+      <div class="obra-nombre">${p.nombre||''}</div>
+      ${resp ? `<div class="obra-resp">🧑‍💼 ${resp}</div>` : ''}
+      ${p.id===obraSeleccionadaId ? '<div class="obra-hint">✓ Tocá un día para asignarla</div>' : ''}
+    </div>`;
+}
+function renderObras(filtro){
+  filtro = (filtro||'').toLowerCase();
+  let lista = PROYECTOS.slice().sort((a,b)=>(a.cliente||'').localeCompare(b.cliente||''));
+  if(filtro) lista = lista.filter(p=>
+    (p.cliente||'').toLowerCase().includes(filtro) ||
+    (p.nro||'').toLowerCase().includes(filtro) ||
+    (p.nombre||'').toLowerCase().includes(filtro));
+  const cont = document.getElementById('obras-lista');
+  cont.innerHTML = lista.length
+    ? lista.map(tarjetaObraHTML).join('')
+    : `<div class="empty-mini">No hay obras abiertas${filtro?' que coincidan':''}.</div>`;
+}
+function filtrarObras(v){ renderObras(v); }
+function actualizarBannerSeleccion(){
+  const banner = document.getElementById('banner-seleccion');
+  if(obraSeleccionadaId){
+    const p = PROYECTOS.find(x=>x.id===obraSeleccionadaId);
+    document.getElementById('banner-seleccion-texto').textContent = `📁 ${p?p.cliente:'Obra'} seleccionada — tocá un día para asignarla`;
+    banner.style.display = 'flex';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+function cancelarSeleccionObra(){
+  obraSeleccionadaId = null;
+  renderObras(document.querySelector('.search-bar input')?.value);
+  actualizarBannerSeleccion();
+  renderCalendario();
+}
+function onClickObra(id){
+  const seleccionando = obraSeleccionadaId !== id;
+  obraSeleccionadaId = seleccionando ? id : null;
+  renderObras(document.querySelector('.search-bar input').value);
+  renderCalendario();
+  actualizarBannerSeleccion();
+  if(seleccionando && window.matchMedia('(max-width:859px)').matches) toggleSidebar(false);
+}
+function onDragStartObra(ev,id){ ev.dataTransfer.setData('text/plain', id); ev.target.classList.add('dragging'); }
+function onDragEndObra(ev){ ev.target.classList.remove('dragging'); }
+
+/* ==================== CALENDARIO ==================== */
+function minutos(hhmm){ if(!hhmm) return null; const [h,m]=hhmm.split(':').map(Number); return h*60+m; }
+function seSuperponen(aDesde,aHasta,bDesde,bHasta){
+  const AD = minutos(aDesde) ?? 0, AH = minutos(aHasta) ?? 1440;
+  const BD = minutos(bDesde) ?? 0, BH = minutos(bHasta) ?? 1440;
+  return AD < BH && BD < AH;
+}
+let verSoloMios = false;
+function asignacionInvolucraAUsuarioActual(a){
+  if(!usuarioActual && !operarioActual) return false;
+  if(a.tipo==='ausencia'){
+    if(usuarioActual){
+      return (a.personaTipo==='usuario' && a.personaId===usuarioActual) ||
+             (a.personaTipo==='operario' && usuarioEsMismaPersonaQueOperario(usuarioActual, a.personaId));
+    }
+    return (a.personaTipo==='operario' && a.personaId===operarioActual) ||
+           (a.personaTipo==='usuario' && usuarioEsMismaPersonaQueOperario(a.personaId, operarioActual));
+  }
+  if(usuarioActual){
+    if(loginResponsableDe(a)===usuarioActual) return true;
+    const opEquiv = operarioEquivalenteDeUsuario(usuarioActual);
+    return !!(opEquiv && (a.operarios||[]).includes(opEquiv.id));
+  }
+  return (a.operarios||[]).includes(operarioActual);
+}
+function alternarFiltroMios(){
+  if(!verSoloMios && !usuarioActual && !operarioActual){
+    toast('Primero elegí quién sos (👷 arriba) para poder filtrar tus días');
+    return;
+  }
+  verSoloMios = !verSoloMios;
+  const btn = document.getElementById('btn-filtro-mios');
+  btn.textContent = verSoloMios ? '🙋 Mi agenda' : '🌐 Todo el equipo';
+  btn.classList.toggle('activo', verSoloMios);
+  renderCalendario();
+}
+function asignacionesQueCubren(f){
+  let lista = ASIGNACIONES.filter(a=>(a.fechas||[]).includes(f));
+  if(verSoloMios) lista = lista.filter(asignacionInvolucraAUsuarioActual);
+  return lista;
+}
+function horarioParaFecha(a,f){
+  if(a.horariosPorFecha && a.horariosPorFecha[f]) return a.horariosPorFecha[f];
+  return { horaDesde:a.horaDesde, horaHasta:a.horaHasta };
+}
+function esIncompleta(a){
+  if(a.tipo==='ausencia') return false;
+  return !(a.operarios && a.operarios.length) || !a.horaDesde || !a.horaHasta || (a.pendientes && a.pendientes.length>0);
+}
+function diaTagHTML(a,f){
+  if(!a.fechas || a.fechas.length<=1) return '';
+  const ordenadas = a.fechas.slice().sort();
+  const nro = ordenadas.indexOf(f)+1;
+  return `<span class="asig-dias">Día ${nro}/${ordenadas.length}</span>`;
+}
+function nombreOperario(id){ const o = OPERARIOS.find(x=>x.id===id); return o?o.nombre:'—'; }
+function chipsOperariosHTML(ids, limite=2){
+  const nombres = ids.map(nombreOperario);
+  const visibles = nombres.slice(0,limite).map(n=>`<span class="chip-persona operario">👷 ${n}</span>`).join('');
+  const restantes = nombres.length - limite;
+  return visibles + (restantes>0 ? `<span class="chip-persona mas">+${restantes}</span>` : '');
+}
+function tituloYSub(a){
+  if(a.tipo==='ausencia'){
+    const nombre = a.personaTipo==='usuario' ? nombreResponsable(a.personaId) : nombreOperario(a.personaId);
+    return { titulo:'🚫 '+(nombre||'—'), sub:'Ausencia'+(a.motivo?': '+a.motivo:'') };
+  }
+  if(a.tipo==='servicio'){
+    return { titulo:'🔧 '+(a.clienteServicio||'Servicio'), sub: nombreResponsable(a.responsableId) || 'Sin responsable' };
+  }
+  const p = PROYECTOS.find(x=>x.id===a.proyectoId) || {cliente:'(obra no encontrada)'};
+  return { titulo: p.cliente, sub: nombreResponsable(p.usuario) || 'Sin responsable' };
+}
+function abrirEdicion(a,f){
+  if(a.tipo==='ausencia') abrirModalAusencia(f, a.id);
+  else abrirModalAsignar(f, a.tipo==='obra'?a.proyectoId:null, a.id);
+}
+function abrirResumen(id, f){
+  const veniaDeModalDia = document.getElementById('modal-dia').classList.contains('open');
+  volverAModalDia = veniaDeModalDia ? f : null;
+  document.getElementById('modal-dia').classList.remove('open');
+  document.getElementById('mr-mover-wrap').style.display = 'none';
+  const a = ASIGNACIONES.find(x=>x.id===id);
+  if(!a) return;
+  resumenActualId = id;
+  resumenActualFecha = f;
+  let titulo, filas;
+  if(a.tipo==='ausencia'){
+    const nombre = a.personaTipo==='usuario' ? nombreResponsable(a.personaId) : nombreOperario(a.personaId);
+    titulo = '🚫 Ausencia';
+    const horario = (a.horaDesde||a.horaHasta) ? `${mostrarHora(a.horaDesde)} a ${mostrarHora(a.horaHasta)}` : 'Todo el día';
+    filas = `
+      <div class="resumen-fila"><span>Persona</span><b>${nombre||'—'}</b></div>
+      <div class="resumen-fila"><span>Horario</span><b>${horario}</b></div>
+      ${a.motivo ? `<div class="resumen-fila"><span>Motivo</span><b>${a.motivo}</b></div>` : ''}
+      ${(a.fechas||[]).length>1 ? `<div class="resumen-fila"><span>Duración</span><b>${a.fechas.length} días</b></div>` : ''}
+    `;
+  } else {
+    const h = horarioParaFecha(a,f);
+    let cliente, responsable;
+    if(a.tipo==='obra'){
+      const p = PROYECTOS.find(x=>x.id===a.proyectoId) || {};
+      cliente = p.cliente || '(obra no encontrada)';
+      responsable = nombreResponsable(p.usuario) || 'Sin responsable';
+      titulo = '📁 ' + cliente;
+    } else {
+      cliente = a.clienteServicio || 'Servicio';
+      responsable = nombreResponsable(a.responsableId) || 'Sin responsable';
+      titulo = '🔧 ' + cliente;
+    }
+    const opsTexto = (a.operarios||[]).map(nombreOperario).join(', ') || 'Sin operarios asignados';
+    const horario = (h.horaDesde||h.horaHasta) ? `${mostrarHora(h.horaDesde)} a ${mostrarHora(h.horaHasta)}` : 'Sin horario cargado';
+    filas = `
+      <div class="resumen-fila"><span>Cliente</span><b>${cliente}</b></div>
+      <div class="resumen-fila"><span>Responsable</span><b>${responsable}</b></div>
+      <div class="resumen-fila"><span>Operarios</span><b>${opsTexto}</b></div>
+      <div class="resumen-fila"><span>Horario</span><b>${horario}</b></div>
+      ${(a.fechas||[]).length>1 ? `<div class="resumen-fila"><span>Duración</span><b>${a.fechas.length} días</b></div>` : ''}
+    `;
+  }
+  document.getElementById('mr-titulo').textContent = titulo;
+  document.getElementById('mr-body').innerHTML = filas;
+  const chkEliminar = puedeEliminarAsignacion(a);
+  document.getElementById('mr-btn-quitar-dia').style.display = chkEliminar.ok ? 'block' : 'none';
+  document.getElementById('mr-btn-eliminar-todo').style.display = (chkEliminar.ok && (a.fechas||[]).length>1) ? 'block' : 'none';
+  document.getElementById('modal-resumen').classList.add('open');
+  if(esNuevoParaMi(a)){
+    marcarVistoParaMi(a).then(()=>{ renderCalendario(); actualizarBadgeNotificaciones(); });
+  }
+}
+function editarDesdeResumen(){
+  const a = ASIGNACIONES.find(x=>x.id===resumenActualId);
+  const f = resumenActualFecha;
+  if(a && a.tipo!=='ausencia'){
+    const loginResp = loginResponsableDe(a);
+    if(operarioActual && !usuarioActual){
+      toast('Los operarios no pueden editar obras ni servicios — eso lo hace el responsable');
+      return;
+    }
+    if(!usuarioActual){
+      toast('Primero elegí quién sos (👷 arriba) para poder editar');
+      return;
+    }
+    if(loginResp && loginResp!==usuarioActual){
+      toast('Solo puede editar esto ' + (nombreResponsable(loginResp)||loginResp) + ', el responsable del trabajo');
+      return;
+    }
+  }
+  document.getElementById('modal-resumen').classList.remove('open');
+  if(a) abrirEdicion(a,f);
+}
+function mostrarMoverDia(){
+  const wrap = document.getElementById('mr-mover-wrap');
+  const abrir = wrap.style.display === 'none';
+  wrap.style.display = abrir ? 'block' : 'none';
+  if(abrir) document.getElementById('mr-mover-fecha').value = resumenActualFecha;
+}
+function confirmarMoverDia(){
+  const nueva = document.getElementById('mr-mover-fecha').value;
+  if(!nueva){ toast('Elegí una fecha'); return; }
+  if(!resumenActualId) return;
+  moverDiaAOtraFecha(resumenActualId, resumenActualFecha, nueva);
+}
+async function moverDiaAOtraFecha(id, fechaVieja, fechaNueva){
+  const a = ASIGNACIONES.find(x=>x.id===id);
+  if(!a) return;
+  if(fechaNueva===fechaVieja){ cerrarModales(); return; }
+  a.fechas = (a.fechas||[]).filter(f=>f!==fechaVieja);
+  if(a.horariosPorFecha && a.horariosPorFecha[fechaVieja]){
+    a.horariosPorFecha[fechaNueva] = a.horariosPorFecha[fechaVieja];
+    delete a.horariosPorFecha[fechaVieja];
+  }
+  if(!a.fechas.includes(fechaNueva)) a.fechas.push(fechaNueva);
+  try{ if(window.db) await window.db.set('planificacion_bloques', id, a); }
+  catch(e){ console.warn(e); toast('No se pudo guardar en la nube'); }
+  volverTrasAccionPlan();
+  toast('Día movido');
+}
+function volverTrasAccionPlan(){
+  cerrarModales();
+  renderCalendario();
+  if(volverAModalDia){
+    const f = volverAModalDia;
+    volverAModalDia = null;
+    abrirModalDia(f);
+  }
+}
+function quitarDiaDesdeResumen(){
+  if(!resumenActualId){ cerrarModales(); return; }
+  const a = ASIGNACIONES.find(x=>x.id===resumenActualId);
+  if(a){ const chk = puedeEliminarAsignacion(a); if(!chk.ok){ toast(chk.msg); return; } }
+  quitarFechaDeAsignacion(resumenActualId, resumenActualFecha);
+}
+function eliminarTodoDesdeResumen(){
+  if(!resumenActualId) return;
+  const a = ASIGNACIONES.find(x=>x.id===resumenActualId);
+  if(a){ const chk = puedeEliminarAsignacion(a); if(!chk.ok){ toast(chk.msg); return; } }
+  eliminarAsignacionCompleta(resumenActualId);
+}
+function filaCompactaHTML(a,f){
+  const {titulo, sub} = tituloYSub(a);
+  return `<div class="asig-compacta tipo-${a.tipo}" onclick="event.stopPropagation();abrirResumen('${a.id}','${f}')"><b>${titulo}</b> — ${sub}</div>`;
+}
+function tarjetaAsignacionHTML(a, f){
+  const incompleta = esIncompleta(a);
+  const dot = incompleta ? '<span class="dot-card-incompleto" title="Faltan datos (operarios y/u horario)"></span>' : '';
+  const badgeNuevo = esNuevoParaMi(a) ? '<span class="badge-nuevo" title="Te asignaron esto — todavía no lo abriste">🆕 Nuevo</span>' : '';
+
+  if(a.tipo==='ausencia'){
+    const {titulo} = tituloYSub(a);
+    const horario = (a.horaDesde||a.horaHasta) ? `<span class="asig-horario">🕒 ${mostrarHora(a.horaDesde)} a ${mostrarHora(a.horaHasta)}</span>` : `<span class="asig-horario">🕒 Todo el día</span>`;
+    return `
+      <div class="asig-card tipo-ausencia" draggable="true" ondragstart="onDragStartAsignacion(event,'${a.id}','${f}')" onclick="event.stopPropagation();abrirResumen('${a.id}','${f}')">
+        <div class="asig-cliente">${titulo}</div>
+        <div class="asig-nro">Ausencia${diaTagHTML(a,f)}</div>
+        ${horario}
+        ${a.motivo ? `<div class="asig-motivo">${a.motivo}</div>` : ''}
+      </div>`;
+  }
+  const h = horarioParaFecha(a,f);
+  if(a.tipo==='servicio'){
+    const resp = nombreResponsable(a.responsableId);
+    const ops = chipsOperariosHTML(a.operarios||[]);
+    const respChip = resp ? `<span class="chip-persona">🧑‍💼 ${resp}</span>` : '';
+    const horario = (h.horaDesde||h.horaHasta) ? `<span class="asig-horario">🕒 ${mostrarHora(h.horaDesde)} a ${mostrarHora(h.horaHasta)}</span>` : '';
+    return `
+      <div class="asig-card tipo-servicio" draggable="true" ondragstart="onDragStartAsignacion(event,'${a.id}','${f}')" onclick="event.stopPropagation();abrirResumen('${a.id}','${f}')">
+        ${dot}${badgeNuevo}
+        <div class="asig-cliente">🔧 ${a.clienteServicio||'Servicio'}</div>
+        <div class="asig-nro">${a.descripcionServicio||''}${diaTagHTML(a,f)}</div>
+        ${horario}
+        <div class="asig-personas">${respChip}${ops}</div>
+      </div>`;
+  }
+  const p = PROYECTOS.find(x=>x.id===a.proyectoId) || {cliente:'(obra no encontrada)', nro:'', usuario:null};
+  const resp = nombreResponsable(p.usuario);
+  const ops = chipsOperariosHTML(a.operarios||[]);
+  const respChip = resp ? `<span class="chip-persona">🧑‍💼 ${resp}</span>` : '';
+  const horario = (h.horaDesde||h.horaHasta) ? `<span class="asig-horario">🕒 ${mostrarHora(h.horaDesde)} a ${mostrarHora(h.horaHasta)}</span>` : '';
+  return `
+    <div class="asig-card tipo-obra" draggable="true" ondragstart="onDragStartAsignacion(event,'${a.id}','${f}')" onclick="event.stopPropagation();abrirResumen('${a.id}','${f}')">
+      ${dot}${badgeNuevo}
+      <div class="asig-cliente">${p.cliente}</div>
+      <div class="asig-nro">${p.nro||''}${diaTagHTML(a,f)}</div>
+      ${horario}
+      <div class="asig-personas">${respChip}${ops}</div>
+    </div>`;
+}
+function nombreFechaLarga(f){
+  const d = parseYMD(f);
+  const dow = (d.getDay()+6)%7;
+  return DIAS_NOMBRE[dow] + ' ' + fechaLegible(f);
+}
+function abrirModalDia(f){
+  const asigs = asignacionesQueCubren(f);
+  document.getElementById('md-titulo').textContent = nombreFechaLarga(f);
+  document.getElementById('md-body').innerHTML = asigs.map(a=>tarjetaAsignacionHTML(a,f)).join('') || `<div class="empty-mini">No hay nada cargado este día.</div>`;
+  document.getElementById('modal-dia').classList.add('open');
+}
+const LIMITE_VISIBLE_DIA = 3;
+let vistaActual = 'calendario';
+function cambiarVista(v){
+  vistaActual = v;
+  document.getElementById('btn-vista-calendario').classList.toggle('activo', v==='calendario');
+  document.getElementById('btn-vista-lista').classList.toggle('activo', v==='lista');
+  renderCalendario();
+}
+function renderCalendario(){
+  if(vistaActual==='lista') return renderVistaLista();
+  return renderVistaCalendario();
+}
+function nombreDiaSemana(d){ return DIAS_NOMBRE[(d.getDay()+6)%7]; }
+function filaListaHTML(a,f){
+  const {titulo, sub} = tituloYSub(a);
+  const h = a.tipo==='ausencia' ? { horaDesde:a.horaDesde, horaHasta:a.horaHasta } : horarioParaFecha(a,f);
+  const horarioTxt = (h.horaDesde||h.horaHasta) ? `${mostrarHora(h.horaDesde)} a ${mostrarHora(h.horaHasta)}` : '';
+  const nuevoTxt = esNuevoParaMi(a) ? ' 🆕' : '';
+  return `<div class="lista-item tipo-${a.tipo}" onclick="event.stopPropagation();abrirResumen('${a.id}','${f}')">
+    <span class="lista-item-titulo">${titulo}${nuevoTxt}</span>
+    <span class="lista-item-sub">${sub}${horarioTxt?' · '+horarioTxt:''}</span>
+  </div>`;
+}
+function renderVistaLista(){
+  const cont = document.getElementById('cal-scroll');
+  const _scrollY = cont.scrollTop;
+  const totalDias = cantidadSemanas*7;
+  let html = '<div class="lista-vista">';
+  for(let i=0;i<totalDias;i++){
+    const d = addDays(fechaBase, i);
+    const f = ymd(d);
+    const hoy = esHoy(d);
+    const asigs = asignacionesQueCubren(f);
+    const cantAusencia = asigs.filter(a=>a.tipo==='ausencia').length;
+    const cantTrabajo = asigs.length - cantAusencia;
+    html += `<div class="lista-dia${hoy?' hoy':''}">
+      <div class="lista-dia-head" onclick="onClickDia('${f}')">
+        <span class="lista-dia-nombre">${nombreDiaSemana(d)}${hoy?' · hoy':''}</span>
+        <span class="lista-dia-fecha">${formatoCorto(d)}</span>
+        ${cantTrabajo>0?`<span class="badge-cantidad">${cantTrabajo}</span>`:''}
+        ${cantAusencia>0?`<span class="badge-ausencia">${cantAusencia}</span>`:''}
+        <button class="btn-add-dia" style="margin-left:auto" onclick="event.stopPropagation();abrirModalTipo('${f}')">+</button>
+      </div>
+      <div class="lista-dia-items">
+        ${asigs.length ? asigs.map(a=>filaListaHTML(a,f)).join('') : `<div class="lista-vacio">Sin trabajos</div>`}
+      </div>
+    </div>`;
+  }
+  html += '</div>';
+  cont.innerHTML = html;
+  cont.scrollTop = _scrollY;
+}
+function renderVistaCalendario(){
+  const cont = document.getElementById('cal-scroll');
+  const _scrollY = cont.scrollTop;
+  let html = `<div class="grilla-wrap"><div class="grilla-encabezado">${DIAS_NOMBRE.map(n=>`<span>${n}</span>`).join('')}</div>`;
+  for(let s=0;s<cantidadSemanas;s++){
+    const lunes = addDays(fechaBase, s*7);
+    const domingo = addDays(lunes,6);
+    const esActual = ymd(lunes)===ymd(lunesDeSemana(0));
+    html += `<div class="week-block${esActual?' actual':''}">
+      <div class="week-block-head">${labelSemana(lunes)} · ${formatoCorto(lunes)} – ${formatoCorto(domingo)}</div>
+      <div class="week-row">`;
+    for(let i=0;i<7;i++){
+      const d = addDays(lunes,i);
+      const f = ymd(d);
+      const hoy = esHoy(d);
+      const asigs = asignacionesQueCubren(f);
+      const hayIncompletas = asigs.some(esIncompleta);
+      const cantAusencia = asigs.filter(a=>a.tipo==='ausencia').length;
+      const cantTrabajo = asigs.length - cantAusencia;
+      const idx = asigs.length ? (((paginaDia[f]||0) % asigs.length) + asigs.length) % asigs.length : 0;
+      const cuerpo = asigs.length ? tarjetaAsignacionHTML(asigs[idx], f) : '';
+      const controles = asigs.length>1
+        ? `<div class="scroll-controls">
+             <button onclick="event.stopPropagation();paginarDia('${f}',-1,${asigs.length})">◀</button>
+             <span class="pagina-txt">${idx+1}/${asigs.length}</span>
+             <button onclick="event.stopPropagation();paginarDia('${f}',1,${asigs.length})">▶</button>
+             <button onclick="event.stopPropagation();abrirModalDia('${f}')">⛶</button>
+           </div>`
+        : (asigs.length===1 ? `<div class="scroll-controls"><button onclick="event.stopPropagation();abrirModalDia('${f}')">⛶</button></div>` : '');
+      html += `
+        <div class="day-col${hoy?' hoy':''}" id="col-${f}"
+             ondragover="onDragOverDia(event,'${f}')" ondragleave="onDragLeaveDia(event,'${f}')"
+             ondrop="onDropDia(event,'${f}')">
+          <div class="day-head" onclick="onClickDia('${f}')">
+            <span class="day-fecha">${formatoCorto(d)}${hayIncompletas?'<span class="dot-incompleto" title="Hay entradas con datos incompletos"></span>':''}</span>
+            ${cantTrabajo>0 ? `<span class="badge-cantidad">${cantTrabajo}</span>` : ''}${cantAusencia>0 ? `<span class="badge-ausencia">${cantAusencia}</span>` : ''}
+            <button class="btn-add-dia" title="Cargar servicio o ausencia" onclick="event.stopPropagation();abrirModalTipo('${f}')">+</button>
+          </div>
+          <div class="day-body" id="body-${f}">${cuerpo}</div>
+          ${controles}
+          ${obraSeleccionadaId ? `<div class="day-drop-hint" onclick="onClickDia('${f}')">Tocá para asignar acá</div>` : ''}
+        </div>`;
+    }
+    html += `</div></div>`;
+  }
+  html += `</div>`;
+  cont.innerHTML = html;
+  cont.scrollTop = _scrollY;
+}
+
+/* Drag & drop / tap-to-place (solo obras) */
+function onDragOverDia(ev,f){ ev.preventDefault(); document.getElementById('col-'+f).classList.add('dragover'); }
+function onDragLeaveDia(ev,f){ document.getElementById('col-'+f).classList.remove('dragover'); }
+function onDragStartAsignacion(ev, id, fecha){
+  ev.stopPropagation();
+  ev.dataTransfer.setData('application/x-mover-asignacion', JSON.stringify({id, fecha}));
+}
+function onDropDia(ev,f){
+  ev.preventDefault();
+  document.getElementById('col-'+f).classList.remove('dragover');
+  const moverData = ev.dataTransfer.getData('application/x-mover-asignacion');
+  if(moverData){
+    try{
+      const {id, fecha} = JSON.parse(moverData);
+      if(fecha!==f) moverDiaAOtraFecha(id, fecha, f);
+    }catch(e){ console.warn(e); }
+    return;
+  }
+  const proyectoId = ev.dataTransfer.getData('text/plain');
+  if(!proyectoId) return;
+  abrirModalAsignar(f, proyectoId, null);
+}
+function onClickDia(f){
+  if(obraSeleccionadaId){
+    const id = obraSeleccionadaId;
+    obraSeleccionadaId = null;
+    renderObras(document.querySelector('.search-bar input')?.value);
+    actualizarBannerSeleccion();
+    abrirModalAsignar(f, id, null);
+    return;
+  }
+  abrirModalDia(f);
+}
+
+/* ==================== MODAL: ELEGIR TIPO ==================== */
+function abrirModalTipo(fecha){
+  fechaNuevaEntrada = fecha;
+  document.getElementById('mt-fecha-lbl').textContent = fechaLegible(fecha);
+  document.getElementById('modal-tipo').classList.add('open');
+}
+function elegirTipo(tipo){
+  const f = fechaNuevaEntrada;
+  document.getElementById('modal-tipo').classList.remove('open');
+  if(tipo==='servicio') abrirModalAsignar(f, null, null, 'servicio');
+  else abrirModalAusencia(f, null);
+}
+/* ==================== ESTADÍSTICAS ==================== */
+function calcularHorasDelTramo(horaDesde, horaHasta){
+  const d = minutos(horaDesde), h = minutos(horaHasta);
+  if(d==null || h==null || h<=d) return 8; // jornada estándar si no hay horario cargado
+  return (h-d)/60;
+}
+function calcularEstadisticas(fechaDesdeStr, fechaHastaStr){
+  const inicio = parseYMD(fechaDesdeStr), fin = parseYMD(fechaHastaStr);
+  const porOperario = {};   // id -> {nombre, horas, trabajos, ausencias}
+  const porResponsable = {}; // login -> {nombre, horas, trabajos}
+  let totalHoras = 0, totalTrabajos = 0, totalAusencias = 0;
+
+  ASIGNACIONES.forEach(a=>{
+    (a.fechas||[]).forEach(f=>{
+      const fd = parseYMD(f);
+      if(fd<inicio || fd>fin) return;
+
+      if(a.tipo==='ausencia'){
+        if(a.personaTipo==='operario'){
+          const nombre = nombreOperario(a.personaId);
+          porOperario[a.personaId] = porOperario[a.personaId] || {nombre, horas:0, trabajos:0, ausencias:0};
+          porOperario[a.personaId].ausencias++;
+          totalAusencias++;
+        }
+        return;
+      }
+
+      const h = horarioParaFecha(a,f);
+      const horas = calcularHorasDelTramo(h.horaDesde, h.horaHasta);
+      totalHoras += horas; totalTrabajos++;
+
+      (a.operarios||[]).forEach(opId=>{
+        const nombre = nombreOperario(opId);
+        porOperario[opId] = porOperario[opId] || {nombre, horas:0, trabajos:0, ausencias:0};
+        porOperario[opId].horas += horas;
+        porOperario[opId].trabajos++;
+      });
+
+      let loginResp = a.tipo==='obra'
+        ? (PROYECTOS.find(x=>x.id===a.proyectoId)?.usuario || null)
+        : (a.responsableId || null);
+      if(loginResp){
+        const nombre = nombreResponsable(loginResp) || loginResp;
+        porResponsable[loginResp] = porResponsable[loginResp] || {nombre, horas:0, trabajos:0};
+        porResponsable[loginResp].horas += horas;
+        porResponsable[loginResp].trabajos++;
+      }
+    });
+  });
+  return { porOperario, porResponsable, totalHoras, totalTrabajos, totalAusencias };
+}
+function onCambioTipoEstadistica(){
+  const tipo = document.getElementById('est-tipo').value;
+  document.getElementById('est-campo-mes').style.display = tipo==='mes' ? 'block' : 'none';
+  document.getElementById('est-campo-trimestre').style.display = tipo==='trimestre' ? 'grid' : 'none';
+  document.getElementById('est-campo-anio').style.display = tipo==='anio' ? 'block' : 'none';
+  document.getElementById('est-campo-personalizado').style.display = tipo==='personalizado' ? 'grid' : 'none';
+}
+function aplicarPeriodoEstadistica(){
+  const tipo = document.getElementById('est-tipo').value;
+  let inicio, fin;
+  if(tipo==='mes'){
+    const valor = document.getElementById('est-mes-valor').value;
+    if(!valor){ toast('Elegí un mes'); return; }
+    const [y,m] = valor.split('-').map(Number);
+    inicio = new Date(y, m-1, 1);
+    fin = new Date(y, m, 0);
+  } else if(tipo==='trimestre'){
+    const q = parseInt(document.getElementById('est-trimestre-valor').value,10);
+    const anio = parseInt(document.getElementById('est-trimestre-anio').value,10);
+    if(!anio){ toast('Elegí un año'); return; }
+    inicio = new Date(anio, q*3, 1);
+    fin = new Date(anio, q*3+3, 0);
+  } else if(tipo==='anio'){
+    const anio = parseInt(document.getElementById('est-anio-valor').value,10);
+    if(!anio){ toast('Elegí un año'); return; }
+    inicio = new Date(anio, 0, 1);
+    fin = new Date(anio, 11, 31);
+  } else {
+    const d1 = document.getElementById('est-desde').value;
+    const d2 = document.getElementById('est-hasta').value;
+    if(!d1 || !d2){ toast('Elegí las dos fechas'); return; }
+    inicio = parseYMD(d1); fin = parseYMD(d2);
+  }
+  renderEstadisticas(ymd(inicio), ymd(fin));
+}
+function abrirEstadisticas(){
+  const hoy = new Date();
+  document.getElementById('est-tipo').value = 'mes';
+  document.getElementById('est-mes-valor').value = ymd(hoy).slice(0,7);
+  document.getElementById('est-trimestre-anio').value = hoy.getFullYear();
+  document.getElementById('est-trimestre-valor').value = Math.floor(hoy.getMonth()/3);
+  document.getElementById('est-anio-valor').value = hoy.getFullYear();
+  document.getElementById('est-desde').value = ymd(fechaBase);
+  document.getElementById('est-hasta').value = ymd(addDays(fechaBase,27));
+  onCambioTipoEstadistica();
+  aplicarPeriodoEstadistica();
+  document.getElementById('modal-estadisticas').classList.add('open');
+}
+function filaEstadistica(item, extraAusencias){
+  return `<div class="est-fila">
+    <span class="nom">${item.nombre}</span>
+    <span class="datos"><b>${item.horas.toFixed(1)}</b>&nbsp;hs · <b>${item.trabajos}</b>&nbsp;trab.${extraAusencias!=null?` · <b>${extraAusencias}</b>&nbsp;aus.`:''}</span>
+  </div>`;
+}
+function renderEstadisticas(desde, hasta){
+  if(!desde || !hasta) return;
+  const { porOperario, porResponsable, totalHoras, totalTrabajos, totalAusencias } = calcularEstadisticas(desde, hasta);
+
+  document.getElementById('est-resumen').innerHTML =
+    `<span>${fechaLegible(desde)} — ${fechaLegible(hasta)}</span><b>${totalHoras.toFixed(1)} hs · ${totalTrabajos} trabajos · ${totalAusencias} ausencias</b>`;
+
+  const listaOp = Object.values(porOperario).sort((a,b)=>b.horas-a.horas);
+  document.getElementById('est-operarios').innerHTML = listaOp.length
+    ? listaOp.map(o=>filaEstadistica(o, o.ausencias)).join('')
+    : `<div class="empty-mini">Sin datos en este período.</div>`;
+
+  const listaResp = Object.values(porResponsable).sort((a,b)=>b.horas-a.horas);
+  document.getElementById('est-responsables').innerHTML = listaResp.length
+    ? listaResp.map(r=>filaEstadistica(r, null)).join('')
+    : `<div class="empty-mini">Sin datos en este período.</div>`;
+}
+
+function cerrarModales(){
+  ['modal-tipo','modal-asignar','modal-ausencia','modal-resumen','modal-dia','modal-estadisticas','modal-usuario-plan','modal-notificaciones','modal-papelera-plan','modal-info'].forEach(id=>document.getElementById(id).classList.remove('open'));
+  fechaModalYMD = null; fechaInicioCalculo = null; proyectoModalId = null; editandoAsignacionId = null;
+}
+
+/* ==================== FINES DE SEMANA (obra / servicio) ==================== */
+function detectarFindesEnRango(fechaInicioStr, cantidadDiasHabiles){
+  const candidatos = [];
+  let cur = parseYMD(fechaInicioStr);
+  let habiles = 0, guard = 0;
+  while(habiles < cantidadDiasHabiles && guard < 400){
+    const dow = cur.getDay();
+    if(dow===0 || dow===6) candidatos.push(ymd(cur));
+    else habiles++;
+    cur = addDays(cur,1); guard++;
+  }
+  return candidatos;
+}
+function onCambioFindeIncluir(f, checked){
+  decisionesFinde[f] = decisionesFinde[f] || {};
+  decisionesFinde[f].incluir = checked;
+  recalcularFindesUI();
+}
+function onCambioFindeHora(f, campo, valor){
+  decisionesFinde[f] = decisionesFinde[f] || {incluir:true};
+  decisionesFinde[f][campo] = valor;
+  renderOperariosCheckboxes();
+}
+function recalcularFindesUI(){
+  const cantidadDias = Math.max(1, parseInt(document.getElementById('ma-dias').value,10) || 1);
+  const candidatos = detectarFindesEnRango(fechaInicioCalculo, cantidadDias);
+  const wrap = document.getElementById('ma-findes');
+  const cont = document.getElementById('ma-findes-lista');
+  if(candidatos.length===0){
+    wrap.style.display = 'none';
+    cont.innerHTML = '';
+  } else {
+    wrap.style.display = 'block';
+    cont.innerHTML = candidatos.map(f=>{
+      const dec = decisionesFinde[f] || {};
+      const nombreDia = parseYMD(f).getDay()===6 ? 'sábado' : 'domingo';
+      return `<div class="finde-row">
+        <label class="field-check"><input type="checkbox" ${dec.incluir?'checked':''} onchange="onCambioFindeIncluir('${f}',this.checked)"> ¿Trabajar el ${nombreDia} ${fechaLegible(f)}?</label>
+        <div class="finde-horario" style="display:${dec.incluir?'flex':'none'}">
+          <input type="text" inputmode="numeric" placeholder="Desde (gral.)" value="${dec.horaDesde||''}" onblur="this.value=formatearHora(this.value);onCambioFindeHora('${f}','horaDesde',this.value)">
+          <input type="text" inputmode="numeric" placeholder="Hasta (gral.)" value="${dec.horaHasta||''}" onblur="this.value=formatearHora(this.value);onCambioFindeHora('${f}','horaHasta',this.value)">
+        </div>
+      </div>`;
+    }).join('');
+  }
+  renderOperariosCheckboxes();
+}
+function previsualizarFechasConHorario(){
+  const cantidadDias = Math.max(1, parseInt(document.getElementById('ma-dias').value,10) || 1);
+  const horaDesdeBase = document.getElementById('ma-hora-desde').value;
+  const horaHastaBase = document.getElementById('ma-hora-hasta').value;
+  const resultado = [];
+  let cur = parseYMD(fechaInicioCalculo);
+  let habiles=0, guard=0;
+  while(habiles<cantidadDias && guard<400){
+    const dow = cur.getDay(); const f = ymd(cur);
+    if(dow===0 || dow===6){
+      const dec = decisionesFinde[f];
+      if(dec && dec.incluir){
+        resultado.push({ fecha:f, horaDesde: dec.horaDesde||horaDesdeBase, horaHasta: dec.horaHasta||horaHastaBase });
+        habiles++;
+      }
+    } else {
+      resultado.push({ fecha:f, horaDesde:horaDesdeBase, horaHasta:horaHastaBase });
+      habiles++;
+    }
+    cur = addDays(cur,1); guard++;
+  }
+  return resultado;
+}
+
+/* ==================== DISPONIBILIDAD DE OPERARIOS ==================== */
+function estadoOperarioEnFecha(operarioId, fecha, horaDesde, horaHasta){
+  for(const a of ASIGNACIONES){
+    if(a.id===editandoAsignacionId) continue;
+    if(!(a.fechas||[]).includes(fecha)) continue;
+    if(a.tipo==='ausencia'){
+      const esElMismo = (a.personaTipo==='operario' && a.personaId===operarioId) ||
+                         (a.personaTipo==='usuario' && usuarioEsMismaPersonaQueOperario(a.personaId, operarioId));
+      if(esElMismo && seSuperponen(horaDesde,horaHasta,a.horaDesde,a.horaHasta)){
+        return { ocupado:true, texto:`Ausente ese día${a.motivo?' ('+a.motivo+')':''}` };
+      }
+      continue;
+    }
+    if((a.operarios||[]).includes(operarioId)){
+      const h = horarioParaFecha(a, fecha);
+      if(seSuperponen(horaDesde,horaHasta,h.horaDesde,h.horaHasta)){
+        const nombre = a.tipo==='obra' ? (PROYECTOS.find(x=>x.id===a.proyectoId)?.cliente||'otra obra') : (a.clienteServicio||'otro servicio');
+        return { ocupado:true, texto:`Ocupado en ${nombre} (${mostrarHora(h.horaDesde)}-${mostrarHora(h.horaHasta)})` };
+      }
+    }
+  }
+  return { ocupado:false };
+}
+function estadoOperarioEnRango(operarioId, fechasConHorario){
+  for(const fh of fechasConHorario){
+    const est = estadoOperarioEnFecha(operarioId, fh.fecha, fh.horaDesde, fh.horaHasta);
+    if(est.ocupado) return est;
+  }
+  return { ocupado:false };
+}
+function onToggleOperario(id, checked){
+  if(checked) marcadosOperarios.add(id); else marcadosOperarios.delete(id);
+}
+function renderOperariosCheckboxes(){
+  const fechasConHorario = previsualizarFechasConHorario();
+  const html = OPERARIOS.slice().sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||'')).map(o=>{
+    const marcado = marcadosOperarios.has(o.id);
+    const est = marcado ? {ocupado:false} : estadoOperarioEnRango(o.id, fechasConHorario);
+    return `<div class="persona-row ${est.ocupado?'ocupado':''}">
+      <input type="checkbox" id="chk-op-${o.id}" ${marcado?'checked':''} ${est.ocupado?'disabled':''} onchange="onToggleOperario('${o.id}',this.checked)">
+      <label for="chk-op-${o.id}">${o.nombre}${est.ocupado?`<br><small style="color:var(--text3);font-weight:400">${est.texto}</small>`:''}</label>
+    </div>`;
+  }).join('');
+  document.getElementById('ma-operarios').innerHTML = html || `<div class="empty-mini">No hay operarios cargados.</div>`;
+}
+
+/* ==================== MODAL: OBRA / SERVICIO ==================== */
+function poblarSelectResponsableServicio(seleccionado){
+  const sel = document.getElementById('ma-servicio-resp');
+  sel.innerHTML = `<option value="">Sin responsable</option>` +
+    USUARIOS_PLAN.slice().sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||''))
+      .map(u=>`<option value="${u.usuario}" ${u.usuario===seleccionado?'selected':''}>${u.nombre}</option>`).join('');
+}
+function abrirModalAsignar(fecha, proyectoId, asignacionId, tipoForzado){
+  fechaModalYMD = fecha;
+  proyectoModalId = proyectoId;
+  editandoAsignacionId = asignacionId;
+  const existente = asignacionId ? ASIGNACIONES.find(a=>a.id===asignacionId) : null;
+  fechaInicioCalculo = existente ? existente.fechas.slice().sort()[0] : fecha;
+  modalTipoActual = existente ? existente.tipo : (tipoForzado || (proyectoId ? 'obra' : 'servicio'));
+  marcadosOperarios = new Set(existente?.operarios || []);
+  decisionesFinde = JSON.parse(JSON.stringify(existente?.decisionesFinde || {}));
+
+  const esObra = modalTipoActual==='obra';
+  document.getElementById('ma-responsable-box').style.display = esObra ? 'flex' : 'none';
+  document.getElementById('ma-servicio-cliente-field').style.display = esObra ? 'none' : 'block';
+  document.getElementById('ma-servicio-desc-field').style.display = esObra ? 'none' : 'block';
+  document.getElementById('ma-servicio-resp-field').style.display = esObra ? 'none' : 'block';
+
+  if(esObra){
+    const p = PROYECTOS.find(x=>x.id===(proyectoId||existente?.proyectoId)) || {};
+    proyectoModalId = p.id || proyectoId;
+    document.getElementById('ma-titulo').textContent = p.cliente || '(sin cliente)';
+    document.getElementById('ma-sub').textContent = `${p.nro||''}${p.nombre?' — '+p.nombre:''}`;
+    document.getElementById('ma-responsable').textContent = nombreResponsable(p.usuario) || 'Sin responsable asignado';
+  } else {
+    document.getElementById('ma-titulo').textContent = 'Servicio';
+    document.getElementById('ma-sub').textContent = 'Trabajo puntual (no ligado a una obra)';
+    document.getElementById('ma-servicio-cliente').value = existente?.clienteServicio || '';
+    document.getElementById('ma-servicio-desc').value = existente?.descripcionServicio || '';
+    poblarSelectResponsableServicio(existente?.responsableId || usuarioActual || '');
+  }
+
+  document.getElementById('ma-fecha-lbl').value = fechaLegible(fechaInicioCalculo);
+  document.getElementById('ma-dias').value = existente?.fechas?.length || 1;
+  document.getElementById('ma-hora-desde').value = existente?.horaDesde || '08:00';
+  document.getElementById('ma-hora-hasta').value = existente?.horaHasta || '17:00';
+
+  recalcularFindesUI(); // también dispara renderOperariosCheckboxes()
+
+  const cantidadDias = existente?.fechas?.length || 1;
+  document.getElementById('ma-btn-quitar-dia').style.display = asignacionId ? 'block' : 'none';
+  document.getElementById('ma-btn-eliminar-todo').style.display = (asignacionId && cantidadDias>1) ? 'block' : 'none';
+  document.getElementById('modal-asignar').classList.add('open');
+}
+async function guardarAsignacion(){
+  document.getElementById('ma-hora-desde').value = formatearHora(document.getElementById('ma-hora-desde').value) || '08:00';
+  document.getElementById('ma-hora-hasta').value = formatearHora(document.getElementById('ma-hora-hasta').value) || '17:00';
+  const horaDesde = document.getElementById('ma-hora-desde').value;
+  const horaHasta = document.getElementById('ma-hora-hasta').value;
+  const operarios = Array.from(marcadosOperarios);
+  if(operarios.length===0){ toast('Elegí al menos un operario para poder guardar'); return; }
+
+  const previsualizacion = previsualizarFechasConHorario();
+  const fechas = previsualizacion.map(x=>x.fecha);
+  const horariosPorFecha = {};
+  previsualizacion.forEach(x=>{
+    const dow = parseYMD(x.fecha).getDay();
+    if(dow===0 || dow===6) horariosPorFecha[x.fecha] = { horaDesde:x.horaDesde, horaHasta:x.horaHasta };
+  });
+
+  for(const opId of operarios){
+    for(const x of previsualizacion){
+      const est = estadoOperarioEnFecha(opId, x.fecha, x.horaDesde, x.horaHasta);
+      if(est.ocupado){
+        toast(`${nombreOperario(opId)} ya está ${est.texto.startsWith('Ausente')?'ausente':'ocupado'} el ${fechaLegible(x.fecha)} (${est.texto}). Elegí otro operario u otro horario.`);
+        return;
+      }
+    }
+  }
+
+  let datos = { fechas, horaDesde, horaHasta, horariosPorFecha, decisionesFinde, operarios, tipo: modalTipoActual };
+  if(modalTipoActual==='obra'){
+    if(!proyectoModalId){ toast('Elegí una obra'); return; }
+    datos.proyectoId = proyectoModalId;
+  } else {
+    datos.clienteServicio = document.getElementById('ma-servicio-cliente').value.trim();
+    datos.descripcionServicio = document.getElementById('ma-servicio-desc').value.trim();
+    datos.responsableId = document.getElementById('ma-servicio-resp').value || null;
+    if(!datos.clienteServicio){ toast('Completá el cliente / lugar del servicio'); return; }
+  }
+
+  let a;
+  const quienGuarda = usuarioActual || operarioActual;
+  if(editandoAsignacionId){
+    a = ASIGNACIONES.find(x=>x.id===editandoAsignacionId);
+    if(!a) return;
+    const operariosViejos = new Set(a.operarios||[]);
+    Object.assign(a, datos);
+    a.vistoPor = a.vistoPor || [];
+    // A los operarios recién agregados les tiene que volver a aparecer el aviso de "nuevo" (el responsable no recibe aviso)
+    const operariosNuevos = (datos.operarios||[]).filter(id=>!operariosViejos.has(id));
+    a.vistoPor = a.vistoPor.filter(id=>!operariosNuevos.includes(id));
+    if(quienGuarda && !a.vistoPor.includes(quienGuarda)) a.vistoPor.push(quienGuarda);
+  } else {
+    a = { id: uid('pl'), fechaCreacion: Date.now(), vistoPor: quienGuarda ? [quienGuarda] : [], ...datos };
+    ASIGNACIONES.push(a);
+  }
+  try{ if(window.db) await window.db.set('planificacion_bloques', a.id, a); }
+  catch(e){ console.warn(e); toast('No se pudo guardar en la nube'); }
+  cerrarModales();
+  renderCalendario();
+
+  if(reemplazandoAusente && a.fechas.includes(reemplazandoAusente.fecha)){
+    const nombresNuevos = (a.operarios||[]).map(nombreOperario).join(', ') || '(sin operarios)';
+    const titulo = a.tipo==='obra' ? (PROYECTOS.find(x=>x.id===a.proyectoId)?.cliente||'este trabajo') : (a.clienteServicio||'este trabajo');
+    mostrarInfo('Reemplazo confirmado',
+      `<span class="info-badge">✅ Cambio guardado</span>` +
+      `<div class="info-parrafo">Se reemplazó a <b>${reemplazandoAusente.nombreAusente}</b> (ausente) en <b>${titulo}</b> del ${fechaLegible(reemplazandoAusente.fecha)}.</div>` +
+      `<div class="info-parrafo">Ahora quedaron asignados: <b>${nombresNuevos}</b>.</div>` +
+      `<div class="info-parrafo">⚠️ Recordá avisarles por tu cuenta (WhatsApp, de palabra, etc.) que fueron asignados a este trabajo — la app todavía no les manda un aviso directo a ellos.</div>`
+    );
+    reemplazandoAusente = null;
+  } else {
+    toast('Guardado');
+  }
+}
+
+/* ==================== MODAL: AUSENCIA ==================== */
+/* ==================== UNIFICAR USUARIO Y OPERARIO (misma persona) ==================== */
+function normalizarNombre(n){ return (n||'').trim().toLowerCase(); }
+function operarioEquivalenteDeUsuario(loginUsuario){
+  const u = USUARIOS_PLAN.find(x=>x.usuario===loginUsuario);
+  if(!u || !u.nombre) return null;
+  return OPERARIOS.find(o=>normalizarNombre(o.nombre)===normalizarNombre(u.nombre)) || null;
+}
+function usuarioEsMismaPersonaQueOperario(loginUsuario, operarioId){
+  const o = OPERARIOS.find(x=>x.id===operarioId);
+  const u = USUARIOS_PLAN.find(x=>x.usuario===loginUsuario);
+  if(!o || !u || !o.nombre || !u.nombre) return false;
+  return normalizarNombre(o.nombre)===normalizarNombre(u.nombre);
+}
+function poblarSelectPersonaAusencia(seleccionado){
+  const sel = document.getElementById('mau-persona');
+  const miUsuario = USUARIOS_PLAN.find(u=>u.usuario===usuarioActual);
+  const miOperario = OPERARIOS.find(o=>o.id===operarioActual);
+  let vosOpts = '';
+  if(miUsuario) vosOpts = `<option value="usuario|${miUsuario.usuario}" ${('usuario|'+miUsuario.usuario)===seleccionado?'selected':''}>${miUsuario.nombre}</option>`;
+  else if(miOperario) vosOpts = `<option value="operario|${miOperario.id}" ${('operario|'+miOperario.id)===seleccionado?'selected':''}>${miOperario.nombre}</option>`;
+  const operariosOpts = OPERARIOS.filter(o=>o.id!==operarioActual).sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||''))
+    .map(o=>`<option value="operario|${o.id}" ${('operario|'+o.id)===seleccionado?'selected':''}>${o.nombre}</option>`).join('');
+  sel.innerHTML = (vosOpts ? `<optgroup label="Vos">${vosOpts}</optgroup>` : '') +
+    `<optgroup label="Operarios">${operariosOpts}</optgroup>`;
+}
+function abrirModalAusencia(fecha, asignacionId){
+  fechaModalYMD = fecha;
+  editandoAsignacionId = asignacionId;
+  const existente = asignacionId ? ASIGNACIONES.find(a=>a.id===asignacionId) : null;
+  fechaInicioCalculo = existente ? existente.fechas.slice().sort()[0] : fecha;
+  const seleccionado = existente ? `${existente.personaTipo}|${existente.personaId}` : '';
+  poblarSelectPersonaAusencia(seleccionado);
+  document.getElementById('mau-fecha-lbl').textContent = fechaLegible(fechaInicioCalculo);
+  document.getElementById('mau-fecha-lbl-input').value = fechaLegible(fechaInicioCalculo);
+  document.getElementById('mau-dias').value = existente?.fechas?.length || 1;
+  document.getElementById('mau-hora-desde').value = existente?.horaDesde || '';
+  document.getElementById('mau-hora-hasta').value = existente?.horaHasta || '';
+  document.getElementById('mau-motivo').value = existente?.motivo || '';
+  const cantidadDias = existente?.fechas?.length || 1;
+  document.getElementById('mau-btn-quitar-dia').style.display = asignacionId ? 'block' : 'none';
+  document.getElementById('mau-btn-eliminar-todo').style.display = (asignacionId && cantidadDias>1) ? 'block' : 'none';
+  document.getElementById('modal-ausencia').classList.add('open');
+}
+async function guardarAusencia(){
+  const valor = document.getElementById('mau-persona').value;
+  if(!valor){ toast('Elegí una persona'); return; }
+  const [personaTipo, personaId] = valor.split('|');
+  const cantidadDias = Math.max(1, parseInt(document.getElementById('mau-dias').value,10) || 1);
+  const horaDesde = formatearHora(document.getElementById('mau-hora-desde').value);
+  const horaHasta = formatearHora(document.getElementById('mau-hora-hasta').value);
+  const motivo = document.getElementById('mau-motivo').value.trim();
+  const fechas = calcularFechasConsecutivas(fechaInicioCalculo, cantidadDias);
+  const idAusencia = editandoAsignacionId || uid('pl');
+
+  let avisos = 0;
+  const detalleAvisos = [];
+  const operarioIdParaConflicto = personaTipo==='operario' ? personaId : (operarioEquivalenteDeUsuario(personaId)?.id || null);
+  if(operarioIdParaConflicto){
+    const conflictosPorAsignacion = {};
+    ASIGNACIONES.forEach(x=>{
+      if(x.id===editandoAsignacionId) return;
+      if(x.tipo==='ausencia') return;
+      if(!(x.operarios||[]).includes(operarioIdParaConflicto)) return;
+      fechas.forEach(f=>{
+        if(!(x.fechas||[]).includes(f)) return;
+        const h = horarioParaFecha(x,f);
+        if(seSuperponen(horaDesde,horaHasta,h.horaDesde,h.horaHasta)){
+          conflictosPorAsignacion[x.id] = conflictosPorAsignacion[x.id] || [];
+          conflictosPorAsignacion[x.id].push(f);
+        }
+      });
+    });
+    for(const id of Object.keys(conflictosPorAsignacion)){
+      const x = ASIGNACIONES.find(y=>y.id===id);
+      x.pendientes = x.pendientes || [];
+      conflictosPorAsignacion[id].forEach(f=>{
+        const yaExiste = x.pendientes.some(p=>p.operarioId===operarioIdParaConflicto && p.fecha===f && p.ausenciaId===idAusencia);
+        if(!yaExiste) x.pendientes.push({ id: uid('pend'), operarioId:operarioIdParaConflicto, fecha:f, ausenciaId:idAusencia, motivo, creado:Date.now() });
+      });
+      try{ if(window.db) await window.db.set('planificacion_bloques', x.id, x); }catch(e){ console.warn(e); }
+      avisos++;
+      const titulo = x.tipo==='obra' ? (PROYECTOS.find(p=>p.id===x.proyectoId)?.cliente||'(obra)') : (x.clienteServicio||'(servicio)');
+      const loginResp = loginResponsableDe(x);
+      const nombreResp = loginResp ? (nombreResponsable(loginResp)||loginResp) : null;
+      detalleAvisos.push({ titulo, nombreResp });
+    }
+  }
+
+  let a;
+  if(editandoAsignacionId){
+    a = ASIGNACIONES.find(x=>x.id===editandoAsignacionId);
+    if(!a) return;
+    Object.assign(a, { personaTipo, personaId, fechas, horaDesde, horaHasta, motivo, tipo:'ausencia' });
+  } else {
+    a = { id: idAusencia, tipo:'ausencia', fechas, personaTipo, personaId, horaDesde, horaHasta, motivo, solicitadoPor: usuarioActual, solicitadoPorOperario: operarioActual, respuestas: [], fechaCreacion: Date.now() };
+    ASIGNACIONES.push(a);
+  }
+  try{ if(window.db) await window.db.set('planificacion_bloques', a.id, a); }
+  catch(e){ console.warn(e); toast('No se pudo guardar en la nube'); }
+  cerrarModales();
+  renderCalendario();
+  actualizarBadgeNotificaciones();
+  if(avisos>0){
+    const nombrePersonaAusente = personaTipo==='operario' ? nombreOperario(personaId) : (nombreResponsable(personaId)||personaId);
+    const lineas = detalleAvisos.map(d=> d.nombreResp
+      ? `<li><b>${d.titulo}</b>Se avisó a ${d.nombreResp}</li>`
+      : `<li><b>${d.titulo}</b>⚠️ Este trabajo no tiene responsable cargado, nadie va a ver el aviso</li>`
+    ).join('');
+    mostrarInfo('Esperando aceptación',
+      `<span class="info-badge">⏳ Pendiente de aceptación</span>` +
+      `<div class="info-parrafo"><b>${nombrePersonaAusente}</b> ya estaba asignado a ${avisos} trabajo(s):</div>` +
+      `<ul class="info-lista">${lineas}</ul>` +
+      `<div class="info-parrafo">Esos trabajos van a quedar pendientes hasta que el responsable elija reemplazar al operario, reprogramar o denegar. Mientras tanto, <b>${nombrePersonaAusente}</b> debe esperar la confirmación antes de dar por tomado el día.</div>`
+    );
+  } else {
+    mostrarInfo('Esperando aceptación',
+      `<span class="info-badge">⏳ Pendiente de aceptación</span>` +
+      `<div class="info-parrafo">Por ahora no está asignado a ningún trabajo en esas fechas, así que no hay nada que reprogramar.</div>`
+    );
+  }
+}
+
+/* ==================== ELIMINAR: TODO O SOLO UN DÍA (va a la papelera) ==================== */
+function moverAPapeleraPlan(a){
+  a.eliminado = true;
+  a.eliminadoEn = Date.now();
+  a.eliminadoPor = usuarioActual || operarioActual || null;
+  PAPELERA_PLAN.unshift(a);
+}
+async function quitarFechaDeAsignacion(id, fecha){
+  const a = ASIGNACIONES.find(x=>x.id===id);
+  if(!a) return;
+  const nuevasFechas = (a.fechas||[]).filter(f=>f!==fecha);
+  if(nuevasFechas.length===0){
+    ASIGNACIONES = ASIGNACIONES.filter(x=>x.id!==id);
+    moverAPapeleraPlan(a);
+    try{ if(window.db) await window.db.set('planificacion_bloques', id, a); }catch(e){ console.warn(e); }
+  } else {
+    a.fechas = nuevasFechas;
+    try{ if(window.db) await window.db.set('planificacion_bloques', id, a); }catch(e){ console.warn(e); }
+  }
+  volverTrasAccionPlan();
+  toast('Día quitado');
+}
+async function eliminarAsignacionCompleta(id){
+  const a = ASIGNACIONES.find(x=>x.id===id);
+  ASIGNACIONES = ASIGNACIONES.filter(x=>x.id!==id);
+  if(a){
+    moverAPapeleraPlan(a);
+    try{ if(window.db) await window.db.set('planificacion_bloques', id, a); }catch(e){ console.warn(e); }
+  }
+  volverTrasAccionPlan();
+  toast('Eliminado — podés recuperarlo desde la papelera 🗑️');
+}
+
+/* ==================== PAPELERA DE PLANIFICACIÓN ==================== */
+function fechaLegibleCorta(ts){
+  if(!ts) return '';
+  const d = new Date(ts);
+  return d.toLocaleDateString('es-AR', {day:'2-digit', month:'2-digit', year:'2-digit'}) + ' ' + d.toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
+}
+function abrirPapeleraPlan(){
+  const cont = document.getElementById('papelera-plan-list');
+  cont.innerHTML = PAPELERA_PLAN.length===0 ? '<div class="empty" style="padding:30px 10px">Papelera vacía</div>' :
+    PAPELERA_PLAN.map((a,i)=>{
+      const {titulo, sub} = tituloYSub(a);
+      const quien = nombreResponsable(a.eliminadoPor) || nombreOperario(a.eliminadoPor) || a.eliminadoPor || '—';
+      return `
+      <div class="pick-row">
+        <div><div class="nm">${titulo}</div><div class="sb">${sub} · eliminado ${fechaLegibleCorta(a.eliminadoEn)} por ${quien}</div></div>
+        <button class="btn secondary sm" onclick="restaurarAsignacionPlan('${a.id}')">Restaurar</button>
+      </div>`;
+    }).join('');
+  document.getElementById('btn-vaciar-papelera-plan').style.display = (rolActualPlan()==='administracion' && PAPELERA_PLAN.length) ? 'block' : 'none';
+  document.getElementById('modal-papelera-plan').classList.add('open');
+}
+function cerrarPapeleraPlan(){ document.getElementById('modal-papelera-plan').classList.remove('open'); }
+async function restaurarAsignacionPlan(id){
+  const idx = PAPELERA_PLAN.findIndex(x=>x.id===id);
+  if(idx===-1) return;
+  const a = PAPELERA_PLAN[idx];
+  a.eliminado = false;
+  delete a.eliminadoEn;
+  delete a.eliminadoPor;
+  try{ if(window.db) await window.db.set('planificacion_bloques', id, a); }catch(e){ console.warn(e); }
+  PAPELERA_PLAN.splice(idx,1);
+  ASIGNACIONES.push(a);
+  toast('Restaurado');
+  abrirPapeleraPlan();
+  renderCalendario();
+}
+function vaciarPapeleraPlan(){
+  confirmarEnApp('¿Vaciar la papelera de planificación? Se van a borrar para siempre todos los trabajos, servicios y ausencias eliminados. No se van a poder recuperar.', ejecutarVaciarPapeleraPlan, 'Vaciar papelera');
+}
+async function ejecutarVaciarPapeleraPlan(){
+  for(const a of PAPELERA_PLAN){
+    try{ if(window.db) await window.db.del('planificacion_bloques', a.id); }catch(e){ console.warn('Error borrando', e); }
+  }
+  PAPELERA_PLAN = [];
+  toast('Papelera de planificación vaciada');
+  cerrarPapeleraPlan();
+}
+
+function quitarSoloEsteDia(){
+  if(!editandoAsignacionId) return;
+  const a = ASIGNACIONES.find(x=>x.id===editandoAsignacionId);
+  if(a){ const chk = puedeEliminarAsignacion(a); if(!chk.ok){ toast(chk.msg); return; } }
+  quitarFechaDeAsignacion(editandoAsignacionId, fechaModalYMD);
+}
+function eliminarBloqueCompleto(){
+  if(!editandoAsignacionId) return;
+  const a = ASIGNACIONES.find(x=>x.id===editandoAsignacionId);
+  if(a){ const chk = puedeEliminarAsignacion(a); if(!chk.ok){ toast(chk.msg); return; } }
+  eliminarAsignacionCompleta(editandoAsignacionId);
+}
+function quitarSoloEsteDiaAusencia(){ quitarSoloEsteDia(); }
+function eliminarBloqueCompletoAusencia(){ eliminarBloqueCompleto(); }
+
+/* ==================== TECLADO: ENTER avanza, ESCAPE cierra ==================== */
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape'){
+    if(document.querySelectorAll('.modal-overlay.open').length) cerrarModales();
+    return;
+  }
+  if(e.key==='Enter'){
+    const tag = (e.target.tagName||'').toLowerCase();
+    if(tag==='input' || tag==='select'){
+      e.preventDefault();
+      const scope = e.target.closest('.modal-box') || document;
+      const focosables = Array.from(scope.querySelectorAll('input, select, button'))
+        .filter(el=> !el.disabled && el.offsetParent!==null);
+      const idx = focosables.indexOf(e.target);
+      if(idx>-1 && idx<focosables.length-1) focosables[idx+1].focus();
+    }
+  }
+});
+document.addEventListener('input', function(e){
+  if(e.target.id==='ma-dias') recalcularFindesUI();
+  else if(['ma-hora-desde','ma-hora-hasta'].includes(e.target.id)) renderOperariosCheckboxes();
+});
+
+cargarTodo();
 </script>
 </body>
 </html>
