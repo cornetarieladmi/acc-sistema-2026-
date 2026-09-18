@@ -504,7 +504,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     </div>
     <button class="icon-btn" id="btn-refrescar-datos" onclick="refrescarDatos()" title="Actualizar datos">🔄</button>
     <button class="icon-btn" onclick="abrirNuevoProyecto()" title="Agregar nuevo proyecto" style="font-weight:700">+ <span class="nuevo-proyecto-label">Nuevo proyecto</span></button>
-    <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión">👷 <span class="user-btn-nombre">Usuario</span> ▾</button>
+    <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión">🦺 <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
     <div class="py-stats-desktop" id="py-stats-desktop">
@@ -600,7 +600,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     </div>
 
     <div id="pf-tomar-box" class="box alerta" style="display:none;text-align:center">
-      <div class="section-head rojo" style="margin-bottom:8px">👷 Proyecto solicitado sin responsable</div>
+      <div class="section-head rojo" style="margin-bottom:8px">🦺 Proyecto solicitado sin responsable</div>
       <div style="font-size:12.5px;color:rgba(255,255,255,0.85);margin-bottom:10px">Este proyecto todavía no tiene quién lo tome. Podés asignártelo vos.</div>
       <button class="btn secondary" onclick="tomarProyecto()" style="width:100%">Tomar este proyecto</button>
     </div>
@@ -676,7 +676,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="topbar-sub">Resumen de proyectos</div>
       </div>
     </div>
-    <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión">👷 <span class="user-btn-nombre">Usuario</span> ▾</button>
+    <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión">🦺 <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
     <div class="chip-row" id="st-scope-filters"></div>
@@ -701,7 +701,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="topbar-sub" id="ad-count">0 registros</div>
       </div>
     </div>
-    <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión">👷 <span class="user-btn-nombre">Usuario</span> ▾</button>
+    <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión">🦺 <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
     <div id="ad-resumen-box"></div>
@@ -725,7 +725,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="topbar-sub">Clientes, Usuarios, Equipos y Operarios</div>
       </div>
     </div>
-    <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión">👷 <span class="user-btn-nombre">Usuario</span> ▾</button>
+    <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión">🦺 <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
     <div id="ad-pendientes"></div>
@@ -866,7 +866,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
   <button class="icon-btn icon-grande" style="margin-left:auto" onclick="actualizarDatos()" title="Actualizar">🔄</button>
   <button class="icon-btn icon-grande" id="btn-notificaciones" onclick="abrirNotificaciones()" title="Avisos">📣</button>
   <button class="icon-btn icon-grande" id="btn-papelera-plan" onclick="abrirPapeleraPlan()" title="Papelera">🗑️</button>
-  <button class="icon-btn" id="btn-usuario-actual" onclick="abrirSelectorUsuarioActual(event)"><span class="icono-obrero">👷</span> ¿Quién sos?</button>
+  <button class="icon-btn" id="btn-usuario-actual" onclick="abrirSelectorUsuarioActual(event)"><span class="icono-obrero">🦺</span> ¿Quién sos?</button>
 </div>
 
 <div class="modal-overlay" id="modal-notificaciones">
@@ -931,7 +931,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     <div class="modal-body">
       <div class="preset-horario">
         <button type="button" id="tab-rol-usuario" class="tab-activo" onclick="cambiarTabRol('usuario')">🧑‍💼 Soy responsable/usuario</button>
-        <button type="button" id="tab-rol-operario" onclick="cambiarTabRol('operario')">👷 Soy operario</button>
+        <button type="button" id="tab-rol-operario" onclick="cambiarTabRol('operario')">🦺 Soy operario</button>
       </div>
       <div class="field" id="campo-rol-usuario">
         <label>Tu usuario</label>
@@ -1825,12 +1825,18 @@ async function hacerLogin(){
   currentUser = u;
   currentUserRol = cuenta.rol;
   currentOperarioId = cuenta.rol==='operario' ? cuenta.operarioId : null;
+  // La identidad de Planificación queda fijada según con qué usuario/contraseña se inició sesión.
+  // Para "ser" otra persona hay que cerrar sesión y loguearse con SU contraseña.
   if(currentUserRol==='operario'){
-    // El operario ya se identificó al loguearse: no hace falta que elija "¿quién sos?" en Planificación
     operarioActual = currentOperarioId;
     usuarioActual = null;
     localStorage.setItem('planif_operario_actual', operarioActual);
     localStorage.removeItem('planif_usuario_actual');
+  } else {
+    usuarioActual = currentUser;
+    operarioActual = null;
+    localStorage.setItem('planif_usuario_actual', usuarioActual);
+    localStorage.removeItem('planif_operario_actual');
   }
   document.querySelectorAll('.user-btn-nombre').forEach(el=> el.textContent = nombreUsuario(currentUser));
   document.getElementById('bottomnav').style.display = 'flex';
@@ -2121,7 +2127,7 @@ function tarjetaProyecto(p, opts){
       <div class="card-top">
         <div style="min-width:0">
           <div class="card-title">${p.cliente||'(sin cliente)'}</div>
-          <div class="card-people"><span class="resp">👷 ${p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable'}</span> &nbsp; <span class="cli">📁 ${p.nombre||'(sin nombre)'}</span></div>
+          <div class="card-people"><span class="resp">🦺 ${p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable'}</span> &nbsp; <span class="cli">📁 ${p.nombre||'(sin nombre)'}</span></div>
           <div class="card-sub"><span style="font-family:var(--mono)">${p.nro||''}</span> &nbsp; 📅 Inicio: ${p.fechaCreacion ? new Date(p.fechaCreacion).toLocaleDateString('es-AR') : '-'}</div>
         </div>
         <span class="badge ${estadoClase}">${estadoTexto}</span>
@@ -2199,7 +2205,7 @@ function renderProyectos(filtroTexto){
     cont.innerHTML = py_scope==='mios'
       ? `<div class="empty"><div class="empty-ic">📁</div>Todavía no tenés proyectos.<br>Tocá + para crear uno.</div>`
       : py_scope==='solicitados'
-      ? `<div class="empty"><div class="empty-ic">👷</div>No hay proyectos solicitados sin responsable.</div>`
+      ? `<div class="empty"><div class="empty-ic">🦺</div>No hay proyectos solicitados sin responsable.</div>`
       : `<div class="empty"><div class="empty-ic">📁</div>Todavía no hay proyectos cargados.</div>`;
     return;
   }
@@ -3718,7 +3724,7 @@ function renderPendientes(){
         <div class="link-row"><span>🔧 ${e.nombre}</span><button class="btn secondary sm" onclick="aprobarEquipo('${e.id}')">Revisar</button></div>
       `).join('')}
       ${operariosPend.map(o=>`
-        <div class="link-row"><span>👷 ${o.nombre}</span><button class="btn secondary sm" onclick="aprobarOperario('${o.id}')">Revisar</button></div>
+        <div class="link-row"><span>🦺 ${o.nombre}</span><button class="btn secondary sm" onclick="aprobarOperario('${o.id}')">Revisar</button></div>
       `).join('')}
     </div>`;
 }
@@ -3952,7 +3958,7 @@ function renderAdmin(filtroTexto){
           <div style="font-size:15px;font-weight:800;color:#14183D">${p ? p.cliente : '(proyecto no encontrado)'}</div>
           <div style="font-size:12.5px;font-weight:600;color:#22487A;margin-top:2px">${p ? p.nombre : ''}</div>
           <div style="font-size:11.5px;color:#22487A;margin-top:3px">${p ? p.nro : ''}${a.ffact?' &nbsp; Facturado: '+a.ffact:''}</div>
-          <div style="font-size:11.5px;font-weight:700;color:#007b00;margin-top:3px">👷 ${p && p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable'}</div>
+          <div style="font-size:11.5px;font-weight:700;color:#007b00;margin-top:3px">🦺 ${p && p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable'}</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">
           <span class="badge" style="background:var(--greenlt);color:var(--green)">${formatDinero(a.tipoFactura==='A' ? a.totalConIva : (a.totalNeto!=null ? a.totalNeto : a.total))}${a.descuentoPct>0?` <span style="opacity:.7;font-weight:600">(-${a.descuentoPct}%)</span>`:''}${a.tipoFactura==='A'?' <span style="opacity:.7;font-weight:600">c/IVA</span>':''}</span>
@@ -4094,7 +4100,7 @@ function filtrarListaOperarios(filtroTexto){
   if(filtroTexto) lista = lista.filter(o=>(o.nombre||'').toLowerCase().includes(filtroTexto));
   document.getElementById('operarios-lista-inner').innerHTML = lista.map(o=>`
         <div class="link-row">
-          <span>👷 ${o.nombre}${o.estado==='pendiente'?'<span class="pend-tag">Pendiente</span>':''}${o.usuario?' <span class="pend-tag" style="background:var(--accentlt);color:var(--accent)">📱 Con acceso</span>':''}</span>
+          <span>🦺 ${o.nombre}${o.estado==='pendiente'?'<span class="pend-tag">Pendiente</span>':''}${o.usuario?' <span class="pend-tag" style="background:var(--accentlt);color:var(--accent)">📱 Con acceso</span>':''}</span>
           <div style="display:flex;gap:6px">
             <button class="btn secondary sm" onclick="abrirModalOperario('${o.id}')">Editar</button>
             <button class="btn secondary sm" style="color:var(--red)" onclick="eliminarOperario('${o.id}')">Eliminar</button>
@@ -4937,12 +4943,18 @@ let usuarioActual = localStorage.getItem('planif_usuario_actual') || null;
 let operarioActual = localStorage.getItem('planif_operario_actual') || null;
 function actualizarLabelUsuarioActual(){
   const btn = document.getElementById('btn-usuario-actual');
-  const icono = '<span class="icono-obrero">👷</span>';
   if(currentUserRol==='operario'){
     const nombre = nombreOperario(operarioActual) || operarioActual;
     btn.innerHTML = '🔒 ' + nombre;
     return;
   }
+  if(currentUser){
+    const nombre = nombreResponsable(usuarioActual) || usuarioActual || currentUser;
+    btn.innerHTML = '🔒 ' + nombre;
+    return;
+  }
+  // Sin sesión iniciada (no debería pasar dentro de la app, es respaldo)
+  const icono = '<span class="icono-obrero">🦺</span>';
   if(usuarioActual){
     const nombre = nombreResponsable(usuarioActual) || usuarioActual;
     btn.innerHTML = icono + ' ' + nombre;
@@ -4960,7 +4972,8 @@ function cambiarTabRol(rol){
   document.getElementById('campo-rol-operario').style.display = rol==='operario' ? 'block' : 'none';
 }
 function abrirSelectorUsuarioActual(event){
-  if(currentUserRol==='operario'){
+  if(currentUser){
+    // La identidad quedó fijada al iniciar sesión. Para cambiarla hay que cerrar sesión y volver a entrar con la contraseña de esa persona.
     toggleUserMenu(event);
     return;
   }
@@ -5013,7 +5026,7 @@ function puedeEliminarAsignacion(a){
     return {ok:false, msg:'Los operarios no pueden eliminar obras ni servicios — eso lo hace el responsable'};
   }
   if(!usuarioActual){
-    return {ok:false, msg:'Primero elegí quién sos (👷 arriba) para poder eliminar'};
+    return {ok:false, msg:'Primero elegí quién sos (🦺 arriba) para poder eliminar'};
   }
   if(loginResp && loginResp!==usuarioActual){
     return {ok:false, msg:'Solo puede eliminar esto ' + (nombreResponsable(loginResp)||loginResp) + ', el responsable del trabajo'};
@@ -5026,14 +5039,25 @@ function esNuevoParaMi(a){
   // El responsable no recibe aviso: es quien programa el trabajo. Solo avisa a los operarios asignados.
   const vistoPor = a.vistoPor||[];
   if(operarioActual && (a.operarios||[]).includes(operarioActual) && !vistoPor.includes(operarioActual)) return true;
+  // Un usuario puede ser, además, la misma persona que un operario (usuarios y operarios son cosas distintas,
+  // pero a veces el mismo trabajador tiene las dos). Si entró con su cuenta de usuario, revisamos también por ese lado.
+  if(usuarioActual){
+    const opEquiv = operarioEquivalenteDeUsuario(usuarioActual);
+    if(opEquiv && (a.operarios||[]).includes(opEquiv.id) && !vistoPor.includes(usuarioActual) && !vistoPor.includes(opEquiv.id)) return true;
+  }
   return false;
 }
 async function marcarVistoParaMi(a){
   const quien = usuarioActual || operarioActual;
   if(!quien) return;
   a.vistoPor = a.vistoPor || [];
-  if(!a.vistoPor.includes(quien)){
-    a.vistoPor.push(quien);
+  let cambio = false;
+  if(!a.vistoPor.includes(quien)){ a.vistoPor.push(quien); cambio = true; }
+  if(usuarioActual){
+    const opEquiv = operarioEquivalenteDeUsuario(usuarioActual);
+    if(opEquiv && !a.vistoPor.includes(opEquiv.id)){ a.vistoPor.push(opEquiv.id); cambio = true; }
+  }
+  if(cambio){
     try{ if(window.db) await window.db.set('planificacion_bloques', a.id, a); }catch(e){ console.warn(e); }
   }
 }
@@ -5078,7 +5102,7 @@ function abrirNotificaciones(){
   const hoy = ymd(new Date());
   let html = '';
   if(!usuarioActual && !operarioActual){
-    html += `<div class="empty-mini">Elegí quién sos (👷 arriba) para recibir avisos personalizados. Igual podés ver acá abajo las ausencias cargadas por todo el equipo.</div>`;
+    html += `<div class="empty-mini">Elegí quién sos (🦺 arriba) para recibir avisos personalizados. Igual podés ver acá abajo las ausencias cargadas por todo el equipo.</div>`;
   }
   if(nuevos.length){
     html += `<h4 class="est-titulo" style="margin-top:0">🆕 Trabajos nuevos asignados a vos</h4>`;
@@ -5431,12 +5455,12 @@ function asignacionInvolucraAUsuarioActual(a){
 }
 function alternarFiltroMios(){
   if(!verSoloMios && !usuarioActual && !operarioActual){
-    toast('Primero elegí quién sos (👷 arriba) para poder filtrar tus días');
+    toast('Primero elegí quién sos (🦺 arriba) para poder filtrar tus días');
     return;
   }
   verSoloMios = !verSoloMios;
   const btn = document.getElementById('btn-filtro-mios');
-  btn.textContent = verSoloMios ? '🙋 Mi agenda' : '🌐 Todo el equipo';
+  btn.textContent = verSoloMios ? '📋 Mi agenda' : '🌐 Todo el equipo';
   btn.classList.toggle('activo', verSoloMios);
   renderCalendario();
 }
@@ -5462,7 +5486,7 @@ function diaTagHTML(a,f){
 function nombreOperario(id){ const o = OPERARIOS.find(x=>x.id===id); return o?o.nombre:'—'; }
 function chipsOperariosHTML(ids, limite=2){
   const nombres = ids.map(nombreOperario);
-  const visibles = nombres.slice(0,limite).map(n=>`<span class="chip-persona operario">👷 ${n}</span>`).join('');
+  const visibles = nombres.slice(0,limite).map(n=>`<span class="chip-persona operario">🦺 ${n}</span>`).join('');
   const restantes = nombres.length - limite;
   return visibles + (restantes>0 ? `<span class="chip-persona mas">+${restantes}</span>` : '');
 }
@@ -5544,7 +5568,7 @@ function editarDesdeResumen(){
       return;
     }
     if(!usuarioActual){
-      toast('Primero elegí quién sos (👷 arriba) para poder editar');
+      toast('Primero elegí quién sos (🦺 arriba) para poder editar');
       return;
     }
     if(loginResp && loginResp!==usuarioActual){
@@ -6152,7 +6176,12 @@ async function guardarAsignacion(){
     a.vistoPor = a.vistoPor || [];
     // A los operarios recién agregados les tiene que volver a aparecer el aviso de "nuevo" (el responsable no recibe aviso)
     const operariosNuevos = (datos.operarios||[]).filter(id=>!operariosViejos.has(id));
-    a.vistoPor = a.vistoPor.filter(id=>!operariosNuevos.includes(id));
+    const aQuitarDeVisto = new Set(operariosNuevos);
+    operariosNuevos.forEach(id=>{
+      const uEquiv = usuarioEquivalenteDeOperario(id);
+      if(uEquiv) aQuitarDeVisto.add(uEquiv.usuario);
+    });
+    a.vistoPor = a.vistoPor.filter(id=>!aQuitarDeVisto.has(id));
     if(quienGuarda && !a.vistoPor.includes(quienGuarda)) a.vistoPor.push(quienGuarda);
   } else {
     a = { id: uid('pl'), fechaCreacion: Date.now(), vistoPor: quienGuarda ? [quienGuarda] : [], ...datos };
@@ -6166,15 +6195,20 @@ async function guardarAsignacion(){
   if(reemplazandoAusente && a.fechas.includes(reemplazandoAusente.fecha)){
     const nombresNuevos = (a.operarios||[]).map(nombreOperario).join(', ') || '(sin operarios)';
     const titulo = a.tipo==='obra' ? (PROYECTOS.find(x=>x.id===a.proyectoId)?.cliente||'este trabajo') : (a.clienteServicio||'este trabajo');
+    const sinAcceso = (a.operarios||[]).filter(id=>!tieneAccesoALaApp(id)).map(nombreOperario);
+    const avisoTxt = sinAcceso.length
+      ? `⚠️ <b>${sinAcceso.join(', ')}</b> todavía no tiene usuario propio para entrar a la app, así que avisale por tu cuenta (WhatsApp, de palabra, etc.). Se lo podés cargar en Gestión → Operarios.`
+      : `✅ Como tiene usuario propio, en cuanto entre a Planificación va a ver el aviso "🆕 Nuevo" marcando este trabajo.`;
     mostrarInfo('Reemplazo confirmado',
       `<span class="info-badge">✅ Cambio guardado</span>` +
       `<div class="info-parrafo">Se reemplazó a <b>${reemplazandoAusente.nombreAusente}</b> (ausente) en <b>${titulo}</b> del ${fechaLegible(reemplazandoAusente.fecha)}.</div>` +
       `<div class="info-parrafo">Ahora quedaron asignados: <b>${nombresNuevos}</b>.</div>` +
-      `<div class="info-parrafo">⚠️ Recordá avisarles por tu cuenta (WhatsApp, de palabra, etc.) que fueron asignados a este trabajo — la app todavía no les manda un aviso directo a ellos.</div>`
+      `<div class="info-parrafo">${avisoTxt}</div>`
     );
     reemplazandoAusente = null;
   } else {
-    toast('Guardado');
+    const sinAcceso = (a.operarios||[]).filter(id=>!tieneAccesoALaApp(id)).map(nombreOperario);
+    toast(sinAcceso.length ? `Guardado — avisale por tu cuenta a ${sinAcceso.join(', ')} (todavía no tiene usuario en la app)` : 'Guardado');
   }
 }
 
@@ -6191,6 +6225,16 @@ function usuarioEsMismaPersonaQueOperario(loginUsuario, operarioId){
   const u = USUARIOS_PLAN.find(x=>x.usuario===loginUsuario);
   if(!o || !u || !o.nombre || !u.nombre) return false;
   return normalizarNombre(o.nombre)===normalizarNombre(u.nombre);
+}
+function usuarioEquivalenteDeOperario(operarioId){
+  const o = OPERARIOS.find(x=>x.id===operarioId);
+  if(!o || !o.nombre) return null;
+  return USUARIOS_PLAN.find(x=>normalizarNombre(x.nombre)===normalizarNombre(o.nombre)) || null;
+}
+function tieneAccesoALaApp(operarioId){
+  const o = OPERARIOS.find(x=>x.id===operarioId);
+  if(o && o.usuario) return true; // tiene su propio usuario de operario
+  return !!usuarioEquivalenteDeOperario(operarioId); // o es la misma persona que un usuario del sistema
 }
 function poblarSelectPersonaAusencia(seleccionado){
   const sel = document.getElementById('mau-persona');
