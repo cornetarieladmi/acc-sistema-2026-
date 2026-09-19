@@ -198,7 +198,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .py-stats-desktop .stat-card{padding:18px}
 .py-stats-desktop .stat-card .num{font-size:30px}
 .stat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px;text-align:center;min-width:0;overflow:hidden}
-.stat-card .num{font-family:var(--mono);font-size:clamp(15px,5vw,24px);font-weight:600;color:var(--accent);word-break:break-word;overflow-wrap:anywhere;line-height:1.2}
+.stat-card .num{font-family:var(--mono);font-size:clamp(14px,4.3vw,24px);font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
 .stat-card .lbl{font-size:11px;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:.04em}
 .stat-bar-row{margin-bottom:12px}
 .stat-bar-top{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px}
@@ -356,15 +356,15 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 #scr-planificacion .asig-card:hover{border-color:var(--border2)}
 #scr-planificacion .asig-card.tipo-servicio{border-left-color:var(--teal)}
 #scr-planificacion .asig-card.tipo-ausencia{border-left-color:var(--violet)}
-#scr-planificacion .asig-cliente{font-size:15px;font-weight:800;line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+#scr-planificacion .asig-cliente{font-size:16.5px;font-weight:800;line-height:1.28;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 #scr-planificacion .asig-nro{font-family:var(--mono);font-size:10.5px;color:var(--text2);margin-top:2px}
 #scr-planificacion .asig-motivo{font-size:11px;color:var(--text2);margin-top:5px;font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #scr-planificacion .asig-horario{display:inline-block;margin-top:5px;font-size:10px;font-weight:700;background:var(--surface);border:1px solid var(--border2);border-radius:5px;padding:2px 6px;color:var(--text2)}
 #scr-planificacion .asig-dias{display:inline-block;margin-top:0;margin-left:5px;font-size:9.5px;font-weight:700;background:var(--surface);border:1px solid var(--border2);border-radius:5px;padding:1px 6px;color:var(--text2);vertical-align:middle}
 #scr-planificacion .asig-personas{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;max-height:40px;overflow:hidden}
 #scr-planificacion .chip-persona{background:var(--accent);color:#fff;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:99px;flex-shrink:1;min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#scr-planificacion .chip-persona.operario{background:var(--teal)}
-#scr-planificacion .chip-persona.mas{background:var(--text3)}
+#scr-planificacion .chip-persona.operario{background:var(--surface2);color:var(--text2);font-weight:600}
+#scr-planificacion .chip-persona.mas{background:var(--surface2);color:var(--text3);font-weight:600}
 #scr-planificacion .dot-card-incompleto{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--amber)}
 #scr-planificacion .badge-nuevo{position:absolute;top:5px;left:5px;background:var(--accent);color:#fff;font-size:9px;font-weight:800;padding:1.5px 6px;border-radius:20px;letter-spacing:.2px;animation:pulso 1.6s infinite;z-index:1}
 #scr-planificacion .notif-item.nuevo{background:var(--accentlt);border-color:var(--border2)}
@@ -1768,6 +1768,9 @@ function formatearInputHoras(input){
 /* Formato de dinero argentino: $18.000,00 */
 function formatDinero(n){
   return '$' + (Number(n)||0).toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function formatDineroCorto(n){
+  return '$' + Math.round(Number(n)||0).toLocaleString('es-AR');
 }
 /* Para inputs de texto editables con $: formatea al salir, y permite leer el número real después */
 function formatearInputDinero(input){
@@ -3919,11 +3922,11 @@ function renderAdmin(filtroTexto){
   document.getElementById('ad-resumen-box').innerHTML = `
     <div class="stat-grid" style="margin-bottom:14px">
       <div class="stat-card" style="background:var(--greenlt);border-color:transparent">
-        <div class="num" style="color:var(--green)">${formatDinero(totalCobrado)}</div>
+        <div class="num" style="color:var(--green)">${formatDineroCorto(totalCobrado)}</div>
         <div class="lbl">✅ Total cobrado</div>
       </div>
       <div class="stat-card" style="background:#fef3c7;border-color:transparent">
-        <div class="num" style="color:#7a4d00">${formatDinero(totalPendiente)}</div>
+        <div class="num" style="color:#7a4d00">${formatDineroCorto(totalPendiente)}</div>
         <div class="lbl">⏳ Pendiente de cobro</div>
       </div>
     </div>`;
@@ -5253,6 +5256,13 @@ async function cargarTodo(){
   actualizarLabelUsuarioActual();
   actualizarBadgeNotificaciones();
   document.getElementById('selector-mes').value = ymd(fechaBase).slice(0,7);
+  scrollHoyEnVista(false);
+}
+function scrollHoyEnVista(suave){
+  setTimeout(()=>{
+    const el = document.getElementById('col-'+ymd(new Date()));
+    if(el) el.scrollIntoView({behavior: suave?'smooth':'auto', block:'start', inline:'center'});
+  }, 80);
 }
 
 /* ==================== OBRAS DE PRUEBA (solo en memoria, no se guardan) ==================== */
@@ -5343,10 +5353,7 @@ function irAMes(valor){
 function irAHoy(){
   irAMesActual();
   renderCalendario();
-  setTimeout(()=>{
-    const el = document.getElementById('col-'+ymd(new Date()));
-    if(el) el.scrollIntoView({behavior:'smooth', block:'start', inline:'center'});
-  }, 60);
+  scrollHoyEnVista(true);
 }
 function irAFechaEnCalendario(f){
   const d = parseYMD(f);
