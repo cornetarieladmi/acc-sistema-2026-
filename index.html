@@ -317,12 +317,12 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 
 /* MAIN / SEMANAS APILADAS */
 #scr-planificacion .main{flex:1;display:flex;flex-direction:column;min-width:0}
-#scr-planificacion .cal-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;padding:14px;display:flex;flex-direction:column;gap:0}
+#scr-planificacion .cal-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;display:flex;flex-direction:column;gap:0}
 #scr-planificacion .cal-scroll::-webkit-scrollbar{width:7px}
 #scr-planificacion .cal-scroll::-webkit-scrollbar-track{background:transparent}
 #scr-planificacion .cal-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
 #scr-planificacion .cal-scroll::-webkit-scrollbar-thumb:hover{background:var(--accent)}
-#scr-planificacion .grilla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#scr-planificacion .grilla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-shrink:0}
 #scr-planificacion .grilla-wrap::-webkit-scrollbar{height:7px}
 #scr-planificacion .grilla-wrap::-webkit-scrollbar-track{background:transparent}
 #scr-planificacion .grilla-wrap::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
@@ -384,7 +384,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 #scr-planificacion .banner-seleccion{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--accent);color:#fff;padding:10px 16px;font-size:13px;font-weight:700}
 #scr-planificacion .banner-seleccion button{background:rgba(255,255,255,.2);color:#fff;padding:6px 12px;border-radius:var(--r);font-size:12px;font-weight:700}
 #scr-planificacion .day-drop-hint{margin:0 6px 6px;text-align:center;font-size:9.5px;color:var(--text3);border:1.5px dashed var(--border2);border-radius:var(--r);padding:4px}
-#scr-planificacion .lista-vista{display:flex;flex-direction:column;gap:6px}
+#scr-planificacion .lista-vista{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
 #scr-planificacion .lista-dia{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r)}
 #scr-planificacion .lista-dia.hoy{border-color:var(--accent);border-width:2px}
 #scr-planificacion .lista-dia-head{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1.5px solid var(--border);cursor:pointer}
@@ -5792,16 +5792,37 @@ function quitarFocoActivo(){
     document.activeElement.blur();
   }
 }
-function restaurarScrollCal(cont, valor){
-  // Esperamos a que el navegador termine sus propios ajustes de layout/foco antes de
-  // fijar el scroll, así nuestro valor es el que queda (y no al revés).
+function capturarAnclaCal(cont){
+  // En vez de guardar "cuántos píxeles" hay de scroll (que puede fallar si el navegador
+  // hace de las suyas), guardamos QUÉ DÍA está arriba de todo Y a qué distancia exacta
+  // del borde superior. Después de redibujar volvemos a dejarlo a esa misma distancia
+  // exacta (no "alineado arriba del todo", que se va corriendo de a poquito con cada click).
+  const cols = cont.querySelectorAll('[id^="col-"]');
+  const contTop = cont.getBoundingClientRect().top;
+  for(const col of cols){
+    const r = col.getBoundingClientRect();
+    if(r.bottom > contTop + 2) return { id: col.id, desde: r.top - contTop };
+  }
+  return null;
+}
+function restaurarAnclaCal(cont, ancla, scrollFallback){
   requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{ cont.scrollTop = valor; });
+    requestAnimationFrame(()=>{
+      const el = ancla ? document.getElementById(ancla.id) : null;
+      if(el){
+        const contTop = cont.getBoundingClientRect().top;
+        const desvio = (el.getBoundingClientRect().top - contTop) - ancla.desde;
+        cont.scrollTop += desvio;
+      } else {
+        cont.scrollTop = scrollFallback;
+      }
+    });
   });
 }
 function renderVistaLista(){
   const cont = document.getElementById('cal-scroll');
   const _scrollY = cont.scrollTop;
+  const _ancla = capturarAnclaCal(cont);
   quitarFocoActivo();
   const totalDias = cantidadSemanas*7;
   let html = '<div class="lista-vista">';
@@ -5812,7 +5833,7 @@ function renderVistaLista(){
     const asigs = asignacionesQueCubren(f);
     const cantAusencia = asigs.filter(a=>a.tipo==='ausencia').length;
     const cantTrabajo = asigs.length - cantAusencia;
-    html += `<div class="lista-dia${hoy?' hoy':''}">
+    html += `<div class="lista-dia${hoy?' hoy':''}" id="col-${f}">
       <div class="lista-dia-head" onclick="onClickDia('${f}')">
         <span class="lista-dia-nombre">${nombreDiaSemana(d)}${hoy?' · hoy':''}</span>
         <span class="lista-dia-fecha">${formatoCorto(d)}</span>
@@ -5827,11 +5848,12 @@ function renderVistaLista(){
   }
   html += '</div>';
   cont.innerHTML = html;
-  restaurarScrollCal(cont, _scrollY);
+  restaurarAnclaCal(cont, _ancla, _scrollY);
 }
 function renderVistaCalendario(){
   const cont = document.getElementById('cal-scroll');
   const _scrollY = cont.scrollTop;
+  const _ancla = capturarAnclaCal(cont);
   quitarFocoActivo();
   let html = `<div class="grilla-wrap"><div class="grilla-encabezado">${DIAS_NOMBRE.map(n=>`<span>${n}</span>`).join('')}</div>`;
   for(let s=0;s<cantidadSemanas;s++){
@@ -5877,7 +5899,7 @@ function renderVistaCalendario(){
   }
   html += `</div>`;
   cont.innerHTML = html;
-  restaurarScrollCal(cont, _scrollY);
+  restaurarAnclaCal(cont, _ancla, _scrollY);
 }
 
 /* Drag & drop / tap-to-place (solo obras) */
