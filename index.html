@@ -619,7 +619,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     </div>
 
     <div id="pf-tomar-box" class="box alerta" style="display:none;text-align:center">
-      <div class="section-head rojo" style="margin-bottom:8px">🧑‍🏭 Proyecto solicitado sin responsable</div>
+      <div class="section-head rojo" style="margin-bottom:8px">👷 Proyecto solicitado sin responsable</div>
       <div style="font-size:12.5px;color:rgba(255,255,255,0.85);margin-bottom:10px">Este proyecto todavía no tiene quién lo tome. Podés asignártelo vos.</div>
       <button class="btn secondary" onclick="tomarProyecto()" style="width:100%">Tomar este proyecto</button>
     </div>
@@ -885,7 +885,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
   <button class="icon-btn icon-grande" style="margin-left:auto" onclick="actualizarDatos()" title="Actualizar">🔄</button>
   <button class="icon-btn icon-grande" id="btn-notificaciones" onclick="abrirNotificaciones()" title="Avisos">📣</button>
   <button class="icon-btn icon-grande" id="btn-papelera-plan" onclick="abrirPapeleraPlan()" title="Papelera">🗑️</button>
-  <button class="icon-btn" id="btn-usuario-actual" onclick="abrirSelectorUsuarioActual(event)"><span class="icono-obrero">🧑‍🏭</span> ¿Quién sos?</button>
+  <button class="icon-btn" id="btn-usuario-actual" onclick="abrirSelectorUsuarioActual(event)"><span class="icono-obrero">👷</span> ¿Quién sos?</button>
 </div>
 
 <div class="modal-overlay" id="modal-notificaciones">
@@ -950,7 +950,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     <div class="modal-body">
       <div class="preset-horario">
         <button type="button" id="tab-rol-usuario" class="tab-activo" onclick="cambiarTabRol('usuario')">🧑‍💼 Soy responsable/usuario</button>
-        <button type="button" id="tab-rol-operario" onclick="cambiarTabRol('operario')">🧑‍🏭 Soy operario</button>
+        <button type="button" id="tab-rol-operario" onclick="cambiarTabRol('operario')">🦺 Soy operario</button>
       </div>
       <div class="field" id="campo-rol-usuario">
         <label>Tu usuario</label>
@@ -2155,7 +2155,7 @@ function tarjetaProyecto(p, opts){
       <div class="card-top">
         <div style="min-width:0">
           <div class="card-title">${p.cliente||'(sin cliente)'}</div>
-          <div class="card-people"><span class="resp">🧑‍🏭 ${p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable'}</span> &nbsp; <span class="cli">📁 ${p.nombre||'(sin nombre)'}</span></div>
+          <div class="card-people"><span class="resp">👷 ${p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable'}</span> &nbsp; <span class="cli">📁 ${p.nombre||'(sin nombre)'}</span></div>
           <div class="card-sub"><span style="font-family:var(--mono)">${p.nro||''}</span> &nbsp; 📅 Inicio: ${p.fechaCreacion ? new Date(p.fechaCreacion).toLocaleDateString('es-AR') : '-'}</div>
         </div>
         <span class="badge ${estadoClase}">${estadoTexto}</span>
@@ -2233,7 +2233,7 @@ function renderProyectos(filtroTexto){
     cont.innerHTML = py_scope==='mios'
       ? `<div class="empty"><div class="empty-ic">📁</div>Todavía no tenés proyectos.<br>Tocá + para crear uno.</div>`
       : py_scope==='solicitados'
-      ? `<div class="empty"><div class="empty-ic">🧑‍🏭</div>No hay proyectos solicitados sin responsable.</div>`
+      ? `<div class="empty"><div class="empty-ic">👷</div>No hay proyectos solicitados sin responsable.</div>`
       : `<div class="empty"><div class="empty-ic">📁</div>Todavía no hay proyectos cargados.</div>`;
     return;
   }
@@ -3752,7 +3752,7 @@ function renderPendientes(){
         <div class="link-row"><span>🔧 ${e.nombre}</span><button class="btn secondary sm" onclick="aprobarEquipo('${e.id}')">Revisar</button></div>
       `).join('')}
       ${operariosPend.map(o=>`
-        <div class="link-row"><span>🧑‍🏭 ${o.nombre}</span><button class="btn secondary sm" onclick="aprobarOperario('${o.id}')">Revisar</button></div>
+        <div class="link-row"><span>🦺 ${o.nombre}</span><button class="btn secondary sm" onclick="aprobarOperario('${o.id}')">Revisar</button></div>
       `).join('')}
     </div>`;
 }
@@ -3986,7 +3986,7 @@ function renderAdmin(filtroTexto){
           <div style="font-size:15px;font-weight:800;color:#14183D">${p ? p.cliente : '(proyecto no encontrado)'}</div>
           <div style="font-size:12.5px;font-weight:600;color:#22487A;margin-top:2px">${p ? p.nombre : ''}</div>
           <div style="font-size:11.5px;color:#22487A;margin-top:3px">${p ? p.nro : ''}${a.ffact?' &nbsp; Facturado: '+a.ffact:''}</div>
-          <div style="font-size:11.5px;font-weight:700;color:#007b00;margin-top:3px">🧑‍🏭 ${p && p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable'}</div>
+          <div style="font-size:11.5px;font-weight:700;color:#007b00;margin-top:3px">👷 ${p && p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable'}</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">
           <span class="badge" style="background:var(--greenlt);color:var(--green)">${formatDinero(a.tipoFactura==='A' ? a.totalConIva : (a.totalNeto!=null ? a.totalNeto : a.total))}${a.descuentoPct>0?` <span style="opacity:.7;font-weight:600">(-${a.descuentoPct}%)</span>`:''}${a.tipoFactura==='A'?' <span style="opacity:.7;font-weight:600">c/IVA</span>':''}</span>
@@ -4128,7 +4128,7 @@ function filtrarListaOperarios(filtroTexto){
   if(filtroTexto) lista = lista.filter(o=>(o.nombre||'').toLowerCase().includes(filtroTexto));
   document.getElementById('operarios-lista-inner').innerHTML = lista.map(o=>`
         <div class="link-row">
-          <span>🧑‍🏭 ${o.nombre}${o.estado==='pendiente'?'<span class="pend-tag">Pendiente</span>':''}${o.usuario?' <span class="pend-tag" style="background:var(--accentlt);color:var(--accent)">📱 Con acceso</span>':''}</span>
+          <span>🦺 ${o.nombre}${o.estado==='pendiente'?'<span class="pend-tag">Pendiente</span>':''}${o.usuario?' <span class="pend-tag" style="background:var(--accentlt);color:var(--accent)">📱 Con acceso</span>':''}</span>
           <div style="display:flex;gap:6px">
             <button class="btn secondary sm" onclick="abrirModalOperario('${o.id}')">Editar</button>
             <button class="btn secondary sm" style="color:var(--red)" onclick="eliminarOperario('${o.id}')">Eliminar</button>
@@ -4982,7 +4982,7 @@ function actualizarLabelUsuarioActual(){
     return;
   }
   // Sin sesión iniciada (no debería pasar dentro de la app, es respaldo)
-  const icono = '<span class="icono-obrero">🧑‍🏭</span>';
+  const icono = '<span class="icono-obrero">👷</span>';
   if(usuarioActual){
     const nombre = nombreResponsable(usuarioActual) || usuarioActual;
     btn.innerHTML = icono + ' ' + nombre;
@@ -5054,7 +5054,7 @@ function puedeEliminarAsignacion(a){
     return {ok:false, msg:'Los operarios no pueden eliminar obras ni servicios — eso lo hace el responsable'};
   }
   if(!usuarioActual){
-    return {ok:false, msg:'Primero elegí quién sos (🧑‍🏭 arriba) para poder eliminar'};
+    return {ok:false, msg:'Primero elegí quién sos (👷 arriba) para poder eliminar'};
   }
   if(loginResp && loginResp!==usuarioActual){
     return {ok:false, msg:'Solo puede eliminar esto ' + (nombreResponsable(loginResp)||loginResp) + ', el responsable del trabajo'};
@@ -5162,7 +5162,7 @@ function abrirNotificaciones(){
   const hoy = ymd(new Date());
   let html = '';
   if(!usuarioActual && !operarioActual){
-    html += `<div class="empty-mini">Elegí quién sos (🧑‍🏭 arriba) para recibir avisos personalizados. Igual podés ver acá abajo las ausencias cargadas por todo el equipo.</div>`;
+    html += `<div class="empty-mini">Elegí quién sos (👷 arriba) para recibir avisos personalizados. Igual podés ver acá abajo las ausencias cargadas por todo el equipo.</div>`;
   }
   if(nuevos.length){
     html += `<h4 class="est-titulo" style="margin-top:0">🆕 Trabajos nuevos asignados a vos</h4>`;
@@ -5524,7 +5524,7 @@ function asignacionInvolucraAUsuarioActual(a){
 }
 function alternarFiltroMios(){
   if(!verSoloMios && !usuarioActual && !operarioActual){
-    toast('Primero elegí quién sos (🧑‍🏭 arriba) para poder filtrar tus días');
+    toast('Primero elegí quién sos (👷 arriba) para poder filtrar tus días');
     return;
   }
   verSoloMios = !verSoloMios;
@@ -5609,9 +5609,10 @@ function abrirResumen(id, f){
     }
     const opsTexto = (a.operarios||[]).map(nombreOperario).join(', ') || 'Sin operarios asignados';
     const horario = (h.horaDesde||h.horaHasta) ? `${mostrarHora(h.horaDesde)} a ${mostrarHora(h.horaHasta)}` : 'Sin horario cargado';
-    const inicioTxt = a.estadoTrabajo && a.horaInicioReal ? `<div class="resumen-fila"><span>Arrancó</span><b>${horaCorta(a.horaInicioReal)}</b></div>` : '';
+    const _estadoResumen = estadoTrabajoDia(a, f);
+    const inicioTxt = _estadoResumen && _estadoResumen.horaInicioReal ? `<div class="resumen-fila"><span>Arrancó</span><b>${horaCorta(_estadoResumen.horaInicioReal)}</b></div>` : '';
     filas = `
-      <div class="resumen-trabajo-wrap">${botonEstadoTrabajoHTML(a)}</div>
+      <div class="resumen-trabajo-wrap">${botonEstadoTrabajoHTML(a, f)}</div>
       ${inicioTxt}
       <div class="resumen-fila"><span>Cliente</span><b>${cliente}</b></div>
       <div class="resumen-fila"><span>Responsable</span><b>${responsable}</b></div>
@@ -5640,7 +5641,7 @@ function editarDesdeResumen(){
       return;
     }
     if(!usuarioActual){
-      toast('Primero elegí quién sos (🧑‍🏭 arriba) para poder editar');
+      toast('Primero elegí quién sos (👷 arriba) para poder editar');
       return;
     }
     if(loginResp && loginResp!==usuarioActual){
@@ -5707,8 +5708,9 @@ function tarjetaAsignacionHTML(a, f){
   const incompleta = esIncompleta(a);
   const dot = incompleta ? '<span class="dot-card-incompleto" title="Faltan datos (operarios y/u horario)"></span>' : '';
   const badgeNuevo = esNuevoParaMi(a) ? '<span class="badge-nuevo" title="Te asignaron esto — todavía no lo abriste">🆕 Nuevo</span>' : '';
-  const badgeEstado = a.estadoTrabajo==='en_curso' ? '<span class="badge-estado en-curso">▶ En curso</span>'
-    : a.estadoTrabajo==='finalizado' ? '<span class="badge-estado hecho">✅ Hecho</span>' : '';
+  const _estadoHoy = estadoTrabajoDia(a, f);
+  const badgeEstado = _estadoHoy?.estado==='en_curso' ? '<span class="badge-estado en-curso">▶ En curso</span>'
+    : _estadoHoy?.estado==='finalizado' ? '<span class="badge-estado hecho">✅ Hecho</span>' : '';
 
   if(a.tipo==='ausencia'){
     const {titulo} = tituloYSub(a);
@@ -6465,48 +6467,53 @@ function horaCorta(ts){
   if(!ts) return '';
   return new Date(ts).toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
 }
-async function arrancarTrabajo(id){
+function estadoTrabajoDia(a, f){
+  return (a.estadoPorFecha && a.estadoPorFecha[f]) || null;
+}
+async function arrancarTrabajo(id, f){
   const a = ASIGNACIONES.find(x=>x.id===id);
   if(!a) return;
-  a.estadoTrabajo = 'en_curso';
-  a.horaInicioReal = Date.now();
-  a.iniciadoPor = usuarioActual || operarioActual || null;
+  a.estadoPorFecha = a.estadoPorFecha || {};
+  a.estadoPorFecha[f] = { estado:'en_curso', horaInicioReal: Date.now(), iniciadoPor: usuarioActual || operarioActual || null };
   try{ if(window.db) await window.db.set('planificacion_bloques', id, a); }catch(e){ console.warn(e); }
   renderCalendario();
   if(resumenActualId===id) abrirResumen(id, resumenActualFecha);
-  toast('▶ Trabajo iniciado');
+  toast('▶ Trabajo iniciado (' + fechaLegible(f) + ')');
 }
-async function finalizarTrabajo(id){
+async function finalizarTrabajo(id, f){
   const a = ASIGNACIONES.find(x=>x.id===id);
   if(!a) return;
-  a.estadoTrabajo = 'finalizado';
-  a.horaFinReal = Date.now();
-  a.finalizadoPor = usuarioActual || operarioActual || null;
+  a.estadoPorFecha = a.estadoPorFecha || {};
+  const previo = a.estadoPorFecha[f] || {};
+  a.estadoPorFecha[f] = { ...previo, estado:'finalizado', horaFinReal: Date.now(), finalizadoPor: usuarioActual || operarioActual || null };
   try{ if(window.db) await window.db.set('planificacion_bloques', id, a); }catch(e){ console.warn(e); }
   renderCalendario();
   if(resumenActualId===id) abrirResumen(id, resumenActualFecha);
-  toast('⏹ Trabajo finalizado');
+  toast('⏹ Trabajo finalizado (' + fechaLegible(f) + ')');
 }
-async function reabrirTrabajo(id){
+async function reabrirTrabajo(id, f){
   const a = ASIGNACIONES.find(x=>x.id===id);
   if(!a) return;
-  a.estadoTrabajo = 'en_curso';
+  a.estadoPorFecha = a.estadoPorFecha || {};
+  const previo = a.estadoPorFecha[f] || {};
+  a.estadoPorFecha[f] = { ...previo, estado:'en_curso' };
   try{ if(window.db) await window.db.set('planificacion_bloques', id, a); }catch(e){ console.warn(e); }
   renderCalendario();
   if(resumenActualId===id) abrirResumen(id, resumenActualFecha);
-  toast('Trabajo reabierto');
+  toast('Trabajo reabierto (' + fechaLegible(f) + ')');
 }
-function botonEstadoTrabajoHTML(a){
+function botonEstadoTrabajoHTML(a, f){
   if(a.tipo==='ausencia') return '';
-  if(a.estadoTrabajo==='en_curso'){
-    return `<button class="btn-trabajo finalizar" onclick="event.stopPropagation();finalizarTrabajo('${a.id}')">⏹ Finalizar trabajo</button>`;
+  const e = estadoTrabajoDia(a, f);
+  if(e && e.estado==='en_curso'){
+    return `<button class="btn-trabajo finalizar" onclick="event.stopPropagation();finalizarTrabajo('${a.id}','${f}')">⏹ Finalizar trabajo de hoy</button>`;
   }
-  if(a.estadoTrabajo==='finalizado'){
-    return `<div class="badge-trabajo-hecho">✅ Trabajo finalizado ${horaCorta(a.horaFinReal)?('· '+horaCorta(a.horaFinReal)):''}
-      <button class="btn-reabrir" onclick="event.stopPropagation();reabrirTrabajo('${a.id}')">↺ Reabrir</button>
+  if(e && e.estado==='finalizado'){
+    return `<div class="badge-trabajo-hecho">✅ Trabajo de hoy finalizado ${horaCorta(e.horaFinReal)?('· '+horaCorta(e.horaFinReal)):''}
+      <button class="btn-reabrir" onclick="event.stopPropagation();reabrirTrabajo('${a.id}','${f}')">↺ Reabrir</button>
     </div>`;
   }
-  return `<button class="btn-trabajo arrancar" onclick="event.stopPropagation();arrancarTrabajo('${a.id}')">▶ Arrancar trabajo</button>`;
+  return `<button class="btn-trabajo arrancar" onclick="event.stopPropagation();arrancarTrabajo('${a.id}','${f}')">▶ Arrancar trabajo de hoy</button>`;
 }
 function moverAPapeleraPlan(a){
   a.eliminado = true;
