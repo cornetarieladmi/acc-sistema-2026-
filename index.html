@@ -81,16 +81,25 @@ body{font-family:var(--sans);background:#00225b;color:var(--text);font-size:14px
 button{font-family:var(--sans);cursor:pointer}
 input,select,textarea{font-family:var(--sans)}
 
-#scr-login{background:linear-gradient(155deg,#1a56db 0%,#12409e 50%,#0a2758 100%);align-items:center;justify-content:center;padding:24px}
-.login-card{width:100%;max-width:380px;background:#fff;border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,0.3);overflow:hidden}
-.login-head{background:linear-gradient(135deg,#1a56db,#12409e);padding:30px 28px 24px;text-align:center}
-.login-mark{font-family:var(--mono);font-size:26px;font-weight:600;color:#fff;letter-spacing:.08em}
-.login-sub{font-size:12px;color:rgba(255,255,255,0.7);margin-top:6px;letter-spacing:.03em}
-.login-body{padding:26px 28px 30px}
+#scr-login{background:radial-gradient(ellipse at 30% 15%,#15306b 0%,#0a1c45 48%,#050f29 100%);align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden}
+.login-glow{position:absolute;border-radius:50%;pointer-events:none;filter:blur(6px)}
+.login-glow-1{width:440px;height:440px;background:radial-gradient(circle,rgba(96,165,250,.22),transparent 70%);top:-140px;left:-110px}
+.login-glow-2{width:380px;height:380px;background:radial-gradient(circle,rgba(59,130,246,.16),transparent 70%);bottom:-150px;right:-120px}
+.login-card{width:100%;max-width:372px;background:#fff;border-radius:26px;box-shadow:0 30px 80px rgba(2,8,30,0.45);overflow:hidden;position:relative;z-index:1}
+.login-head{padding:36px 28px 18px;text-align:center}
+.login-badge{width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#2563eb,#1e3a8a);display:flex;align-items:center;justify-content:center;font-size:21px;margin:0 auto 14px;box-shadow:0 10px 22px rgba(37,99,235,.35)}
+.login-mark{font-family:var(--sans);font-size:19px;font-weight:800;color:#0f172a;letter-spacing:.12em}
+.login-sub{font-size:11.5px;color:#64748b;margin-top:5px;letter-spacing:.01em}
+.login-body{padding:10px 30px 32px}
+.login-body .field label{color:#64748b;font-weight:600;letter-spacing:.03em}
+.login-body .field input{border:1.5px solid #e4e9f2;border-radius:14px;padding:13px 16px;font-size:14.5px;background:#f8fafc;transition:.15s}
+.login-body .field input:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 4px rgba(37,99,235,.1)}
+.login-body .btn{border-radius:14px;background:linear-gradient(135deg,#2563eb,#1d4ed8);box-shadow:0 12px 26px rgba(37,99,235,.32);letter-spacing:.01em;margin-top:6px;padding:13px 16px}
+.login-body .btn:active{transform:translateY(1px);box-shadow:0 6px 16px rgba(37,99,235,.28)}
 
-.field{margin-bottom:14px}
-.field label{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text2);margin-bottom:6px}
-.field input,.field select,.field textarea{width:100%;padding:11px 13px;background:#fff;border:1.5px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:15px;outline:none;transition:.15s}
+.field{margin-bottom:10px}
+.field label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text2);margin-bottom:4px}
+.field input,.field select,.field textarea{width:100%;padding:9px 12px;background:#fff;border:1.5px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:14px;outline:none;transition:.15s}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(26,86,219,0.14)}
 input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disabled{cursor:not-allowed;background:var(--surface2) !important;color:var(--text2)}
 .field textarea{resize:vertical;min-height:80px;line-height:1.6}
@@ -106,6 +115,15 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .topbar-left{display:flex;align-items:center;gap:10px;min-width:0}
 .back-btn{background:rgba(255,255,255,0.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:17px;flex-shrink:0}
 .icon-btn{background:rgba(255,255,255,0.15);border:none;color:#fff;border-radius:8px;padding:0 10px;height:32px;font-size:12px;font-weight:700;flex-shrink:0}
+.rol-badge{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;vertical-align:middle;margin-right:1px}
+.rol-badge svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2.4}
+.rol-badge.rol-admin{background:#334155}
+.rol-badge.rol-usuario{background:rgba(255,255,255,.28)}
+.rol-badge.rol-operario{background:#15803d}
+.icon-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2.1;vertical-align:middle}
+.icon-btn.icon-grande svg{width:19px;height:19px}
+.icon-btn{position:relative}
+.icon-badge-num{position:absolute;top:-3px;right:-3px;min-width:15px;height:15px;padding:0 3px;border-radius:50%;background:#dc2626;color:#fff;font-size:9.5px;font-weight:800;align-items:center;justify-content:center;border:1.5px solid var(--accent)}
 .icon-btn.girando{animation:girar 0.6s linear}
 @keyframes girar{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @media (max-width:639px){ .nuevo-proyecto-label{display:none} }
@@ -170,12 +188,90 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .modal-sheet{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:86vh;overflow-y:auto;padding:18px 16px 28px;box-shadow:0 -10px 40px rgba(0,0,0,0.25)}
 @media (min-width:860px){
   #modal-item{align-items:center}
-  #modal-item-sheet{max-width:760px;width:92%;max-height:90vh;border-radius:20px;padding:28px 34px 34px}
+  #modal-item-sheet{max-width:1020px;width:94%;max-height:92vh;border-radius:16px;padding:20px 26px 24px}
   #modal-item-sheet .modal-handle{display:none}
-  #modal-item-sheet .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  #modal-item-sheet #item-operarios-list .mini-row{display:grid;grid-template-columns:2fr 1.3fr 0.9fr 0.9fr auto;align-items:end;gap:8px}
-  #modal-item-sheet #item-operarios-list .mini-row .mini-horas{grid-column:1/-1}
+  #modal-item-sheet #item-operarios-list .mini-row{grid-template-columns:2fr 1.4fr .8fr .8fr auto .9fr;align-items:end;gap:8px;margin-bottom:6px}
+  #modal-item-sheet #item-operarios-list .mini-row .mini-horas{grid-column:auto;margin:0 0 9px;white-space:nowrap}
+  #modal-item-sheet .pf-cols2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 }
+.pf-grid .c3{grid-column:span 3}.pf-grid .c4{grid-column:span 4}.pf-grid .c5{grid-column:span 5}
+@media(max-width:859px){
+  #modal-item-sheet #item-operarios-list .mini-row{grid-template-columns:1fr 1fr auto;gap:6px}
+  #modal-item-sheet #item-operarios-list .mini-row .mini-field:nth-child(1),#modal-item-sheet #item-operarios-list .mini-row .mini-field:nth-child(2){grid-column:1/-1}
+  #modal-item-sheet #item-operarios-list .mini-row .mini-horas{grid-column:1/-1;margin:0 0 6px}
+  #modal-item-sheet .mini-row.g3{grid-template-columns:1fr 1fr 1fr auto}
+}
+.pf-cols2{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:860px){.pf-cols-box{grid-template-columns:1fr 1fr}}
+.pf-cols-box .box{margin-bottom:0}.pf-cols-box{margin-bottom:12px}
+.pf-admin-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px}
+.pf-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 28px;padding:10px 12px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r2)}
+.pf-actions-sp{flex:1}
+.btn-act{border:1px solid var(--border2);background:var(--surface);color:var(--text2);border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--sans)}
+.btn-act:hover{border-color:var(--accent);color:var(--accent)}
+.btn-act.primary{background:var(--accent);border-color:var(--accent);color:#fff;padding:8px 22px}
+.btn-act.primary:hover{filter:brightness(1.08);color:#fff}
+.btn-act.ok{color:var(--green);border-color:rgba(22,128,70,.35)}
+.btn-act.ok:hover{background:rgba(22,128,70,.07);border-color:var(--green);color:var(--green)}
+.btn-act.danger{color:var(--red);border-color:rgba(200,50,50,.3)}
+.btn-act.danger:hover{background:var(--redlt);border-color:var(--red);color:var(--red)}
+@media(max-width:560px){.pf-actions{padding:10px}.pf-actions-sp{display:none}.btn-act{flex:1 1 45%;text-align:center}.pf-admin-row{flex-direction:column;align-items:stretch}}
+.ad-table.pf-table{min-width:0;font-size:12.5px}
+.pf-table th{padding:7px 12px;font-size:10.5px;cursor:default}.pf-table th:hover{color:var(--text2)}
+.pf-table td{padding:6px 12px}
+.pf-table .num{text-align:right}.pf-table td.mono{font-family:var(--mono);font-size:12px}
+.pf-table td.pf-wrap{white-space:normal;min-width:140px}
+.pf-mas{display:inline-block;background:var(--accentlt);color:var(--accent);border-radius:10px;padding:0 6px;font-size:11px;font-weight:700;margin-left:3px}
+.pf-row-actions{display:flex;gap:5px;justify-content:flex-end}
+.pf-row-actions .mc-del{border:none;border-radius:6px;background:var(--redlt);color:var(--red);font-size:12px;width:26px;height:24px;display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.pf-row-actions .pf-mail{background:var(--accentlt);color:var(--accent)}
+.pf-count{color:var(--text3);font-weight:700;margin-left:4px}
+@media(max-width:640px){.pf-table{table-layout:auto}.pf-table td{white-space:normal}.pf-table td.mono{white-space:nowrap;font-size:10.5px}.pf-table td:first-child,.pf-table th:first-child{padding-left:8px!important}.pf-table td:last-child{padding-right:6px!important}.pf-table td:nth-child(2){max-width:118px}.pf-table .pf-mas{display:block;width:max-content;margin:2px 0 0}.pf-table td.pf-wrap{min-width:0}.pf-table th,.pf-table td{padding:6px 4px!important}.pf-row-actions{gap:3px}.pf-row-actions .mc-del{width:22px}.pf-table .num{padding-left:2px!important}.pf-table th{font-size:9.5px}.pf-table .hide-m{display:none}}
+.rt-wrap{border:1px solid var(--border2);border-radius:7px;background:#fff;overflow:hidden}
+.rt-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,86,219,.12)}
+.rt-bar{display:flex;align-items:center;gap:3px;padding:3px 6px;background:var(--surface2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.rt-btn{border:1px solid transparent;background:transparent;border-radius:5px;min-width:26px;height:24px;padding:0 6px;font-size:13px;color:var(--text2);cursor:pointer;line-height:1}
+.rt-btn:hover{background:#fff;border-color:var(--border2)}
+.rt-btn.rt-b{font-weight:800}.rt-btn.rt-clear{font-size:11px;font-weight:600;margin-left:auto}
+.rt-btn.rt-f0{font-family:var(--sans)}.rt-btn.rt-f1{font-family:var(--mono);font-size:12px}.rt-btn.rt-f2{font-family:Georgia,'Times New Roman',serif;font-style:italic}
+.rt-sep{width:1px;height:16px;background:var(--border2);margin:0 4px}
+.rt-dot i{display:block;width:13px;height:13px;border-radius:50%;margin:0 auto}
+.rt-dot.rt-c1 i{background:#c0362c}.rt-dot.rt-c2 i{background:#1a56db}.rt-dot.rt-c3 i{background:#15803d}
+.rt-editor{padding:6px 9px;font-size:13px;line-height:1.5;color:var(--text);outline:none;white-space:pre-wrap;word-break:break-word;font-family:var(--sans)}
+.rt-editor:empty:before{content:attr(data-ph);color:var(--text3);pointer-events:none}
+.rt-editor .rt-f0{font-family:var(--sans)}.rt-editor .rt-f1{font-family:var(--mono);font-size:.93em}.rt-editor .rt-f2{font-family:Georgia,'Times New Roman',serif;font-size:1.05em}
+.rt-editor .rt-b{font-weight:800}
+.rt-editor .rt-c1{color:#c0362c}.rt-editor .rt-c2{color:#1a56db}.rt-editor .rt-c3{color:#15803d}
+#pf-content.pf-readonly .rt-editor{pointer-events:none;opacity:.75;background:var(--bg)}
+#pf-content.pf-readonly .rt-bar{display:none}
+.pf-grid .c12.box{grid-column:span 12}
+.pf-grid input.af-ro{background:var(--surface2);font-weight:700;color:var(--text)}
+.pf-grid input.af-big{font-weight:800;color:var(--accent);font-size:14px}
+.af-hint{font-size:11px;color:var(--text2);margin-top:2px}
+.pf-grid input.af-ro{pointer-events:none}
+@media(max-width:560px){.pf-grid .c3,.pf-grid .c4{grid-column:span 6}.pf-grid .c5{grid-column:span 12}}
+.gt-pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:10px;letter-spacing:.02em}
+.gt-pill.amb{background:#fef3c7;color:#92400e}.gt-pill.ver{background:var(--greenlt);color:var(--green)}.gt-pill.azu{background:var(--accentlt);color:var(--accent)}.gt-pill.gri{background:var(--surface2);color:var(--text2)}
+.gt-cnt{display:inline-block;margin-left:4px;font-size:10.5px;opacity:.7;font-weight:700}
+.gt-table td{padding:8px 12px}.gt-table td.mono,.gt-table .mono{font-family:var(--mono);font-size:12px}
+.gt-acc .btn-tool.sm{padding:4px 10px;font-size:11.5px}.gt-acc .gt-del{color:var(--red)}.gt-acc .gt-del:hover{border-color:var(--red);color:var(--red)}
+#scr-gestion .ad-toolbar{margin-top:2px}
+@media(max-width:640px){.gt-table td{white-space:normal}.gt-acc{flex-wrap:wrap}}
+.emp-logo-prev{border:1.5px dashed var(--border2);border-radius:var(--r);background:#fff;min-height:90px;display:flex;align-items:center;justify-content:center;padding:14px}.emp-logo-prev img{max-width:100%;max-height:110px}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:3px}.stat-filtros{font-size:11.5px;color:rgba(255,255,255,.65);margin:0 2px 12px}
+.busq-tag{flex-shrink:0;border:none;background:var(--accentlt);color:var(--accent);font-size:11.5px;font-weight:700;border-radius:12px;padding:2px 10px;cursor:pointer;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.busq-tag:hover{background:var(--accent);color:#fff}
+.btn-act-ico{display:inline-flex;align-items:center;gap:7px}.btn-act-ico .pdf-icon{font-size:8.5px;padding:2px 5px;border-radius:4px}
+.pf-modal{margin-bottom:2px}
+.pf-sec{margin:10px 0 6px;padding-top:8px;border-top:1px solid var(--border)}
+.pf-sec-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.costo-inline{font-size:12px;color:var(--text2)}.costo-inline b{font-family:var(--mono);color:var(--accent);margin-left:4px}
+#modal-item-sheet .modal-title{font-size:15px}.modal-sub{margin-bottom:10px}
+#modal-item-sheet .foto-drop{padding:9px;margin-bottom:6px}
+#modal-item-sheet .mini-field input,#modal-item-sheet .mini-field select{height:32px;padding:5px 8px;font-size:12.5px;border-width:1px}
+#modal-item-sheet .mini-del{height:32px;width:32px}
+#modal-item-sheet .mini-row{margin-bottom:6px}
+#modal-item-sheet .firma-canvas{max-height:110px}
+@media(max-width:859px){#modal-item-sheet .pf-grid .c3,#modal-item-sheet .pf-grid .c5,#modal-item-sheet .pf-grid .c2{grid-column:span 6}#modal-item-sheet .pf-grid .c6{grid-column:span 12}}
 .modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 14px}
 .modal-title{font-size:16px;font-weight:800;margin-bottom:3px}
 .modal-sub{font-size:12.5px;color:var(--text2);margin-bottom:14px}
@@ -194,6 +290,56 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .icon-x{background:none;border:none;color:var(--text3);font-size:15px;padding:2px 6px}
 
 .stat-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-bottom:14px}
+.stat-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat-card-subtle{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--border2)}
+.stat-card-subtle .num{color:var(--text)}
+.stat-card-subtle.tono-verde{border-top-color:var(--green)}
+.stat-card-subtle.tono-verde .num{color:var(--green)}
+.stat-card-subtle.tono-ambar{border-top-color:#d97706}
+.stat-card-subtle.tono-ambar .num{color:#b45309}
+.ad-periodo-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.ad-periodo-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.04em}
+.ad-periodo-tabs{display:inline-flex;gap:2px;background:var(--surface2);border-radius:999px;padding:2px}
+.ad-periodo-tab{padding:5px 13px;border-radius:999px;font-size:12px;font-weight:600;color:var(--text2);background:none;border:none;cursor:pointer}
+.ad-periodo-tab.active{background:var(--surface);color:var(--accent);box-shadow:0 1px 3px rgba(20,26,43,.1)}
+.ad-periodo-select{border:1px solid var(--border);border-radius:999px;padding:5px 14px;font-size:12px;color:var(--text2);background:var(--surface);cursor:pointer}
+@media (max-width:560px){ .stat-grid-3{grid-template-columns:1fr} }
+/* ===== Facturación: toolbar + tabla estilo escritorio ===== */
+.ad-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.ad-toolbar-left{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.btn-tool{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text2);cursor:pointer;white-space:nowrap}
+.btn-tool:hover{border-color:var(--accent);color:var(--accent)}
+.btn-tool.sm{padding:6px 11px;font-size:12px}
+.btn-tool:disabled{opacity:.4;cursor:default;border-color:var(--border)}
+.ad-toolbar-search{margin:0;max-width:280px;flex:1 1 220px}
+.ad-cols-wrap{position:relative}
+.ad-cols-dropdown{position:absolute;top:calc(100% + 6px);left:0;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--r2);box-shadow:0 8px 24px rgba(20,26,43,.15);padding:8px;z-index:40;min-width:200px}
+.ad-cols-item{display:flex;align-items:center;gap:8px;padding:7px 6px;font-size:13px;color:var(--text);border-radius:6px;cursor:pointer}
+.ad-cols-item:hover{background:var(--surface2)}
+.ad-table-wrap{overflow-x:auto;border:1.5px solid var(--border);border-radius:var(--r2);background:var(--surface)}
+.ad-table{width:100%;border-collapse:collapse;font-size:13px;min-width:720px}
+.ad-table th{text-align:left;padding:11px 14px;background:var(--surface2);color:var(--text2);font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;border-bottom:1.5px solid var(--border);cursor:pointer;white-space:nowrap;user-select:none}
+.ad-table th:hover{color:var(--accent)}
+.ad-table td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text);white-space:nowrap}
+.ad-table tbody tr{cursor:pointer}
+.ad-table tbody tr:hover{background:var(--accentlt)}
+.ad-table tbody tr:last-child td{border-bottom:none}
+.ad-row-parcial td:first-child{box-shadow:inset 3px 0 0 var(--amber)}
+.ad-row-pendiente td:first-child{box-shadow:inset 3px 0 0 #c9903c}
+.ad-row-cobrado td:first-child{box-shadow:inset 3px 0 0 var(--green)}
+.ad-row-abierto td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.ad-row-presupuesto td:first-child{box-shadow:inset 3px 0 0 var(--amber)}
+.ad-row-cerrado td:first-child{box-shadow:inset 3px 0 0 var(--text3)}
+.ad-row-facturado td:first-child{box-shadow:inset 3px 0 0 var(--green)}
+.ad-row-solicitado td:first-child{box-shadow:inset 3px 0 0 #c9903c}
+.ad-table-empty{text-align:center;color:var(--text3);padding:34px 14px!important;font-size:14px;white-space:normal!important}
+.ad-sub{opacity:.7;font-weight:600;font-size:11px}
+.ad-paginacion{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:12px;color:var(--text2);font-size:13px}
+.ad-pag-controles{display:flex;align-items:center;gap:10px}
+@media (max-width:640px){
+  .ad-toolbar{flex-direction:column;align-items:stretch}
+  .ad-toolbar-search{max-width:none}
+}
 .py-stats-desktop{display:none;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
 .py-stats-desktop .stat-card{padding:18px}
 .py-stats-desktop .stat-card .num{font-size:30px}
@@ -361,8 +507,11 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 #scr-planificacion .asig-motivo{font-size:11px;color:var(--text2);margin-top:5px;font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #scr-planificacion .asig-horario{display:inline-block;margin-top:5px;font-size:10px;font-weight:700;background:var(--surface);border:1px solid var(--border2);border-radius:5px;padding:2px 6px;color:var(--text2)}
 #scr-planificacion .asig-dias{display:inline-block;margin-top:0;margin-left:5px;font-size:9.5px;font-weight:700;background:var(--surface);border:1px solid var(--border2);border-radius:5px;padding:1px 6px;color:var(--text2);vertical-align:middle}
+#scr-planificacion .asig-dias.cant-operarios{background:var(--accentlt);border-color:var(--accent);color:var(--accent)}
 #scr-planificacion .asig-personas{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;max-height:40px;overflow:hidden}
 #scr-planificacion .chip-persona{background:var(--accent);color:#fff;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:99px;flex-shrink:1;min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#scr-planificacion .chip-persona.chip-click{cursor:pointer}
+#scr-planificacion .chip-persona.chip-click:active{filter:brightness(0.9)}
 #scr-planificacion .chip-persona.operario{background:var(--surface2);color:var(--text2);font-weight:600}
 #scr-planificacion .chip-persona.mas{background:var(--surface2);color:var(--text3);font-weight:600}
 #scr-planificacion .dot-card-incompleto{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--amber)}
@@ -399,6 +548,56 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 #scr-planificacion .lista-item-sub{font-size:12px;color:var(--text2)}
 #scr-planificacion .lista-vacio{padding:9px 12px;font-size:12px;color:var(--text3);font-style:italic}
 #scr-planificacion .ver-todo-hint{margin-top:auto;text-align:center;font-size:9.5px;color:var(--accent);font-weight:700;padding:3px 0 1px;cursor:pointer}
+
+/* ===== Tarjetas de Planificación: diseño sutil y compacto ===== */
+#scr-planificacion .asig-card{border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:8px 10px 7px;box-shadow:0 1px 2px rgba(20,26,43,.05);height:auto;min-height:0;max-height:182px;gap:0}
+#scr-planificacion .asig-card:hover{border-color:var(--border2);box-shadow:0 2px 8px rgba(20,26,43,.1)}
+#scr-planificacion .asig-cliente{font-size:13.5px;font-weight:700;line-height:1.25;letter-spacing:-.005em;-webkit-line-clamp:2}
+#scr-planificacion .asig-nro{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-top:4px;font-family:var(--mono);font-size:10.5px;color:var(--text2)}
+#scr-planificacion .asig-lugar{display:inline-block;font-family:var(--sans);font-size:10px;font-weight:600;color:var(--text2);background:var(--surface2);border-radius:4px;padding:1px 6px}
+#scr-planificacion .asig-dias{margin:0;border:none;background:var(--surface2);border-radius:4px;font-size:10px;padding:1px 6px;color:var(--text2)}
+#scr-planificacion .asig-horario{display:block;margin-top:5px;border:none;background:none;padding:0;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text)}
+#scr-planificacion .badge-estado{display:inline-flex;align-items:center;gap:4px;margin:4px 0 0;padding:1px 8px 1px 6px;border-radius:10px;font-size:10px;font-weight:700}
+#scr-planificacion .badge-estado:before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+#scr-planificacion .badge-estado.en-curso{animation:none}
+#scr-planificacion .asig-personas{gap:4px;margin-top:6px;max-height:44px}
+#scr-planificacion .chip-persona{background:var(--surface2);color:var(--text);border:1px solid var(--border);font-size:10px;font-weight:600;padding:1px 7px;border-radius:5px}
+#scr-planificacion .chip-persona.operario{background:#fff;color:var(--text2);font-weight:600}
+#scr-planificacion .chip-persona.chip-click:hover{border-color:var(--accent);color:var(--accent)}
+#scr-planificacion .badge-nuevo{top:6px;left:auto;right:8px;background:var(--accentlt);color:var(--accent);border:1px solid rgba(26,86,219,.25);font-size:9px;font-weight:700;padding:1px 7px;border-radius:10px;animation:none}
+#scr-planificacion .asig-card .asig-cliente{padding-right:0}
+#scr-planificacion .dot-card-incompleto{top:9px;right:8px}
+#scr-planificacion .asig-motivo{font-size:11px;margin-top:4px}
+/* encabezado de cada día */
+#scr-planificacion .day-head{padding:6px 8px 4px}
+#scr-planificacion .day-fecha{font-size:12px;font-weight:700;color:var(--text2)}
+#scr-planificacion .day-col.hoy{background:var(--accentlt);box-shadow:inset 0 0 0 1.5px var(--accent)}
+#scr-planificacion .day-col.hoy .day-fecha{color:var(--accent);font-weight:800}
+#scr-planificacion .badge-cantidad,#scr-planificacion .badge-ausencia{height:15px;min-width:15px;font-size:9px;font-weight:700}
+#scr-planificacion .badge-cantidad{background:var(--accentlt);color:var(--accent)}
+#scr-planificacion .badge-ausencia{background:var(--redlt);color:var(--red)}
+#scr-planificacion .btn-add-dia{background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--text3)}
+#scr-planificacion .grilla-encabezado span{font-size:10.5px;letter-spacing:.05em;color:var(--text2)}
+#scr-planificacion .week-block-head{font-size:10.5px;font-weight:600;letter-spacing:.02em}
+#scr-planificacion .asig-compacta{border-radius:6px;font-size:10.5px}
+/* tarjetas de obras (barra lateral) */
+#scr-planificacion .obra-card{border:1px solid var(--border);border-left:3px solid var(--green);border-radius:8px;padding:8px 10px;margin-bottom:6px;box-shadow:none}
+#scr-planificacion .obra-card:hover{border-color:var(--border2);box-shadow:0 2px 8px rgba(20,26,43,.08)}
+#scr-planificacion .obra-cliente{font-size:13px;font-weight:700}
+#scr-planificacion .obra-nombre{font-size:11px}
+#scr-planificacion .obra-resp{font-weight:600;color:var(--text2)}
+
+/* tarjetas más grandes, con más datos */
+#scr-planificacion .day-col{height:372px}
+#scr-planificacion .asig-card{max-height:276px;padding:10px 12px 9px}
+#scr-planificacion .asig-cliente{font-size:14.5px}
+#scr-planificacion .asig-proy{margin-top:5px;font-size:11.5px;line-height:1.35;color:var(--text2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+#scr-planificacion .asig-horario{margin-top:6px;font-size:11.5px}
+#scr-planificacion .asig-horario em{font-style:normal;font-weight:600;color:var(--text3)}
+#scr-planificacion .asig-fila-estado{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:5px}
+#scr-planificacion .asig-fila-estado .badge-estado{margin:0}
+#scr-planificacion .asig-meta{font-size:10.5px;color:var(--text3);font-weight:600}
+#scr-planificacion .asig-personas{margin-top:7px;max-height:48px}
 
 /* MODAL */
 #scr-planificacion .modal-overlay{position:fixed;inset:0;background:rgba(10,15,30,0.5);display:none;align-items:flex-end;justify-content:center;z-index:1000}
@@ -486,14 +685,29 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
   #scr-planificacion .backdrop.show{display:block}
 }
 
+/* Proyecto: identificación compacta */
+.pf-ident{background:var(--surface);padding:12px 14px}
+.pf-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:2px 10px}
+.pf-grid .field{margin-bottom:6px;min-width:0}
+.pf-grid .c2{grid-column:span 2}.pf-grid .c6{grid-column:span 6}.pf-grid .c12{grid-column:span 12}
+.pf-grid .field label{font-size:10px;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.pf-grid .field input,.pf-grid .field select,.pf-grid .field textarea{padding:6px 9px;font-size:13px;border-width:1px;border-radius:7px;min-height:32px}
+.pf-grid .field textarea{min-height:48px;line-height:1.45}
+.pf-pres-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center}
+.pf-pres-row .btn-tool{white-space:nowrap}
+@media(max-width:900px){.pf-grid .c2{grid-column:span 4}}
+@media(max-width:560px){.pf-grid .c2{grid-column:span 6}.pf-grid .c6{grid-column:span 12}.pf-pres-row{grid-template-columns:1fr 1fr}.pf-pres-row .btn-tool{grid-column:span 2}}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div class="screen active" id="scr-login">
+  <div class="login-glow login-glow-1"></div>
+  <div class="login-glow login-glow-2"></div>
   <div class="login-card">
     <div class="login-head">
+      <div class="login-badge">🔐</div>
       <div class="login-mark">A.A.C.</div>
       <div class="login-sub">Proyectos · OT · Informes · Administración</div>
     </div>
@@ -521,8 +735,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="topbar-sub" id="py-count">0 proyectos</div>
       </div>
     </div>
-    <button class="icon-btn" id="btn-refrescar-datos" onclick="refrescarDatos()" title="Actualizar datos">🔄</button>
-    <button class="icon-btn" onclick="abrirNuevoProyecto()" title="Agregar nuevo proyecto" style="font-weight:700">+ <span class="nuevo-proyecto-label">Nuevo proyecto</span></button>
+    <button class="icon-btn" id="btn-refrescar-datos" onclick="refrescarDatos()" title="Actualizar datos"><svg viewBox="0 0 24 24"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg></button>
     <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión"><span class="rol-emoji">👷</span> <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
@@ -540,11 +753,26 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
       <option value="cerrado">Cerrado</option>
       <option value="facturado">Facturado</option>
     </select>
-    <div class="search-bar">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" placeholder="Buscar proyecto, cliente o responsable..." oninput="renderProyectos(this.value)">
+    <div class="ad-toolbar">
+      <div class="ad-toolbar-left">
+        <button class="btn-tool" onclick="abrirNuevoProyecto()">+ Agregar</button>
+        <div class="ad-cols-wrap">
+          <button class="btn-tool" onclick="toggleSelectorColumnasProyectos(event)">☰ Columnas</button>
+          <div class="ad-cols-dropdown" id="py-cols-dropdown" style="display:none"></div>
+        </div>
+      </div>
+      <div class="search-bar ad-toolbar-search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="py-search-input" placeholder="Buscar proyecto, cliente o responsable..." oninput="renderProyectos(this.value)" onkeydown="confirmarBusqueda('py',event)">
+      </div>
     </div>
-    <div id="py-list"></div>
+    <div class="ad-table-wrap">
+      <table class="ad-table">
+        <thead><tr id="py-table-head"></tr></thead>
+        <tbody id="py-table-body"></tbody>
+      </table>
+    </div>
+    <div class="ad-paginacion" id="py-paginacion"></div>
   </div>
   <button class="fab" onclick="abrirNuevoProyecto()">+</button>
 </div>
@@ -565,11 +793,11 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     <div class="box" id="pf-facturado-banner" style="display:none;background:#fef3c7;border:1.5px solid #f5c542;color:#7a4d00;font-size:12.5px;padding:12px 14px;line-height:1.5">
       🔒 Este proyecto ya fue facturado. Solo Administración puede modificarlo.
     </div>
-    <div class="box tint">
-      <div class="section-head" style="margin-bottom:10px">Identificación</div>
-      <div class="row2">
-        <div class="field"><label>Nº Proyecto</label><input type="text" id="pf-nro" readonly style="font-family:var(--mono);font-weight:700;color:var(--accent)"></div>
-        <div class="field"><label>Estado</label>
+    <div class="box pf-ident">
+      <div class="section-head" style="margin-bottom:8px">Identificación</div>
+      <div class="pf-grid">
+        <div class="field c2"><label>Nº Proyecto</label><input type="text" id="pf-nro" readonly style="font-family:var(--mono);font-weight:700;color:var(--accent);background:var(--surface2)"></div>
+        <div class="field c2"><label>Estado</label>
           <select id="pf-estado" onchange="onCambiaEstadoProyecto()">
             <option value="solicitado">Solicitado</option>
             <option value="abierto">Abierto</option>
@@ -577,44 +805,45 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
             <option value="cerrado">Cerrado</option>
           </select>
         </div>
-      </div>
-      <div class="field"><label>Nombre del proyecto *</label><input type="text" id="pf-nombre" placeholder="Ej: Mantenimiento correctivo — Compresor Norte"></div>
-      <div class="field" style="max-width:130px"><label>Fecha de requerimiento</label><input type="text" id="pf-fecha-requerimiento" inputmode="numeric" maxlength="10" placeholder="" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
-      <div class="field"><label>Requerimiento</label><textarea id="pf-requerimiento" placeholder="Descripción del requerimiento o falla reportada..." style="min-height:60px"></textarea></div>
-      <div class="field" id="pf-presupuesto-box" style="display:none">
-        <label>Monto del presupuesto</label>
-        <div class="row2">
-          <input type="text" id="pf-presupuesto-monto" inputmode="numeric" placeholder="0" onblur="formatearInputDinero(this)">
-          <select id="pf-presupuesto-moneda">
-            <option value="ARS">Peso argentino ($)</option>
-            <option value="USD">Dólar (US$)</option>
+        <div class="field c2"><label>Tipo</label>
+          <select id="pf-tipo">
+            <option value="">Sin especificar</option>
+            <option value="mantenimiento">Mantenimiento</option>
+            <option value="instalacion">Instalación</option>
+            <option value="reparacion">Reparación</option>
+            <option value="capacitacion">Capacitación</option>
+            <option value="otro">Otro</option>
           </select>
         </div>
-        <div class="foto-drop pf-edit-action" onclick="document.getElementById('pf-presupuesto-archivo-input').click()" style="margin-top:8px">📎 Adjuntar presupuesto</div>
-        <input type="file" id="pf-presupuesto-archivo-input" style="display:none" onchange="manejarArchivoPresupuesto(event)">
-        <div id="pf-presupuesto-archivo-list"></div>
-      </div>
-      <div class="field">
-        <label>Cliente *</label>
-        <select id="pf-cliente-select" onchange="onCambiaClienteProyecto()"></select>
-      </div>
-      <div class="field" style="margin-bottom:0">
-        <label>Contacto *</label>
-        <select id="pf-contacto-select" onchange="onCambiaContactoProyecto()"></select>
-      </div>
-    </div>
+        <div class="field c2"><label>F. requerimiento</label><input type="text" id="pf-fecha-requerimiento" inputmode="numeric" maxlength="10" placeholder="" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
+        <div class="field c2"><label>¿Presupuestado?</label>
+          <select id="pf-es-presupuestado">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+          </select>
+        </div>
+        <div class="field c2"><label>F. aprobación</label><input type="text" id="pf-fecha-aprobacion" inputmode="numeric" maxlength="10" placeholder="" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
 
-    <div class="box">
-      <div class="field" style="margin-bottom:0">
-        <label>Tipo de proyecto</label>
-        <select id="pf-tipo">
-          <option value="">Sin especificar</option>
-          <option value="mantenimiento">Mantenimiento</option>
-          <option value="instalacion">Instalación</option>
-          <option value="reparacion">Reparación</option>
-          <option value="capacitacion">Capacitación</option>
-          <option value="otro">Otro</option>
-        </select>
+        <div class="field c12"><label>Nombre del proyecto *</label><input type="text" id="pf-nombre" placeholder="Ej: Mantenimiento correctivo — Compresor Norte"></div>
+
+        <div class="field c6"><label>Cliente *</label><select id="pf-cliente-select" onchange="onCambiaClienteProyecto()"></select></div>
+        <div class="field c6"><label>Contacto *</label><select id="pf-contacto-select" onchange="onCambiaContactoProyecto()"></select></div>
+
+        <div class="field c12" id="pf-presupuesto-box" style="display:none">
+          <label>Presupuesto</label>
+          <div class="pf-pres-row">
+            <input type="text" id="pf-presupuesto-monto" inputmode="numeric" placeholder="Monto" onblur="formatearInputDinero(this)">
+            <select id="pf-presupuesto-moneda">
+              <option value="ARS">Peso argentino ($)</option>
+              <option value="USD">Dólar (US$)</option>
+            </select>
+            <button type="button" class="btn-tool pf-edit-action" onclick="document.getElementById('pf-presupuesto-archivo-input').click()">📎 Adjuntar</button>
+          </div>
+          <input type="file" id="pf-presupuesto-archivo-input" style="display:none" onchange="manejarArchivoPresupuesto(event)">
+          <div id="pf-presupuesto-archivo-list"></div>
+        </div>
+
+        <div class="field c12"><label>Requerimiento</label><textarea id="pf-requerimiento" rows="2" placeholder="Descripción del requerimiento o falla reportada..."></textarea></div>
       </div>
     </div>
 
@@ -636,53 +865,61 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     <div class="box" id="pf-resumen-box" style="display:none">
       <div class="section-head" style="margin-bottom:10px">📊 Resumen general</div>
       <div class="stat-grid" id="pf-resumen-grid"></div>
+      <div id="pf-operarios-pct" style="margin-top:16px"></div>
     </div>
 
     <div class="box">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div class="section-head">📋 Órdenes de Trabajo</div>
-        <button class="btn secondary sm pf-edit-action" onclick="abrirModalItem('ot')">+ Agregar OT</button>
+      <div class="pf-sec-head">
+        <span class="section-head">Órdenes de trabajo <span class="pf-count" id="pf-ot-count"></span></span>
+        <button class="btn-tool sm pf-edit-action" onclick="abrirModalItem('ot')">+ Agregar OT</button>
       </div>
       <div id="pf-ot-list"></div>
     </div>
 
     <div class="box">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div class="section-head">📄 Informes</div>
-        <button class="btn secondary sm pf-edit-action" onclick="abrirModalItem('informe')">+ Agregar Informe</button>
+      <div class="pf-sec-head">
+        <span class="section-head">Informes <span class="pf-count" id="pf-informe-count"></span></span>
+        <button class="btn-tool sm pf-edit-action" onclick="abrirModalItem('informe')">+ Agregar Informe</button>
       </div>
       <div id="pf-informe-list"></div>
     </div>
 
-    <div class="box">
-      <div class="section-head" style="margin-bottom:10px">📷 Fotos del proyecto</div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:8px">Fotos generales, no ligadas a una OT o Informe puntual.</div>
-      <div class="foto-drop pf-edit-action" onclick="document.getElementById('pf-foto-input').click()">📷 Agregar fotos</div>
-      <input type="file" id="pf-foto-input" accept="image/*" multiple style="display:none" onchange="manejarFotosProyecto(event)">
-      <div class="foto-grid" id="pf-fotos-grid"></div>
-
-      <div class="section-head" style="margin:16px 0 8px">📎 Archivos del proyecto</div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:8px">Cualquier tipo de archivo (máx. 700KB c/u), general del proyecto.</div>
-      <div class="foto-drop pf-edit-action" onclick="document.getElementById('pf-archivo-input').click()">📎 Agregar archivo</div>
-      <input type="file" id="pf-archivo-input" multiple style="display:none" onchange="manejarArchivosProyecto(event)">
-      <div id="pf-archivos-list"></div>
+    <div class="pf-cols2 pf-cols-box">
+      <div class="box">
+        <div class="pf-sec-head"><span class="section-head">Fotos del proyecto</span></div>
+        <div style="font-size:11.5px;color:var(--text2);margin:-4px 0 8px">Generales, no ligadas a una OT o Informe puntual.</div>
+        <div class="foto-drop pf-edit-action" onclick="document.getElementById('pf-foto-input').click()">📷 Agregar fotos</div>
+        <input type="file" id="pf-foto-input" accept="image/*" multiple style="display:none" onchange="manejarFotosProyecto(event)">
+        <div class="foto-grid" id="pf-fotos-grid"></div>
+      </div>
+      <div class="box">
+        <div class="pf-sec-head"><span class="section-head">Archivos del proyecto</span></div>
+        <div style="font-size:11.5px;color:var(--text2);margin:-4px 0 8px">Cualquier tipo de archivo (máx. 700KB c/u).</div>
+        <div class="foto-drop pf-edit-action" onclick="document.getElementById('pf-archivo-input').click()">📎 Agregar archivo</div>
+        <input type="file" id="pf-archivo-input" multiple style="display:none" onchange="manejarArchivosProyecto(event)">
+        <div id="pf-archivos-list"></div>
+      </div>
     </div>
 
-    <div class="field"><label>Observaciones</label><textarea id="pf-obs" placeholder="Notas adicionales..."></textarea></div>
-
-    <div id="pf-admin-link" style="display:none;text-align:center" class="box">
-      <div class="section-head" style="margin-bottom:8px">Administración</div>
-      <div style="font-size:12.5px;color:var(--text2);margin-bottom:10px">Facturación, costos y reparto de horas de este proyecto.</div>
-      <button class="btn secondary sm" onclick="irAAdministracionDesdeProyecto()" style="width:100%">Ir a Administración de este proyecto →</button>
+    <div class="box pf-ident">
+      <div class="pf-grid"><div class="field c12" style="margin-bottom:0"><label>Observaciones</label><textarea id="pf-obs" rows="2" placeholder="Notas adicionales..."></textarea></div></div>
     </div>
 
-    <button class="btn secondary" id="pf-finalizar-btn" onclick="finalizarProyecto()" style="margin-bottom:10px;color:var(--green);border-color:var(--green)">✅ Finalizar proyecto</button>
-
-    <div style="display:flex;gap:10px;margin:14px 0 10px">
-      <button class="btn secondary" onclick="intentarCerrarProyectoForm()">Cancelar</button>
-      <button class="btn" id="pf-save-btn-bottom" onclick="guardarProyecto()">💾 Guardar</button>
+    <div id="pf-admin-link" style="display:none" class="box pf-admin-row">
+      <div>
+        <div class="section-head">Administración</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">Facturación, costos y reparto de horas de este proyecto.</div>
+      </div>
+      <button class="btn-tool" onclick="irAAdministracionDesdeProyecto()">Ir a Administración →</button>
     </div>
-    <button class="btn secondary" id="pf-del-btn" onclick="eliminarProyectoActual()" style="color:var(--red);margin-bottom:24px">🗑️ Eliminar proyecto</button>
+
+    <div class="pf-actions">
+      <button class="btn-act danger" id="pf-del-btn" onclick="eliminarProyectoActual()">Eliminar</button>
+      <button class="btn-act ok" id="pf-finalizar-btn" onclick="finalizarProyecto()">✓ Finalizar proyecto</button>
+      <span class="pf-actions-sp"></span>
+      <button class="btn-act" onclick="intentarCerrarProyectoForm()">Cancelar</button>
+      <button class="btn-act primary" id="pf-save-btn-bottom" onclick="guardarProyecto()">Guardar</button>
+    </div>
   </div>
 </div>
 
@@ -701,7 +938,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     <div class="chip-row" id="st-scope-filters"></div>
     <div class="search-bar">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="st-search" placeholder="Buscar por cliente o proyecto..." oninput="renderStats(this.value)">
+      <input type="text" id="st-search" placeholder="Buscar por cliente o proyecto..." oninput="renderStats(this.value)" onkeydown="confirmarBusqueda('st',event)">
     </div>
     <div style="display:flex;gap:10px;margin-bottom:12px">
       <div class="field" style="margin-bottom:0;max-width:130px"><label style="color:#fff">Desde</label><input type="text" id="st-fecha-desde" inputmode="numeric" maxlength="10" placeholder="" oninput="this.value=soloFecha(this.value)" onblur="completarFechaSlash(this);renderStats()" onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('st-fecha-hasta').focus();}"></div>
@@ -723,15 +960,33 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión"><span class="rol-emoji">👷</span> <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
+    <div id="ad-periodo-box"></div>
     <div id="ad-resumen-box"></div>
     <div id="ad-facturar-box"></div>
-    <div class="search-bar">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="ad-search-input" placeholder="Buscar por proyecto o cliente..." oninput="renderAdmin(this.value)">
-    </div>
     <div class="chip-row" id="ad-filtro-cobro" style="margin-bottom:10px"></div>
-    <button class="btn secondary" id="ad-excel-btn" onclick="exportarExcelFacturacion()" style="margin-bottom:12px">📊 Exportar a Excel</button>
-    <div id="ad-list"></div>
+
+    <div class="ad-toolbar">
+      <div class="ad-toolbar-left">
+        <button class="btn-tool" onclick="abrirNuevoAdmin()">+ Agregar</button>
+        <button class="btn-tool" onclick="exportarExcelFacturacion()">↓ Exportar</button>
+        <div class="ad-cols-wrap">
+          <button class="btn-tool" onclick="toggleSelectorColumnasAdmin(event)">☰ Columnas</button>
+          <div class="ad-cols-dropdown" id="ad-cols-dropdown" style="display:none"></div>
+        </div>
+      </div>
+      <div class="search-bar ad-toolbar-search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="ad-search-input" placeholder="Buscar por proyecto o cliente..." oninput="renderAdmin(this.value)" onkeydown="confirmarBusqueda('ad',event)">
+      </div>
+    </div>
+
+    <div class="ad-table-wrap">
+      <table class="ad-table">
+        <thead><tr id="ad-table-head"></tr></thead>
+        <tbody id="ad-table-body"></tbody>
+      </table>
+    </div>
+    <div class="ad-paginacion" id="ad-paginacion"></div>
   </div>
   <button class="fab" onclick="abrirNuevoAdmin()">+</button>
 </div>
@@ -753,6 +1008,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     <div id="tab-operarios" style="display:none"><div id="ad-operarios-box"></div></div>
     <div id="tab-usuarios" style="display:none"><div id="ad-usuarios-box"></div></div>
     <div id="tab-equipos" style="display:none"><div id="ad-equipos-box"></div></div>
+    <div id="tab-empresa" style="display:none"><div id="ad-empresa-box"></div></div>
   </div>
 </div>
 
@@ -769,33 +1025,32 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     <button onclick="guardarAdmin()" style="padding:6px 14px;border:none;border-radius:var(--r);background:#fff;color:var(--accent);font-size:13px;font-weight:800">Guardar</button>
   </div>
   <div class="content" id="af-content">
-    <div class="box tint">
-      <div class="section-head" style="margin-bottom:10px">Proyecto vinculado</div>
-      <div class="field" style="margin-bottom:0">
-        <label>Proyecto *</label>
-        <select id="af-proyecto" onchange="onCambiaProyectoAdmin()"></select>
+    <div class="box pf-ident">
+      <div class="pf-grid">
+        <div class="field c12" style="margin-bottom:0">
+          <label>Proyecto vinculado *</label>
+          <select id="af-proyecto" onchange="onCambiaProyectoAdmin()"></select>
+        </div>
       </div>
     </div>
 
-    <div class="box">
-      <div class="section-head" style="margin-bottom:10px">Fechas</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <div class="field" style="max-width:130px"><label>Requerimiento</label><input type="text" id="af-freq" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
-        <div class="field" style="max-width:130px"><label>Ejecución</label><input type="text" id="af-fejec" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
-        <div class="field" style="max-width:130px;margin-bottom:0"><label>Facturación</label><input type="text" id="af-ffact" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
-        <div class="field" style="max-width:130px;margin-bottom:0"><label>Pago / Cobro</label><input type="text" id="af-fpago" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
-      </div>
-      <div class="row2" style="margin-top:12px">
-        <div class="field"><label>Monto pagado ($)</label><input type="text" id="af-monto-pagado" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
-        <div class="field" style="margin-bottom:0"><label>Saldo pendiente</label><input type="text" id="af-saldo-pendiente" readonly style="background:var(--bg);font-weight:700"></div>
+    <div class="box pf-ident">
+      <div class="section-head" style="margin-bottom:8px">Fechas y cobro</div>
+      <div class="pf-grid">
+        <div class="field c3"><label>Requerimiento</label><input type="text" id="af-freq" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
+        <div class="field c3"><label>Ejecución</label><input type="text" id="af-fejec" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
+        <div class="field c3"><label>Facturación</label><input type="text" id="af-ffact" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
+        <div class="field c3"><label>Pago / Cobro</label><input type="text" id="af-fpago" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
+        <div class="field c6"><label>Monto pagado ($)</label><input type="text" id="af-monto-pagado" inputmode="numeric" placeholder="0" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}"></div>
+        <div class="field c6"><label>Saldo pendiente</label><input type="text" id="af-saldo-pendiente" readonly class="af-ro"></div>
       </div>
     </div>
 
-    <div class="box">
-      <div class="section-head" style="margin-bottom:10px">Facturación y costos</div>
-      <div class="row2">
-        <div class="field"><label>Nº Factura</label><input type="text" id="af-nrofact" placeholder="FC-0001" style="font-family:var(--mono)"></div>
-        <div class="field" style="margin-bottom:0"><label>Tipo de factura</label>
+    <div class="box pf-ident">
+      <div class="section-head" style="margin-bottom:8px">Facturación y costos</div>
+      <div class="pf-grid">
+        <div class="field c4"><label>Nº Factura</label><input type="text" id="af-nrofact" placeholder="FC-0001" style="font-family:var(--mono)"></div>
+        <div class="field c4"><label>Tipo de factura</label>
           <select id="af-tipo-factura" onchange="calcularCostoHoraAdmin()">
             <option value="">Sin especificar</option>
             <option value="A">Factura A (+ IVA 21%)</option>
@@ -803,34 +1058,28 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
             <option value="C">Factura C</option>
           </select>
         </div>
+        <div class="field c4"><label>Costo de hora ($)</label><input type="text" id="af-costohora" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
+
+        <div class="field c3"><label title="Suma de (horas × índice) de cada OT/Informe del proyecto">Horas × Índice</label><input type="text" id="af-horas-ponderadas" readonly class="af-ro"></div>
+        <div class="field c3"><label>Costo de horas (total)</label><input type="text" id="af-costohoras-total" readonly class="af-ro"></div>
+        <div class="field c3"><label>Combustible ($/litro)</label><input type="text" id="af-precio-combustible" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
+        <div class="field c3"><label title="Precio combustible ÷ 4 (km por litro)">Costo por km</label><input type="text" id="af-costo-km" readonly class="af-ro"></div>
+
+        <div class="field c3"><label>Km al cliente</label><input type="text" id="af-km-traslado" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()"></div>
+        <div class="field c3"><label>Traslado ($)</label><input type="text" id="af-traslado" readonly class="af-ro"></div>
+        <div class="field c3"><label>Materiales ($)</label><input type="text" id="af-materiales" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
+        <div class="field c3"><label>Otros gastos ($)</label><input type="text" id="af-gastos" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
+
+        <div class="field c5"><label>Total facturado ($)</label><input type="text" id="af-total" readonly class="af-ro af-big"></div>
+        <div class="field c2"><label>Descuento (%)</label><input type="text" id="af-descuento" inputmode="decimal" placeholder="0" oninput="calcularCostoHoraAdmin()"></div>
+        <div class="field c5"><label>Total con descuento</label><input type="text" id="af-total-neto" readonly class="af-ro af-big"></div>
+
+        <div class="box c12" id="af-iva-box" style="display:none;background:var(--bg);margin:0 0 6px;padding:8px 12px">
+          <div class="costo-preview" style="margin-top:0"><span>IVA (21%)</span><b id="af-iva-monto">$0</b></div>
+          <div class="costo-preview" style="margin-top:6px"><span>Total + IVA</span><b id="af-total-con-iva" style="color:var(--accent);font-size:16px">$0</b></div>
+        </div>
       </div>
-      <div class="box" id="af-iva-box" style="display:none;background:var(--bg);margin-bottom:12px">
-        <div class="costo-preview"><span>IVA (21%)</span><b id="af-iva-monto">$0</b></div>
-        <div class="costo-preview" style="margin-top:6px"><span>Total + IVA</span><b id="af-total-con-iva" style="color:var(--accent);font-size:16px">$0</b></div>
-      </div>
-      <div class="row2">
-        <div class="field"><label>Costo de hora ($)</label><input type="text" id="af-costohora" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
-        <div class="field"><label>Horas × Índice</label><input type="text" id="af-horas-ponderadas" readonly style="background:var(--bg);font-weight:700"></div>
-      </div>
-      <div style="font-size:11px;color:var(--text2);margin:-6px 0 12px">Suma de (horas × índice) de cada OT/Informe del proyecto — se recalcula al vincular el proyecto o tocar "Recalcular desde OT/Informes"</div>
-      <div class="field"><label>Costo de horas (total)</label><input type="text" id="af-costohoras-total" readonly style="background:var(--bg);font-weight:700"></div>
-      <div class="row2">
-        <div class="field"><label>Precio combustible ($/litro)</label><input type="text" id="af-precio-combustible" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
-        <div class="field"><label>Costo por km</label><input type="text" id="af-costo-km" readonly style="background:var(--bg);font-weight:700"></div>
-      </div>
-      <div style="font-size:11px;color:var(--text2);margin:-6px 0 12px">= Precio combustible ÷ 4 (km por litro)</div>
-      <div class="row2">
-        <div class="field"><label>Km al cliente</label><input type="text" id="af-km-traslado" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()"></div>
-        <div class="field"><label>Traslado ($)</label><input type="text" id="af-traslado" readonly style="background:var(--bg);font-weight:700"></div>
-      </div>
-      <div class="field"><label>Materiales ($)</label><input type="text" id="af-materiales" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
-      <div class="field"><label>Otros gastos ($)</label><input type="text" id="af-gastos" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
-      <div class="field"><label>Total Facturado ($)</label><input type="text" id="af-total" readonly style="background:var(--bg);font-weight:800;color:var(--accent);font-size:16px"></div>
-      <div class="row2">
-        <div class="field"><label>Descuento (%)</label><input type="text" id="af-descuento" inputmode="decimal" placeholder="0" oninput="calcularCostoHoraAdmin()"></div>
-        <div class="field" style="margin-bottom:0"><label>Total con descuento</label><input type="text" id="af-total-neto" readonly style="background:var(--bg);font-weight:700;color:var(--accent)"></div>
-      </div>
-      <div style="font-size:11px;color:var(--text2);margin:-6px 0 12px">Costo/hora efectivo (con descuento, usado para repartir entre operarios): <b id="af-costohora-efectivo">$0</b></div>
+      <div class="af-hint">Costo/hora efectivo (con descuento, para repartir entre operarios): <b id="af-costohora-efectivo">$0</b> · Las horas ponderadas se recalculan al vincular el proyecto o con "Recalcular desde OT/Informes".</div>
     </div>
 
     <div class="box" id="af-detalle-box" style="display:none">
@@ -860,15 +1109,18 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
       <div class="costo-preview"><span>Costo total / hora</span><b id="af-costo-preview">$0.00</b></div>
     </div>
 
-    <div class="field"><label>Observaciones</label><textarea id="af-obs" placeholder="Notas adicionales..."></textarea></div>
-
-    <div style="display:flex;gap:10px;margin:14px 0 10px">
-      <button class="btn secondary" onclick="cerrarAdminForm()">Cancelar</button>
-      <button class="btn" onclick="guardarAdmin()">💾 Guardar</button>
+    <div class="box pf-ident">
+      <div class="pf-grid"><div class="field c12" style="margin-bottom:0"><label>Observaciones</label><textarea id="af-obs" rows="2" placeholder="Notas adicionales..."></textarea></div></div>
     </div>
-    <button class="btn secondary" id="af-pdf-btn" onclick="exportarPdfAdmin()" style="margin-bottom:10px"><span class="pdf-icon">PDF</span> Exportar PDF</button>
-    <button class="btn secondary" id="af-enviar-btn" onclick="enviarPdfAdmin()" style="margin-bottom:10px">📤 Enviar por WhatsApp / email</button>
-    <button class="btn secondary" id="af-del-btn" onclick="eliminarAdminActual()" style="color:var(--red);margin-bottom:24px">🗑️ Eliminar facturación</button>
+
+    <div class="pf-actions">
+      <button class="btn-act danger" id="af-del-btn" onclick="eliminarAdminActual()">Eliminar</button>
+      <button class="btn-act btn-act-ico" id="af-pdf-btn" onclick="exportarPdfAdmin()"><span class="pdf-icon">PDF</span> Exportar PDF</button>
+      <button class="btn-act btn-act-ico" id="af-enviar-btn" onclick="enviarPdfAdmin()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg> Enviar por WhatsApp / email</button>
+      <span class="pf-actions-sp"></span>
+      <button class="btn-act" onclick="cerrarAdminForm()">Cancelar</button>
+      <button class="btn-act primary" onclick="guardarAdmin()">Guardar</button>
+    </div>
   </div>
 </div>
 
@@ -882,9 +1134,9 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
       <div class="topbar-sub">Calendario de trabajo</div>
     </div>
   </div>
-  <button class="icon-btn icon-grande" style="margin-left:auto" onclick="actualizarDatos()" title="Actualizar">🔄</button>
-  <button class="icon-btn icon-grande" id="btn-notificaciones" onclick="abrirNotificaciones()" title="Avisos">📣</button>
-  <button class="icon-btn icon-grande" id="btn-papelera-plan" onclick="abrirPapeleraPlan()" title="Papelera">🗑️</button>
+  <button class="icon-btn icon-grande" style="margin-left:auto" onclick="actualizarDatos()" title="Actualizar"><svg viewBox="0 0 24 24"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg></button>
+  <button class="icon-btn icon-grande" id="btn-notificaciones" onclick="abrirNotificaciones()" title="Avisos"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num" id="btn-notif-num" style="display:none"></span></button>
+  <button class="icon-btn icon-grande" id="btn-papelera-plan" onclick="abrirPapeleraPlan()" title="Papelera"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg></button>
   <button class="icon-btn" id="btn-usuario-actual" onclick="abrirSelectorUsuarioActual(event)"><span class="icono-obrero">👷</span> ¿Quién sos?</button>
 </div>
 
@@ -1165,6 +1417,10 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <span class="ic">🧑‍💼</span>
         <div class="txt">Responsable (automático)<b id="ma-responsable">—</b></div>
       </div>
+      <div class="field" id="ma-obra-lugar-field" style="display:none">
+        <label>Lugar de trabajo (opcional)</label>
+        <input type="text" id="ma-obra-lugar" placeholder="Ej: Taller, Fábrica, Empresa...">
+      </div>
       <div class="field" id="ma-servicio-cliente-field" style="display:none">
         <label>Cliente / lugar</label>
         <input type="text" id="ma-servicio-cliente" placeholder="Ej: Cliente García">
@@ -1319,72 +1575,78 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     </div>
     <div class="modal-sub" id="item-modal-sub">Orden de trabajo dentro del proyecto</div>
 
-    <div style="display:flex;gap:10px">
-      <div class="field" style="max-width:130px"><label>Fecha *</label><input type="text" id="item-fecha" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
+    <div class="pf-grid pf-modal">
+      <div class="field c3"><label>Fecha *</label><input type="text" id="item-fecha" placeholder="" inputmode="numeric" maxlength="10" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
+      <div class="field c5"><label>Técnico responsable</label><input type="text" id="item-tecnico" readonly style="background:var(--surface2);color:var(--text2)"></div>
+      <div class="field c2"><label>Km</label><input type="number" id="item-traslado-km-cliente" placeholder="0" min="0" step="1"></div>
+      <div class="field c2" id="item-traslado-km-admin-box"><label>Km (Admin)</label><input type="number" id="item-traslado-km-admin" placeholder="0" min="0" step="1"></div>
     </div>
-    <div class="field"><label>Técnico responsable</label><input type="text" id="item-tecnico" readonly style="background:var(--surface2);color:var(--text2)"></div>
 
     <div id="item-ot-only">
-      <div class="field">
-        <label>Equipo / Sistema intervenido</label>
-        <div style="display:flex;gap:8px">
-          <input type="text" id="item-equipo-input" placeholder="Escribí o elegí un equipo..." list="equipos-datalist" onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();agregarEquipoItem();}">
-          <datalist id="equipos-datalist"></datalist>
-          <button class="btn secondary sm" type="button" style="width:auto" onclick="agregarEquipoItem()">+</button>
+      <div class="pf-grid pf-modal">
+        <div class="field c6">
+          <label>Equipo / Sistema intervenido</label>
+          <div style="display:flex;gap:6px">
+            <input type="text" id="item-equipo-input" placeholder="Escribí o elegí un equipo..." list="equipos-datalist" onkeydown="if(event.key==='Enter'){event.preventDefault();event.stopPropagation();agregarEquipoItem();}">
+            <datalist id="equipos-datalist"></datalist>
+            <button class="btn-tool sm" type="button" onclick="agregarEquipoItem()">+</button>
+          </div>
+          <div class="chip-row" id="item-equipos-chips" style="margin:6px 0 0"></div>
         </div>
-        <div class="chip-row" id="item-equipos-chips" style="margin-top:8px"></div>
+        <div class="field c6"><label>Requerimiento</label><textarea id="item-requerimiento" rows="2" placeholder="Descripción del requerimiento o falla reportada..."></textarea></div>
       </div>
-      <div class="field"><label>Requerimiento</label><textarea id="item-requerimiento" placeholder="Descripción del requerimiento o falla reportada..." style="min-height:60px"></textarea></div>
     </div>
 
-    <div class="section-head" style="margin:16px 0 8px">Traslado</div>
-    <div class="row2">
-      <div class="field"><label>Km</label><input type="number" id="item-traslado-km-cliente" placeholder="0" min="0" step="1"></div>
-      <div class="field" id="item-traslado-km-admin-box"><label>Km (Admin)</label><input type="number" id="item-traslado-km-admin" placeholder="0" min="0" step="1"></div>
+    <div class="pf-grid pf-modal">
+      <div class="field c12"><label id="item-trabajo-label">Trabajo realizado</label><textarea id="item-trabajo" rows="3" placeholder="Detalle de las tareas..."></textarea></div>
     </div>
 
-    <div class="field"><label id="item-trabajo-label">Trabajo realizado</label><textarea id="item-trabajo" placeholder="Detalle de las tareas..."></textarea></div>
+    <div class="pf-sec">
+      <div class="pf-sec-head"><span class="section-head">Operarios y horas trabajadas</span><span class="costo-inline">Horas totales <b id="item-horas-total">0hs</b></span></div>
+      <div id="item-operarios-list"></div>
+      <datalist id="operarios-datalist"></datalist>
+      <button class="btn-tool sm" id="btn-add-operario" type="button" onclick="agregarOperarioItem()">+ Agregar operario</button>
+    </div>
 
-    <div class="section-head" style="margin:16px 0 8px">Operarios y horas trabajadas</div>
-    <div id="item-operarios-list"></div>
-    <datalist id="operarios-datalist"></datalist>
-    <button class="btn secondary sm" id="btn-add-operario" type="button" onclick="agregarOperarioItem()" style="width:auto;margin-bottom:10px">+ Agregar operario</button>
-    <div class="costo-preview" style="margin-bottom:6px"><span>Horas totales</span><b id="item-horas-total">0hs</b></div>
+    <div class="pf-cols2">
+      <div class="pf-sec">
+        <div class="pf-sec-head"><span class="section-head">Otros gastos</span></div>
+        <div id="item-gastos-list"></div>
+        <button class="btn-tool sm" type="button" onclick="agregarGastoItem()">+ Agregar gasto</button>
+      </div>
+      <div class="pf-sec">
+        <div class="pf-sec-head"><span class="section-head">Materiales utilizados</span></div>
+        <div id="item-materiales-list"></div>
+        <button class="btn-tool sm" id="btn-add-material" type="button" onclick="agregarMaterialItem()">+ Agregar material</button>
+      </div>
+    </div>
 
-    <div class="section-head" style="margin:16px 0 8px">Otros gastos</div>
-    <div id="item-gastos-list"></div>
-    <button class="btn secondary sm" type="button" onclick="agregarGastoItem()" style="width:auto;margin-bottom:4px">+ Agregar gasto</button>
-
-    <div class="section-head" style="margin:16px 0 8px">Materiales utilizados</div>
-    <div id="item-materiales-list"></div>
-    <button class="btn secondary sm" id="btn-add-material" type="button" onclick="agregarMaterialItem()" style="width:auto;margin-bottom:4px">+ Agregar material</button>
-
-    <div class="section-head" style="margin:16px 0 8px">Fotos del trabajo</div>
-    <div class="row2">
-      <div>
-        <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text2);margin-bottom:6px">Inicio de trabajo</label>
+    <div class="pf-cols2">
+      <div class="pf-sec">
+        <div class="pf-sec-head"><span class="section-head">Fotos · inicio de trabajo</span></div>
         <div class="foto-drop" onclick="document.getElementById('item-foto-inicio-input').click()">📷 Agregar fotos</div>
         <input type="file" id="item-foto-inicio-input" accept="image/*" multiple style="display:none" onchange="manejarFotos(event,'inicio')">
         <div class="foto-grid" id="item-fotos-inicio"></div>
       </div>
-      <div>
-        <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text2);margin-bottom:6px">Finalización</label>
+      <div class="pf-sec">
+        <div class="pf-sec-head"><span class="section-head">Fotos · finalización</span></div>
         <div class="foto-drop" onclick="document.getElementById('item-foto-fin-input').click()">📷 Agregar fotos</div>
         <input type="file" id="item-foto-fin-input" accept="image/*" multiple style="display:none" onchange="manejarFotos(event,'fin')">
         <div class="foto-grid" id="item-fotos-fin"></div>
       </div>
     </div>
 
-    <div class="section-head" style="margin:16px 0 8px">Archivos adjuntos</div>
-    <div class="foto-drop" onclick="document.getElementById('item-archivo-input').click()">📎 Agregar archivo (cualquier tipo, máx. 700KB)</div>
-    <input type="file" id="item-archivo-input" multiple style="display:none" onchange="manejarArchivosItem(event)">
-    <div id="item-archivos-list"></div>
+    <div class="pf-sec">
+      <div class="pf-sec-head"><span class="section-head">Archivos adjuntos</span></div>
+      <div class="foto-drop" onclick="document.getElementById('item-archivo-input').click()">📎 Agregar archivo (cualquier tipo, máx. 700KB)</div>
+      <input type="file" id="item-archivo-input" multiple style="display:none" onchange="manejarArchivosItem(event)">
+      <div id="item-archivos-list"></div>
+    </div>
 
-    <div id="item-firma-box">
-      <div class="section-head" style="margin:16px 0 8px">Conformidad del cliente</div>
+    <div id="item-firma-box" class="pf-sec">
+      <div class="pf-sec-head"><span class="section-head">Conformidad del cliente</span><button class="btn-tool sm" type="button" onclick="limpiarFirma()">Limpiar firma</button></div>
       <canvas id="item-firma-canvas" class="firma-canvas" width="500" height="160"></canvas>
-      <button class="btn secondary sm" type="button" onclick="limpiarFirma()" style="width:auto;margin:8px 0 12px">Limpiar firma</button>
-      <div class="field" style="margin-bottom:16px"><label>Nombre y cargo del firmante</label><input type="text" id="item-firmante" placeholder="Ej: Ing. García — Jefe de mantenimiento"></div>
+      <div class="field" style="margin:8px 0 14px"><label>Nombre y cargo del firmante</label><input type="text" id="item-firmante" placeholder="Ej: Ing. García — Jefe de mantenimiento"></div>
     </div>
 
     <div style="display:flex;gap:10px">
@@ -1609,9 +1871,8 @@ function buscarCuenta(u){
   return cuenta;
 }
 function emojiRol(rol){
-  if(rol==='administracion') return '💼';
-  if(rol==='operario') return '🦺';
-  return '👷'; // usuario, gerente
+  const clase = rol==='administracion' ? 'rol-admin' : rol==='operario' ? 'rol-operario' : 'rol-usuario';
+  return `<span class="rol-badge ${clase}"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>`;
 }
 function nombreUsuario(u){
   const c = buscarCuenta(u);
@@ -1682,6 +1943,10 @@ function formatearIndice(input){
   input.value = isNaN(num) ? '' : String(num);
 }
 /* Solo permite números y separadores de fecha (nada de palabras) */
+function hoyDMY(){
+  const d = new Date();
+  return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear();
+}
 function soloFecha(v){
   return (v||'').replace(/[^\d\/\-]/g,'');
 }
@@ -1787,6 +2052,51 @@ function formatDineroCorto(n){
   return '$' + Math.round(Number(n)||0).toLocaleString('es-AR');
 }
 /* Para inputs de texto editables con $: formatea al salir, y permite leer el número real después */
+/* ===== Búsqueda: Enter confirma, el campo queda limpio y el filtro queda como etiqueta ===== */
+const BUSQ_APLICADA = { py:'', st:'', ad:'' };
+const BUSQ_CFG = {
+  py: { input:'py-search-input', render:()=>renderProyectos(''), ph:'Buscar proyecto, cliente o responsable...' },
+  st: { input:'st-search', render:()=>renderStats(''), ph:'Buscar por cliente o proyecto...' },
+  ad: { input:'ad-search-input', render:()=>renderAdmin(''), ph:'Buscar por proyecto o cliente...' }
+};
+function busquedaEfectiva(k, texto){
+  const t = (texto||'').trim();
+  return (t || BUSQ_APLICADA[k] || '').toLowerCase();
+}
+function pintarTagBusqueda(k){
+  const cfg = BUSQ_CFG[k]; const el = document.getElementById(cfg.input);
+  if(!el) return;
+  const bar = el.closest('.search-bar') || el.parentElement;
+  let tag = bar.querySelector('.busq-tag');
+  if(!BUSQ_APLICADA[k]){ if(tag) tag.remove(); el.placeholder = cfg.ph; return; }
+  if(!tag){
+    tag = document.createElement('button'); tag.type = 'button'; tag.className = 'busq-tag';
+    tag.title = 'Quitar la búsqueda'; bar.appendChild(tag);
+  }
+  tag.textContent = '“' + BUSQ_APLICADA[k] + '”  ✕';
+  tag.onclick = ()=>quitarBusqueda(k);
+  el.placeholder = 'Escribí para buscar otra cosa...';
+}
+function confirmarBusqueda(k, ev){
+  if(ev.key !== 'Enter') return;
+  ev.preventDefault();
+  const el = document.getElementById(BUSQ_CFG[k].input);
+  const v = (el.value||'').trim();
+  if(!v) return;
+  BUSQ_APLICADA[k] = v;
+  el.value = '';
+  if(typeof py_paginaActual!=='undefined' && k==='py') py_paginaActual = 1;
+  if(typeof ad_paginaActual!=='undefined' && k==='ad') ad_paginaActual = 1;
+  pintarTagBusqueda(k);
+  BUSQ_CFG[k].render();
+}
+function quitarBusqueda(k){
+  BUSQ_APLICADA[k] = '';
+  pintarTagBusqueda(k);
+  BUSQ_CFG[k].render();
+}
+function reiniciarBusquedas(){ Object.keys(BUSQ_APLICADA).forEach(k=>{ BUSQ_APLICADA[k] = ''; pintarTagBusqueda(k); }); }
+
 function formatearInputDinero(input){
   input.value = formatDinero(parseDineroInput(input));
 }
@@ -1866,7 +2176,7 @@ async function hacerLogin(){
     localStorage.removeItem('planif_operario_actual');
   }
   document.querySelectorAll('.user-btn-nombre').forEach(el=> el.textContent = nombreUsuario(currentUser));
-  document.querySelectorAll('.rol-emoji').forEach(el=> el.textContent = emojiRol(currentUserRol));
+  document.querySelectorAll('.rol-emoji').forEach(el=> el.innerHTML = emojiRol(currentUserRol));
   document.getElementById('bottomnav').style.display = 'flex';
   document.getElementById('nav-proyectos').style.display = currentUserRol==='operario' ? 'none' : 'flex';
   document.getElementById('nav-stats').style.display = currentUserRol==='operario' ? 'none' : 'flex';
@@ -2012,6 +2322,7 @@ async function cargarDatos(){
       STATE.operarios = op.filter(x=>!x.eliminado);
       po.forEach(o=> PASSWORD_OVERRIDES[o.id] = o.pass);
       window._trashPr = pr.filter(x=>x.eliminado);
+      try{ const cfg = await window.db.getAll('configuracion'); const e = cfg.find(x=>x.id==='empresa'); LOGO_EMPRESA = (e && e.logo) || ''; }catch(_){}
     }
   }catch(e){
     console.warn('No se pudo leer Firebase, se trabaja en memoria', e);
@@ -2019,6 +2330,10 @@ async function cargarDatos(){
   }
   actualizarBadgeGestion();
   actualizarBadgeFacturacion();
+  // Al entrar con un usuario siempre se arranca en Proyectos: "Mis proyectos" (Administración y Gerente: "Todos")
+  py_scope = (currentUserRol==='administracion' || currentUserRol==='gerente') ? 'todos' : 'mios';
+  py_filtroEstado = 'todos';
+  reiniciarBusquedas();
   irA(currentUserRol==='operario' ? 'planificacion' : 'proyectos');
   setTimeout(chequearBorradoresPendientes, 400);
   iniciarMonitorInactividad();
@@ -2161,6 +2476,7 @@ function tarjetaProyecto(p, opts){
         <span class="badge ${estadoClase}">${estadoTexto}</span>
       </div>
       ${requerimiento ? `<div class="card-req">📝 ${requerimiento}</div>` : ''}
+      ${p.esPresupuestado==='si' ? `<div class="card-req">💰 Presupuestado${p.fechaAprobacion ? ' · Aprobado el '+p.fechaAprobacion : ' · Pendiente de aprobación'}</div>` : ''}
       <div class="card-meta">
         <span>📋 <b>${nOt}</b> OT</span>
         <span>📄 <b>${nInf}</b> Informe${nInf===1?'':'s'}</span>
@@ -2169,7 +2485,7 @@ function tarjetaProyecto(p, opts){
     </div>`;
 }
 function renderProyectos(filtroTexto){
-  filtroTexto = (filtroTexto||'').toLowerCase();
+  filtroTexto = busquedaEfectiva('py', filtroTexto);
   const solicitadosCount = STATE.proyectos.filter(p=>p.estado==='solicitado').length;
   document.getElementById('py-scope').innerHTML = `
     <button class="chip ${py_scope==='mios'?'active':''}" onclick="py_scope='mios';renderProyectos()">Mis proyectos</button>
@@ -2228,16 +2544,140 @@ function renderProyectos(filtroTexto){
   document.getElementById('py-stat-ot').textContent = lista.reduce((s,p)=>s+(p.ots||[]).length,0);
   document.getElementById('py-stat-inf').textContent = lista.reduce((s,p)=>s+(p.informes||[]).length,0);
 
-  const cont = document.getElementById('py-list');
-  if(lista.length===0){
-    cont.innerHTML = py_scope==='mios'
-      ? `<div class="empty"><div class="empty-ic">📁</div>Todavía no tenés proyectos.<br>Tocá + para crear uno.</div>`
-      : py_scope==='solicitados'
-      ? `<div class="empty"><div class="empty-ic">👷</div>No hay proyectos solicitados sin responsable.</div>`
-      : `<div class="empty"><div class="empty-ic">📁</div>Todavía no hay proyectos cargados.</div>`;
-    return;
+  if(py_ordenCol){
+    lista = lista.slice().sort((a,b)=>{
+      const va = pyValorColumna(a, py_ordenCol), vb = pyValorColumna(b, py_ordenCol);
+      let cmp;
+      if(typeof va==='number' && typeof vb==='number') cmp = va - vb;
+      else cmp = String(va).localeCompare(String(vb), 'es');
+      return py_ordenDir==='asc' ? cmp : -cmp;
+    });
   }
-  cont.innerHTML = lista.map(p=>tarjetaProyecto(p,{mostrarUsuario: py_scope!=='mios'})).join('');
+
+  const totalPaginasPy = Math.max(1, Math.ceil(lista.length / PY_POR_PAGINA));
+  if(py_paginaActual > totalPaginasPy) py_paginaActual = totalPaginasPy;
+  const desdePy = (py_paginaActual-1) * PY_POR_PAGINA;
+  const listaPaginaPy = lista.slice(desdePy, desdePy + PY_POR_PAGINA);
+
+  const colsPy = pyColumnasVisibles();
+  const headPy = document.getElementById('py-table-head');
+  headPy.innerHTML = colsPy.map(key=>{
+    const col = PY_COLUMNAS.find(c=>c.key===key);
+    const flecha = py_ordenCol===key ? (py_ordenDir==='asc' ? ' ↑' : ' ↓') : '';
+    return `<th onclick="pyOrdenarPor('${key}')">${col?col.label:key}${flecha}</th>`;
+  }).join('');
+
+  const bodyPy = document.getElementById('py-table-body');
+  if(lista.length===0){
+    const msg = py_scope==='mios' ? '📁 Todavía no tenés proyectos. Tocá "+ Agregar" para crear uno.'
+      : py_scope==='solicitados' ? '👷 No hay proyectos solicitados sin responsable.'
+      : '📁 Todavía no hay proyectos cargados.';
+    bodyPy.innerHTML = `<tr><td colspan="${colsPy.length}" class="ad-table-empty">${msg}</td></tr>`;
+  } else {
+    bodyPy.innerHTML = listaPaginaPy.map(p=>{
+      const facturado = tieneAdmin(p.id);
+      const estadoClase = facturado ? 'facturado' : p.estado;
+      return `<tr class="ad-row-${estadoClase}" onclick="abrirProyecto('${p.id}')">` +
+        colsPy.map(key=>`<td>${pyCeldaHTML(p, key)}</td>`).join('') +
+        `</tr>`;
+    }).join('');
+  }
+
+  document.getElementById('py-paginacion').innerHTML = `
+    <span>${lista.length} proyecto${lista.length===1?'':'s'}</span>
+    <div class="ad-pag-controles">
+      <button class="btn-tool sm" ${py_paginaActual<=1?'disabled':''} onclick="py_paginaActual--;renderProyectos(document.getElementById('py-search-input').value)">Anterior</button>
+      <span>Página ${py_paginaActual} de ${totalPaginasPy}</span>
+      <button class="btn-tool sm" ${py_paginaActual>=totalPaginasPy?'disabled':''} onclick="py_paginaActual++;renderProyectos(document.getElementById('py-search-input').value)">Siguiente</button>
+    </div>`;
+}
+const PY_COLUMNAS = [
+  {key:'cliente', label:'Cliente', default:true},
+  {key:'proyecto', label:'Proyecto', default:true},
+  {key:'nro', label:'N°', default:true},
+  {key:'estado', label:'Estado', default:true},
+  {key:'responsable', label:'Responsable', default:true},
+  {key:'inicio', label:'Fecha inicio', default:true},
+  {key:'ots', label:'OTs', default:false},
+  {key:'informes', label:'Informes', default:false},
+  {key:'requerimiento', label:'Requerimiento', default:false},
+];
+let py_ordenCol = null;
+let py_ordenDir = 'asc';
+let py_paginaActual = 1;
+const PY_POR_PAGINA = 15;
+function pyOrdenarPor(key){
+  if(py_ordenCol===key) py_ordenDir = py_ordenDir==='asc' ? 'desc' : 'asc';
+  else { py_ordenCol = key; py_ordenDir = 'asc'; }
+  renderProyectos(document.getElementById('py-search-input').value);
+}
+function pyColumnasVisibles(){
+  try{
+    const g = JSON.parse(localStorage.getItem('py_columnas_visibles'));
+    if(Array.isArray(g) && g.length) return PY_COLUMNAS.map(c=>c.key).filter(k=>g.includes(k));
+  }catch(e){}
+  return PY_COLUMNAS.filter(c=>c.default).map(c=>c.key);
+}
+function toggleSelectorColumnasProyectos(ev){
+  if(ev) ev.stopPropagation();
+  const dd = document.getElementById('py-cols-dropdown');
+  const abrir = dd.style.display==='none';
+  if(!abrir){ dd.style.display='none'; return; }
+  const visibles = pyColumnasVisibles();
+  dd.innerHTML = PY_COLUMNAS.map(c=>`
+    <label class="ad-cols-item">
+      <input type="checkbox" ${visibles.includes(c.key)?'checked':''} onchange="pyToggleColumna('${c.key}',this.checked)">
+      ${c.label}
+    </label>`).join('');
+  dd.style.display = 'block';
+  setTimeout(()=>document.addEventListener('click', pyCerrarSelectorColumnasUnaVez), 0);
+}
+function pyCerrarSelectorColumnasUnaVez(){
+  document.getElementById('py-cols-dropdown').style.display = 'none';
+  document.removeEventListener('click', pyCerrarSelectorColumnasUnaVez);
+}
+function pyToggleColumna(key, checked){
+  let visibles = pyColumnasVisibles();
+  if(checked && !visibles.includes(key)) visibles.push(key);
+  if(!checked) visibles = visibles.filter(k=>k!==key);
+  if(visibles.length===0){ toast('Dejá al menos una columna visible'); return; }
+  localStorage.setItem('py_columnas_visibles', JSON.stringify(visibles));
+  renderProyectos(document.getElementById('py-search-input').value);
+}
+function pyValorColumna(p, key){
+  const facturado = tieneAdmin(p.id);
+  switch(key){
+    case 'cliente': return p.cliente || '';
+    case 'proyecto': return p.nombre || '';
+    case 'nro': return p.nro || '';
+    case 'estado': return facturado ? 'facturado' : (p.estado||'');
+    case 'responsable': return p.usuario ? nombreUsuario(p.usuario) : '';
+    case 'inicio': return p.fechaCreacion || 0;
+    case 'ots': return (p.ots||[]).length;
+    case 'informes': return (p.informes||[]).length;
+    case 'requerimiento': return p.requerimiento || '';
+  }
+  return '';
+}
+function pyCeldaHTML(p, key){
+  const facturado = tieneAdmin(p.id);
+  if(key==='cliente') return `<b>${p.cliente||'(sin cliente)'}</b>`;
+  if(key==='proyecto') return p.nombre || '—';
+  if(key==='nro') return p.nro || '—';
+  if(key==='estado'){
+    const estadoClase = facturado ? 'facturado' : p.estado;
+    const estadoTexto = facturado ? 'Facturado' : p.estado;
+    return `<span class="badge ${estadoClase}">${estadoTexto}</span>`;
+  }
+  if(key==='responsable') return p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable';
+  if(key==='inicio') return p.fechaCreacion ? new Date(p.fechaCreacion).toLocaleDateString('es-AR') : '—';
+  if(key==='ots') return (p.ots||[]).length;
+  if(key==='informes') return (p.informes||[]).length;
+  if(key==='requerimiento'){
+    const r = (p.requerimiento||'').trim();
+    return r ? (r.length>60 ? r.slice(0,60)+'…' : r) : '—';
+  }
+  return '';
 }
 
 /* ==================== PROYECTO: FORM ==================== */
@@ -2283,8 +2723,10 @@ function abrirNuevoProyecto(){
   const maxNro = Math.max(999, ...nums);
   document.getElementById('pf-nro').value = 'AC1-' + (maxNro+1);
   document.getElementById('pf-estado').value = 'presupuesto';
-  document.getElementById('pf-fecha-requerimiento').value = '';
+  document.getElementById('pf-fecha-requerimiento').value = hoyDMY();
   document.getElementById('pf-requerimiento').value = '';
+  document.getElementById('pf-es-presupuestado').value = 'no';
+  document.getElementById('pf-fecha-aprobacion').value = hoyDMY();
   document.getElementById('pf-presupuesto-monto').value = '';
   document.getElementById('pf-nombre').value = '';
   document.getElementById('pf-obs').value = '';
@@ -2349,9 +2791,11 @@ function chequearBorradoresPendientes(){
         document.getElementById('pf-nombre').value = datos.nombre||'';
         document.getElementById('pf-estado').value = datos.estado||'presupuesto';
         document.getElementById('pf-fecha-requerimiento').value = datos.fechaReq||'';
-        document.getElementById('pf-requerimiento').value = datos.requerimiento||'';
+        document.getElementById('pf-requerimiento').value = datos.requerimiento||''; rtCargar('pf-requerimiento', datos.requerimientoHtml);
+        document.getElementById('pf-es-presupuestado').value = datos.esPresupuestado||'no';
+        document.getElementById('pf-fecha-aprobacion').value = datos.fechaAprobacion||'';
         document.getElementById('pf-presupuesto-monto').value = datos.presupuesto||'';
-        document.getElementById('pf-obs').value = datos.obs||'';
+        document.getElementById('pf-obs').value = datos.obs||''; rtCargar('pf-obs', datos.obsHtml);
         document.getElementById('pf-tipo').value = datos.tipo||'';
         if(datos.clienteId){ document.getElementById('pf-cliente-select').value = datos.clienteId; poblarSelectContacto(datos.clienteId, datos.contacto||''); }
         pf_ots = datos.ots||[];
@@ -2375,10 +2819,12 @@ function abrirProyecto(id){
   document.getElementById('pf-nro').value = p.nro||'';
   document.getElementById('pf-estado').value = p.estado||'abierto';
   document.getElementById('pf-fecha-requerimiento').value = p.fechaRequerimiento || '';
-  document.getElementById('pf-requerimiento').value = p.requerimiento || '';
+  document.getElementById('pf-requerimiento').value = p.requerimiento || ''; rtCargar('pf-requerimiento', p.requerimientoHtml);
+  document.getElementById('pf-es-presupuestado').value = p.esPresupuestado || 'no';
+  document.getElementById('pf-fecha-aprobacion').value = p.fechaAprobacion || '';
   document.getElementById('pf-presupuesto-monto').value = p.presupuestoMonto ? formatDinero(p.presupuestoMonto) : '';
   document.getElementById('pf-nombre').value = p.nombre||'';
-  document.getElementById('pf-obs').value = p.obs||'';
+  document.getElementById('pf-obs').value = p.obs||''; rtCargar('pf-obs', p.obsHtml);
   document.getElementById('pf-tipo').value = p.tipo||'';
   poblarSelectCliente(p.clienteId||'');
   poblarSelectContacto(p.clienteId||'', p.contacto||'');
@@ -2393,7 +2839,7 @@ function abrirProyecto(id){
   renderInformeList();
   renderFotosProyecto();
   renderArchivosProyecto();
-  document.getElementById('pf-admin-link').style.display = (currentUserRol==='administracion'||currentUserRol==='gerente') ? 'block' : 'none';
+  document.getElementById('pf-admin-link').style.display = (currentUserRol==='administracion'||currentUserRol==='gerente') ? 'flex' : 'none';
   document.getElementById('pf-tomar-box').style.display = (p.estado==='solicitado' && !p.usuario && currentUserRol!=='gerente') ? 'block' : 'none';
   const puedeTransferir = currentUserRol!=='gerente' && p.usuario && (p.usuario===currentUser || currentUserRol==='administracion');
   if(puedeTransferir) poblarSelectTransferir(p.usuario);
@@ -2453,12 +2899,129 @@ async function transferirProyecto(){
   }, 'Transferir');
 }
 let pf_snapshotInicial = '';
+/* ==================== TEXTO ENRIQUECIDO (letras y colores en descripciones) ==================== */
+const RT_IDS = ['pf-requerimiento','pf-obs','item-requerimiento','item-trabajo'];
+const RT_FUENTES = [['rt-f0','Aa','Normal'],['rt-f1','Aa','Técnica (datos, medidas)'],['rt-f2','Aa','Elegante']];
+const RT_COLORES = [['rt-c1','Rojo · importante'],['rt-c2','Azul · dato / referencia'],['rt-c3','Verde · resuelto / ok']];
+function rtEsc(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function rtTextoAHtml(t){ return rtEsc(t).replace(/\r?\n/g,'<br>'); }
+function rtLimpiar(html){
+  const doc = new DOMParser().parseFromString('<body>'+(html||'')+'</body>','text/html');
+  const permitidas = /^rt-(f[0-2]|c[1-3]|b)$/;
+  function rec(n){
+    let out = '';
+    n.childNodes.forEach(c=>{
+      if(c.nodeType===3) out += rtEsc(c.nodeValue);
+      else if(c.nodeType===1){
+        const t = c.tagName;
+        if(t==='BR') out += '<br>';
+        else if(t==='SPAN'){
+          const cls = (c.getAttribute('class')||'').split(/\s+/).filter(x=>permitidas.test(x));
+          const inner = rec(c);
+          out += cls.length ? `<span class="${cls.join(' ')}">${inner}</span>` : inner;
+        } else if(t==='DIV' || t==='P'){
+          const inner = rec(c);
+          if(out && !/<br>$/.test(out)) out += '<br>';
+          out += inner;
+        } else out += rec(c);
+      }
+    });
+    return out;
+  }
+  return rec(doc.body).replace(/(<br>)+$/,'');
+}
+function rtHtml(id){
+  const ed = document.querySelector(`.rt-editor[data-for="${id}"]`);
+  if(!ed) return '';
+  const h = rtLimpiar(ed.innerHTML);
+  return /<span /.test(h) ? h : '';   // sin formato → alcanza con el texto plano
+}
+function rtCargar(id, html){
+  const ed = document.querySelector(`.rt-editor[data-for="${id}"]`);
+  if(ed && html) ed.innerHTML = rtLimpiar(html);
+}
+function rtAplicar(ed, clase, grupo){
+  const sel = window.getSelection();
+  if(!sel.rangeCount || sel.isCollapsed || !ed.contains(sel.anchorNode) || !ed.contains(sel.focusNode)){
+    if(typeof toast==='function') toast('Primero seleccioná el texto');
+    return;
+  }
+  const range = sel.getRangeAt(0);
+  const frag = range.extractContents();
+  const span = document.createElement('span');
+  if(clase){
+    span.className = clase;
+    // dentro de lo seleccionado se pisa el formato anterior del mismo grupo
+    if(grupo){ frag.querySelectorAll('span').forEach(s=>{ grupo.forEach(g=>s.classList.remove(g)); }); }
+  }
+  span.appendChild(frag);
+  range.insertNode(span);
+  const r2 = document.createRange(); r2.selectNodeContents(span);
+  sel.removeAllRanges(); sel.addRange(r2);
+  ed.dispatchEvent(new Event('input',{bubbles:true}));
+}
+function rtLimpiarSeleccion(ed){
+  const sel = window.getSelection();
+  if(!sel.rangeCount || sel.isCollapsed || !ed.contains(sel.anchorNode)){ if(typeof toast==='function') toast('Primero seleccioná el texto'); return; }
+  const range = sel.getRangeAt(0);
+  const frag = range.extractContents();
+  const txt = document.createDocumentFragment();
+  const lineas = (frag.textContent||'').split('\n');
+  lineas.forEach((l,i)=>{ if(i) txt.appendChild(document.createElement('br')); txt.appendChild(document.createTextNode(l)); });
+  range.insertNode(txt);
+  ed.dispatchEvent(new Event('input',{bubbles:true}));
+}
+function rtInit(id){
+  const ta = document.getElementById(id);
+  if(!ta || ta._rt) return;
+  ta._rt = true;
+  const nativo = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value');
+  const wrap = document.createElement('div');
+  wrap.className = 'rt-wrap';
+  wrap.innerHTML = `<div class="rt-bar">
+      ${RT_FUENTES.map(f=>`<button type="button" class="rt-btn ${f[0]}" data-cls="${f[0]}" data-g="f" title="${f[2]}">${f[1]}</button>`).join('')}
+      <button type="button" class="rt-btn rt-b" data-cls="rt-b" title="Negrita">B</button>
+      <span class="rt-sep"></span>
+      ${RT_COLORES.map(c=>`<button type="button" class="rt-btn rt-dot ${c[0]}" data-cls="${c[0]}" data-g="c" title="${c[1]}"><i></i></button>`).join('')}
+      <span class="rt-sep"></span>
+      <button type="button" class="rt-btn rt-clear" data-cls="" title="Quitar formato">Quitar</button>
+    </div>
+    <div class="rt-editor" contenteditable="true" data-for="${id}" data-ph="${rtEsc(ta.placeholder||'')}" style="min-height:${(Number(ta.rows)||2)*22+8}px"></div>`;
+  ta.style.display = 'none';
+  ta.parentNode.insertBefore(wrap, ta.nextSibling);
+  const ed = wrap.querySelector('.rt-editor');
+  ed.innerHTML = rtTextoAHtml(nativo.get.call(ta));
+  Object.defineProperty(ta,'value',{
+    configurable:true,
+    get(){ return nativo.get.call(ta); },
+    set(v){ nativo.set.call(ta,v); ed.innerHTML = rtTextoAHtml(v); }
+  });
+  ed.addEventListener('input', ()=>{ nativo.set.call(ta, ed.innerText.replace(/ /g,' ').replace(/\n$/,'')); });
+  ed.addEventListener('paste', e=>{                // pegar siempre como texto plano
+    e.preventDefault();
+    const t = (e.clipboardData||window.clipboardData).getData('text/plain');
+    document.execCommand('insertText', false, t);
+  });
+  wrap.querySelector('.rt-bar').addEventListener('mousedown', e=>{ if(e.target.closest('.rt-btn')) e.preventDefault(); });
+  wrap.querySelectorAll('.rt-btn').forEach(b=>b.addEventListener('click', ()=>{
+    const cls = b.dataset.cls;
+    if(b.classList.contains('rt-clear')) return rtLimpiarSeleccion(ed);
+    const grupo = b.dataset.g==='f' ? ['rt-f0','rt-f1','rt-f2'] : b.dataset.g==='c' ? ['rt-c1','rt-c2','rt-c3'] : ['rt-b'];
+    rtAplicar(ed, cls, grupo);
+  }));
+}
+function rtInitTodos(){ RT_IDS.forEach(rtInit); }
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', rtInitTodos); else rtInitTodos();
+
 function snapshotProyectoForm(){
   return JSON.stringify({
     nombre: document.getElementById('pf-nombre')?.value,
     estado: document.getElementById('pf-estado')?.value,
     fechaReq: document.getElementById('pf-fecha-requerimiento')?.value,
     requerimiento: document.getElementById('pf-requerimiento')?.value,
+    requerimientoHtml: rtHtml('pf-requerimiento'),
+    esPresupuestado: document.getElementById('pf-es-presupuestado')?.value,
+    fechaAprobacion: document.getElementById('pf-fecha-aprobacion')?.value,
     presupuesto: document.getElementById('pf-presupuesto-monto')?.value,
     presupuestoMoneda: document.getElementById('pf-presupuesto-moneda')?.value,
     presupuestoArchivo: pf_presupuestoArchivo,
@@ -2466,6 +3029,7 @@ function snapshotProyectoForm(){
     contacto: document.getElementById('pf-contacto-select')?.value,
     tipo: document.getElementById('pf-tipo')?.value,
     obs: document.getElementById('pf-obs')?.value,
+    obsHtml: rtHtml('pf-obs'),
     ots: pf_ots, informes: pf_informes, fotos: pf_fotos, archivos: pf_archivos
   });
 }
@@ -2558,42 +3122,75 @@ function renderResumenProyecto(){
     <div class="stat-card"><div class="num">${formatDinero(gastos)}</div><div class="lbl">Gastos cargados</div></div>
     <div class="stat-card"><div class="num">${km} km</div><div class="lbl">Km al cliente</div></div>
   `;
+  // % de horas por operario (se actualiza en vivo al cargar/quitar OT o informes)
+  const acum = {};
+  items.forEach(it=>(it.operarios||[]).forEach(o=>{
+    const k = normalizarNombreOperario(o.nombre) || '(sin nombre)';
+    acum[k] = (acum[k]||0) + (Number(o.horas)||0);
+  }));
+  const filas = Object.entries(acum).sort((a,b)=>b[1]-a[1]);
+  const pctBox = document.getElementById('pf-operarios-pct');
+  if(pctBox){
+    pctBox.innerHTML = (horas>0 && filas.length) ? `
+      <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Participación por operario</div>
+      ${filas.map(([nombre,h])=>{
+        const pct = Math.round((h/horas)*100);
+        return `<div class="stat-bar-row"><div class="stat-bar-top"><span>${nombre}</span><b>${pct}% · ${formatHoras(h)}</b></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:${pct}%"></div></div></div>`;
+      }).join('')}` : '';
+  }
+}
+const PF_ICO_MAIL = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>';
+function pfNombresOperarios(lista){
+  const n = [...new Set((lista||[]).map(o=>(o.nombre||'').trim()).filter(Boolean))];
+  if(!n.length) return '<span style="color:var(--text3)">—</span>';
+  return n[0] + (n.length>1 ? ` <span class="pf-mas">+${n.length-1}</span>` : '');
+}
+function pfAcciones(tipo, id, lista){
+  return `<div class="pf-row-actions">
+    <button class="mc-del pdf-badge" onclick="event.stopPropagation();exportarPdfItem('${tipo}','${id}')" title="Descargar PDF">PDF</button>
+    <button class="mc-del pf-mail" onclick="event.stopPropagation();enviarPdfItem('${tipo}','${id}')" title="Enviar por email">${PF_ICO_MAIL}</button>
+    <button class="mc-del pf-edit-action" onclick="event.stopPropagation();${lista}.splice(${lista}.findIndex(x=>x.id==='${id}'),1);${tipo==='ot'?'renderOTList':'renderInformeList'}()" title="Eliminar">✕</button>
+  </div>`;
 }
 function renderOTList(){
   const cont = document.getElementById('pf-ot-list');
   const lista = pf_ots.slice().sort((a,b)=> parseFechaDMY(a.fecha) - parseFechaDMY(b.fecha));
-  cont.innerHTML = lista.map((o)=>`
-    <div class="mini-card" onclick="abrirModalItem('ot','${o.id}')">
-      <div>
-        <div class="mc-title">${(o.equipos&&o.equipos.length) ? o.equipos.map(e=>e.nombre).join(', ') : 'OT sin equipo asignado'}</div>
-        <div class="mc-sub">${o.fecha||'sin fecha'} ${o.tecnico ? '&nbsp; '+o.tecnico : ''}</div>
-      </div>
-      <div style="display:flex;gap:6px">
-        <button class="mc-del pdf-badge" onclick="event.stopPropagation();exportarPdfItem('ot','${o.id}')" title="Descargar PDF">PDF</button>
-        <button class="mc-del" style="background:var(--accentlt);color:var(--accent)" onclick="event.stopPropagation();enviarPdfItem('ot','${o.id}')" title="Enviar por email">📤</button>
-        <button class="mc-del" onclick="event.stopPropagation();pf_ots.splice(pf_ots.findIndex(x=>x.id==='${o.id}'),1);renderOTList()">✕</button>
-      </div>
-    </div>`).join('') || `<div style="font-size:12.5px;color:var(--text3)">Todavía no hay OT cargadas en este proyecto.</div>`;
+  const cnt = document.getElementById('pf-ot-count'); if(cnt) cnt.textContent = lista.length ? '· '+lista.length : '';
+  cont.innerHTML = lista.length ? `<div class="ad-table-wrap"><table class="ad-table pf-table"><thead><tr>
+      <th>Fecha</th><th>Equipo / Sistema</th><th class="hide-m">Técnico</th><th class="hide-m">Operarios</th><th class="num">Horas</th><th></th>
+    </tr></thead><tbody>${lista.map(o=>{
+      const horas = (o.operarios||[]).reduce((s,x)=>s+(Number(x.horas)||0),0);
+      const equipos = (o.equipos&&o.equipos.length) ? o.equipos.map(e=>e.nombre).join(', ') : '<span style="color:var(--text3)">Sin equipo</span>';
+      return `<tr onclick="abrirModalItem('ot','${o.id}')">
+        <td class="mono">${o.fecha||'sin fecha'}</td>
+        <td class="pf-wrap">${equipos}</td>
+        <td class="hide-m">${o.tecnico||'<span style="color:var(--text3)">—</span>'}</td>
+        <td class="hide-m">${pfNombresOperarios(o.operarios)}</td>
+        <td class="num mono">${horas?formatHoras(horas):'—'}</td>
+        <td>${pfAcciones('ot', o.id, 'pf_ots')}</td></tr>`;
+    }).join('')}</tbody></table></div>`
+    : `<div style="font-size:12.5px;color:var(--text3)">Todavía no hay OT cargadas en este proyecto.</div>`;
   renderResumenProyecto();
 }
 function renderInformeList(){
   const cont = document.getElementById('pf-informe-list');
   const lista = pf_informes.slice().sort((a,b)=> parseFechaDMY(a.fecha) - parseFechaDMY(b.fecha));
-  cont.innerHTML = lista.map((inf)=>{
-    const horas = (inf.operarios||[]).reduce((s,o)=>s+(Number(o.horas)||0),0);
-    return `
-    <div class="mini-card" onclick="abrirModalItem('informe','${inf.id}')">
-      <div>
-        <div class="mc-title">${inf.fecha || 'Informe sin fecha'}</div>
-        <div class="mc-sub">${(inf.operarios||[]).length} operario${(inf.operarios||[]).length===1?'':'s'} &nbsp; ${formatHoras(horas)}</div>
-      </div>
-      <div style="display:flex;gap:6px">
-        <button class="mc-del pdf-badge" onclick="event.stopPropagation();exportarPdfItem('informe','${inf.id}')" title="Descargar PDF">PDF</button>
-        <button class="mc-del" style="background:var(--accentlt);color:var(--accent)" onclick="event.stopPropagation();enviarPdfItem('informe','${inf.id}')" title="Enviar por email">📤</button>
-        <button class="mc-del" onclick="event.stopPropagation();pf_informes.splice(pf_informes.findIndex(x=>x.id==='${inf.id}'),1);renderInformeList()">✕</button>
-      </div>
-    </div>`;
-  }).join('') || `<div style="font-size:12.5px;color:var(--text3)">Todavía no hay informes cargados en este proyecto.</div>`;
+  const cnt = document.getElementById('pf-informe-count'); if(cnt) cnt.textContent = lista.length ? '· '+lista.length : '';
+  cont.innerHTML = lista.length ? `<div class="ad-table-wrap"><table class="ad-table pf-table"><thead><tr>
+      <th>Fecha</th><th>Operarios</th><th class="num">Horas</th><th class="num hide-m">Gastos</th><th class="num hide-m">Materiales</th><th></th>
+    </tr></thead><tbody>${lista.map(inf=>{
+      const horas = (inf.operarios||[]).reduce((s,o)=>s+(Number(o.horas)||0),0);
+      const gastos = (inf.gastos||[]).reduce((s,g)=>s+(Number(g.costo)||0),0);
+      const mats = (inf.materiales||[]).length;
+      return `<tr onclick="abrirModalItem('informe','${inf.id}')">
+        <td class="mono">${inf.fecha||'sin fecha'}</td>
+        <td>${pfNombresOperarios(inf.operarios)}</td>
+        <td class="num mono">${horas?formatHoras(horas):'—'}</td>
+        <td class="num mono hide-m">${gastos?formatDineroCorto(gastos):'—'}</td>
+        <td class="num mono hide-m">${mats||'—'}</td>
+        <td>${pfAcciones('informe', inf.id, 'pf_informes')}</td></tr>`;
+    }).join('')}</tbody></table></div>`
+    : `<div style="font-size:12.5px;color:var(--text3)">Todavía no hay informes cargados en este proyecto.</div>`;
   renderResumenProyecto();
 }
 
@@ -2727,11 +3324,11 @@ function abrirModalItem(tipo, id){
   document.getElementById('item-trabajo-label').textContent = 'Trabajo realizado';
   document.getElementById('item-traslado-km-admin-box').style.display = 'block';
 
-  document.getElementById('item-fecha').value = it?.fecha || '';
+  document.getElementById('item-fecha').value = it?.fecha || hoyDMY();
   document.getElementById('item-tecnico').value = currentUserRol==='administracion' ? (it?.tecnico || '') : nombreUsuario(currentUser);
   document.getElementById('item-equipo-input').value = '';
-  document.getElementById('item-requerimiento').value = it?.requerimiento || '';
-  document.getElementById('item-trabajo').value = it?.trabajo || '';
+  document.getElementById('item-requerimiento').value = it?.requerimiento || ''; rtCargar('item-requerimiento', it?.requerimientoHtml);
+  document.getElementById('item-trabajo').value = it?.trabajo || ''; rtCargar('item-trabajo', it?.trabajoHtml);
   document.getElementById('item-traslado-km-cliente').value = it?.traslado?.kmCliente || '';
   document.getElementById('item-traslado-km-admin').value = it?.traslado?.kmAdmin || '';
   document.getElementById('item-firmante').value = it?.firmante || '';
@@ -2765,7 +3362,9 @@ function snapshotModalItem(){
   return JSON.stringify({
     fecha: document.getElementById('item-fecha')?.value,
     trabajo: document.getElementById('item-trabajo')?.value,
+    trabajoHtml: rtHtml('item-trabajo'),
     requerimiento: document.getElementById('item-requerimiento')?.value,
+    requerimientoHtml: rtHtml('item-requerimiento'),
     firmante: document.getElementById('item-firmante')?.value,
     kmCliente: document.getElementById('item-traslado-km-cliente')?.value,
     kmAdmin: document.getElementById('item-traslado-km-admin')?.value,
@@ -3081,6 +3680,7 @@ async function guardarModalItem(){
     fecha: document.getElementById('item-fecha').value,
     tecnico: document.getElementById('item-tecnico').value,
     trabajo: document.getElementById('item-trabajo').value,
+    trabajoHtml: rtHtml('item-trabajo'),
     operarios: item_operarios,
     gastos: item_gastos,
     materiales: item_materiales,
@@ -3094,6 +3694,7 @@ async function guardarModalItem(){
   if(item_tipo==='ot'){
     data.equipos = item_equipos;
     data.requerimiento = document.getElementById('item-requerimiento').value;
+    data.requerimientoHtml = rtHtml('item-requerimiento');
   }
 
   const lista = item_tipo==='ot' ? pf_ots : pf_informes;
@@ -3208,6 +3809,9 @@ async function guardarProyecto(){
   if(nuevoEstado==='solicitado') obj.usuario = null;
   obj.fechaRequerimiento = document.getElementById('pf-fecha-requerimiento').value;
   obj.requerimiento = document.getElementById('pf-requerimiento').value;
+  obj.requerimientoHtml = rtHtml('pf-requerimiento');
+  obj.esPresupuestado = document.getElementById('pf-es-presupuestado').value;
+  obj.fechaAprobacion = document.getElementById('pf-fecha-aprobacion').value;
   obj.presupuestoMonto = parseDineroInput(document.getElementById('pf-presupuesto-monto'));
   obj.presupuestoMoneda = document.getElementById('pf-presupuesto-moneda').value;
   obj.presupuestoArchivo = pf_presupuestoArchivo;
@@ -3215,6 +3819,7 @@ async function guardarProyecto(){
   obj.clienteId = clienteId;
   obj.cliente = clienteObj?.nombre || obj.cliente || '';
   obj.obs = document.getElementById('pf-obs').value;
+  obj.obsHtml = rtHtml('pf-obs');
   obj.contacto = contacto;
   obj.tipo = document.getElementById('pf-tipo').value;
   obj.ots = pf_ots;
@@ -3284,14 +3889,29 @@ async function compartirPDF(doc, nombreArchivo){
 function limpiarNombreArchivo(s){
   return (s||'').replace(/[\/\\:*?"<>|]/g,'').replace(/\s+/g,' ').trim();
 }
+let LOGO_EMPRESA = '';   // dataURL del logo (se carga desde Gestión → Empresa)
 function pdfEncabezado(doc, subtitulo, folio, fecha){
   doc.setFillColor(26,86,219);
   doc.rect(0,0,210,26,'F');
+  let xTexto = 14;
+  if(LOGO_EMPRESA){
+    try{
+      const props = doc.getImageProperties(LOGO_EMPRESA);
+      const ratio = props.width / props.height;
+      const ancho = Math.min(46, Math.max(14, 18 * ratio));
+      const altoReal = ancho / ratio;
+      doc.setFillColor(255,255,255);
+      doc.roundedRect(10, 3, ancho+6, 20, 2, 2, 'F');
+      doc.addImage(LOGO_EMPRESA, props.fileType || 'PNG', 13, 3 + (20-altoReal)/2, ancho, altoReal);
+      xTexto = 10 + ancho + 6 + 6;
+    }catch(e){ console.warn('No se pudo dibujar el logo en el PDF', e); xTexto = 14; }
+  }
   doc.setTextColor(255,255,255);
+  const conLogo = xTexto !== 14;
   doc.setFont(undefined,'bold'); doc.setFontSize(19);
-  doc.text('A.A.C.', 14, 16);
-  doc.setFont(undefined,'normal'); doc.setFontSize(9.5);
-  doc.text(subtitulo, 14, 22);
+  if(!conLogo) doc.text('A.A.C.', xTexto, 16);
+  doc.setFont(undefined,'normal'); doc.setFontSize(conLogo ? 11 : 9.5);
+  doc.text(subtitulo, xTexto, conLogo ? 15.5 : 22);
   doc.setFont(undefined,'bold'); doc.setFontSize(12.5);
   doc.text(folio, 196, 15, {align:'right'});
   doc.setFont(undefined,'normal'); doc.setFontSize(8.5);
@@ -3540,7 +4160,8 @@ function statsDeProyectoPeriodo(p, periodoValor, periodoTipo){
   return {
     horas: horasTotal,
     operarios: Object.entries(acumulado).map(([nombre,horas])=>({nombre, horas, pct: horasTotal>0 ? +((horas/horasTotal)*100).toFixed(1) : 0})),
-    fuente: 'periodo'
+    fuente: 'periodo',
+    tieneActividad: items.length>0
   };
 }
 function statsDeProyecto(p){
@@ -3575,7 +4196,7 @@ function toggleStatProyecto(id){
   renderStats();
 }
 function renderStats(filtroTexto){
-  filtroTexto = (filtroTexto!==undefined ? filtroTexto : (document.getElementById('st-search')?.value||'')).toLowerCase();
+  filtroTexto = busquedaEfectiva('st', (filtroTexto!==undefined ? filtroTexto : (document.getElementById('st-search')?.value||'')));
 
   let lista = STATE.proyectos.slice();
   if(st_usuarioFiltro) lista = lista.filter(p=>p.usuario===st_usuarioFiltro);
@@ -3620,7 +4241,8 @@ function renderStats(filtroTexto){
   const porTipo = {ot:0, informe:0};
   lista.forEach(p=>{ const est=estadoEfectivoProyecto(p); if(porEstado[est]!==undefined) porEstado[est]++; porTipo.ot += (p.ots||[]).length; porTipo.informe += (p.informes||[]).length; });
 
-  const porProyecto = lista.map(p=>({p, stats: st_periodoValor ? statsDeProyectoPeriodo(p, st_periodoValor, st_periodoTipo) : statsDeProyecto(p)}));
+  let porProyecto = lista.map(p=>({p, stats: st_periodoValor ? statsDeProyectoPeriodo(p, st_periodoValor, st_periodoTipo) : statsDeProyecto(p)}));
+  if(st_periodoValor) porProyecto = porProyecto.filter(({stats})=>stats.tieneActividad);
   const horasTotales = porProyecto.reduce((s,x)=>s+x.stats.horas, 0);
 
   const maxEstado = Math.max(1, ...Object.values(porEstado));
@@ -3699,34 +4321,70 @@ function renderStats(filtroTexto){
     </div>`;
   }
 
+  const mostrarFacturado = currentUserRol==='administracion';
+  if(st_ordenCol){
+    porProyecto.sort((x,y)=>{
+      const va = stValorColumna(x, st_ordenCol), vb = stValorColumna(y, st_ordenCol);
+      let cmp;
+      if(typeof va==='number' && typeof vb==='number') cmp = va - vb;
+      else cmp = String(va).localeCompare(String(vb), 'es');
+      return st_ordenDir==='asc' ? cmp : -cmp;
+    });
+  }
+  const colsSt = ['proyecto','cliente','nro','ots','informes','horas'].concat(mostrarFacturado ? ['total'] : []);
+  const headSt = colsSt.map(key=>{
+    const col = ST_COLUMNAS.find(c=>c.key===key);
+    const flecha = st_ordenCol===key ? (st_ordenDir==='asc' ? ' ↑' : ' ↓') : '';
+    return `<th onclick="stOrdenarPor('${key}')">${col?col.label:key}${flecha}</th>`;
+  }).join('');
   html += `<div class="section-head" style="margin:16px 0 10px;color:#fff">Detalle por proyecto</div>`;
   if(porProyecto.length===0){
     html += `<div class="empty" style="padding:30px 10px">No hay proyectos para mostrar.</div>`;
   } else {
-    html += porProyecto.map(({p, stats})=>{
-      const abierto = st_expandido.has(p.id);
-      const filasOperarios = stats.operarios.map(o=>`
-        <div class="stat-bar-row">
-          <div class="stat-bar-top"><span>${o.nombre}</span><b>${o.pct}% · ${formatHoras(o.horas)}${(currentUserRol==='administracion' && stats.fuente==='administracion') ? ' · '+formatDinero(o.costoHora)+'/h' : ''}</b></div>
-          <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${o.pct}%"></div></div>
-        </div>`).join('') || `<div style="font-size:12px;color:var(--text3)">Sin operarios / horas cargadas todavía.</div>`;
-      return `
-      <div class="card" style="cursor:pointer" onclick="toggleStatProyecto('${p.id}')">
-        <div class="card-top">
-          <div>
-            <div class="card-title">${p.nombre}</div>
-            <div class="card-sub">${p.cliente} &nbsp; <span style="font-family:var(--mono)">${p.nro}</span></div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">
-            <span class="badge" style="background:var(--accentlt);color:var(--accent)">${(p.ots||[]).length} OT · ${(p.informes||[]).length} Inf</span>
-            <span class="badge" style="background:var(--surface2);color:var(--text2)">${formatHoras(stats.horas)}</span>
-          </div>
-        </div>
-        ${abierto ? `<div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px">${filasOperarios}${(currentUserRol==='administracion' && stats.fuente==='administracion') ? `<div class="costo-preview" style="margin-top:4px"><span>Total facturado</span><b>${formatDinero(stats.total)}</b></div>` : ''}</div>` : ''}
-      </div>`;
-    }).join('');
+    const filasSt = porProyecto.map(({p, stats})=>
+      `<tr onclick="abrirProyecto('${p.id}')">` + colsSt.map(key=>`<td>${stCeldaHTML(p, stats, key)}</td>`).join('') + `</tr>`
+    ).join('');
+    html += `<div class="ad-table-wrap"><table class="ad-table"><thead><tr>${headSt}</tr></thead><tbody>${filasSt}</tbody></table></div>`;
   }
   document.getElementById('st-content').innerHTML = html;
+}
+const ST_COLUMNAS = [
+  {key:'proyecto', label:'Proyecto'},
+  {key:'cliente', label:'Cliente'},
+  {key:'nro', label:'N°'},
+  {key:'ots', label:'OTs'},
+  {key:'informes', label:'Informes'},
+  {key:'horas', label:'Horas'},
+  {key:'total', label:'Total facturado'},
+];
+let st_ordenCol = null;
+let st_ordenDir = 'asc';
+function stOrdenarPor(key){
+  if(st_ordenCol===key) st_ordenDir = st_ordenDir==='asc' ? 'desc' : 'asc';
+  else { st_ordenCol = key; st_ordenDir = 'asc'; }
+  renderStats();
+}
+function stValorColumna({p, stats}, key){
+  switch(key){
+    case 'proyecto': return p.nombre || '';
+    case 'cliente': return p.cliente || '';
+    case 'nro': return p.nro || '';
+    case 'ots': return (p.ots||[]).length;
+    case 'informes': return (p.informes||[]).length;
+    case 'horas': return stats.horas || 0;
+    case 'total': return stats.total || 0;
+  }
+  return '';
+}
+function stCeldaHTML(p, stats, key){
+  if(key==='proyecto') return `<b>${p.nombre||'—'}</b>`;
+  if(key==='cliente') return p.cliente || '—';
+  if(key==='nro') return p.nro || '—';
+  if(key==='ots') return (p.ots||[]).length;
+  if(key==='informes') return (p.informes||[]).length;
+  if(key==='horas') return formatHoras(stats.horas);
+  if(key==='total') return (currentUserRol==='administracion' && stats.fuente==='administracion') ? formatDinero(stats.total) : '—';
+  return '';
 }
 
 /* ==================== ADMINISTRACIÓN ==================== */
@@ -3744,15 +4402,15 @@ function renderPendientes(){
   if(!clientesPend.length && !equiposPend.length && !operariosPend.length){ cont.innerHTML=''; return; }
   cont.innerHTML = `
     <div class="box alerta">
-      <div class="section-head rojo" style="margin-bottom:10px">⚠️ Pendientes de aprobar</div>
+      <div class="section-head rojo" style="margin-bottom:8px">Pendientes de aprobar</div>
       ${clientesPend.map(c=>`
-        <div class="link-row"><span>👤 ${c.nombre} — ${(c.contactos&&c.contactos[0]?.nombre)||''}</span><button class="btn secondary sm" onclick="aprobarCliente('${c.id}')">Revisar</button></div>
+        <div class="link-row"><span><b>Cliente</b> · ${c.nombre} — ${(c.contactos&&c.contactos[0]?.nombre)||''}</span><button class="btn secondary sm" onclick="aprobarCliente('${c.id}')">Revisar</button></div>
       `).join('')}
       ${equiposPend.map(e=>`
-        <div class="link-row"><span>🔧 ${e.nombre}</span><button class="btn secondary sm" onclick="aprobarEquipo('${e.id}')">Revisar</button></div>
+        <div class="link-row"><span><b>Equipo</b> · ${e.nombre}</span><button class="btn secondary sm" onclick="aprobarEquipo('${e.id}')">Revisar</button></div>
       `).join('')}
       ${operariosPend.map(o=>`
-        <div class="link-row"><span>🦺 ${o.nombre}</span><button class="btn secondary sm" onclick="aprobarOperario('${o.id}')">Revisar</button></div>
+        <div class="link-row"><span><b>Operario</b> · ${o.nombre}</span><button class="btn secondary sm" onclick="aprobarOperario('${o.id}')">Revisar</button></div>
       `).join('')}
     </div>`;
 }
@@ -3883,34 +4541,48 @@ async function ejecutarEliminarUsuario(id){
   renderUsuariosBox();
 }
 
+/* ===== Gestión: tablas con el mismo estilo que Facturación / Proyectos ===== */
+function gtBuscador(placeholder, handler){
+  return `<div class="search-bar ad-toolbar-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="${placeholder}" oninput="${handler}(this.value)"></div>`;
+}
+function gtPill(tipo, texto){ return `<span class="gt-pill ${tipo}">${texto}</span>`; }
+function gtEstado(e){ return e==='pendiente' ? gtPill('amb','Pendiente') : gtPill('ver','Aceptado'); }
+function gtAcciones(editFn, delFn){
+  return `<div class="pf-row-actions gt-acc">
+    ${editFn?`<button class="btn-tool sm" onclick="event.stopPropagation();${editFn}">Editar</button>`:''}
+    ${delFn?`<button class="btn-tool sm gt-del" onclick="event.stopPropagation();${delFn}">Eliminar</button>`:''}
+  </div>`;
+}
+function gtTabla(cabeceras, filas, vacio){
+  if(!filas.length) return `<div class="ad-table-wrap"><div class="ad-table-empty" style="padding:30px 14px">${vacio||'Sin resultados.'}</div></div>`;
+  return `<div class="ad-table-wrap"><table class="ad-table pf-table gt-table"><thead><tr>${cabeceras.map(h=>`<th class="${h[1]||''}">${h[0]}</th>`).join('')}</tr></thead><tbody>${filas.join('')}</tbody></table></div>`;
+}
+
 function renderClientesBox(){
   const cont = document.getElementById('ad-clientes-box');
   cont.innerHTML = `
-    <div class="box">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div class="section-head">Clientes</div>
-        <button class="btn secondary sm" onclick="abrirModalCliente()">+ Nuevo cliente</button>
-      </div>
-      <div class="search-bar" style="margin-bottom:10px">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" placeholder="Buscar cliente..." oninput="filtrarListaClientes(this.value)">
-      </div>
-      <div id="clientes-lista-inner"></div>
-    </div>`;
+    <div class="ad-toolbar">
+      <div class="ad-toolbar-left">${gtBuscador('Buscar cliente o contacto...','filtrarListaClientes')}</div>
+      <button class="btn-tool" onclick="abrirModalCliente()">+ Nuevo cliente</button>
+    </div>
+    <div id="clientes-lista-inner"></div>`;
   filtrarListaClientes('');
 }
 function filtrarListaClientes(filtroTexto){
   filtroTexto = (filtroTexto||'').toLowerCase();
   let lista = STATE.clientes.slice().sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||''));
   if(filtroTexto) lista = lista.filter(c=>(c.nombre||'').toLowerCase().includes(filtroTexto) || (c.contactos||[]).some(ct=>(ct.nombre||'').toLowerCase().includes(filtroTexto)));
-  document.getElementById('clientes-lista-inner').innerHTML = lista.map(c=>`
-        <div class="link-row">
-          <span>${c.nombre}${c.estado==='pendiente'?'<span class="pend-tag">Pendiente</span>':''}</span>
-          <div style="display:flex;gap:6px">
-            <button class="btn secondary sm" onclick="abrirModalCliente('${c.id}')">Editar</button>
-            <button class="btn secondary sm" style="color:var(--red)" onclick="eliminarCliente('${c.id}')">Eliminar</button>
-          </div>
-        </div>`).join('') || `<div style="font-size:12.5px;color:var(--text3);padding:8px 0">Sin resultados.</div>`;
+  const filas = lista.map(c=>{
+    const cts = (c.contactos||[]).filter(x=>x.nombre);
+    const lugar = [c.planta, c.localidad].filter(Boolean).join(' · ');
+    return `<tr onclick="abrirModalCliente('${c.id}')">
+      <td><b>${c.nombre||''}</b></td>
+      <td class="hide-m">${lugar||'<span style="color:var(--text3)">—</span>'}</td>
+      <td class="hide-m">${cts.length ? cts[0].nombre + (cts.length>1?` <span class="pf-mas">+${cts.length-1}</span>`:'') : '<span style="color:var(--text3)">—</span>'}</td>
+      <td>${gtEstado(c.estado)}</td>
+      <td>${gtAcciones(`abrirModalCliente('${c.id}')`, `eliminarCliente('${c.id}')`)}</td></tr>`;
+  });
+  document.getElementById('clientes-lista-inner').innerHTML = gtTabla([['Cliente'],['Planta / Localidad','hide-m'],['Contacto','hide-m'],['Estado'],['']], filas, 'Sin clientes cargados.');
 }
 function diasDesde(fechaStr){
   const t = parseFechaDMY(fechaStr);
@@ -3921,37 +4593,41 @@ function diasDesde(fechaStr){
 
 let ad_filtroCobro = 'todos';
 let ad_listaActual = [];
+let ad_periodoTipo = 'mes';
+let ad_periodoValor = '';
 function renderAdmin(filtroTexto){
-  filtroTexto = (filtroTexto||'').toLowerCase();
+  filtroTexto = busquedaEfectiva('ad', filtroTexto);
   renderFacturarBox();
   document.getElementById('ad-count').textContent = STATE.administracion.length + ' registro' + (STATE.administracion.length===1?'':'s');
 
-  // Resumen general: cuánto realmente se cobró vs cuánto falta cobrar (sobre TODOS los registros)
-  let totalCobrado = 0, totalPendiente = 0;
-  STATE.administracion.forEach(a=>{
-    const totalFinal = Number(a.totalConIva!=null ? a.totalConIva : (a.totalNeto!=null ? a.totalNeto : a.total)) || 0;
-    const pagado = a.montoPagado!=null ? Number(a.montoPagado)||0 : (estadoCobroDe(a)==='cobrado' ? totalFinal : 0);
-    totalCobrado += Math.min(pagado, totalFinal);
-    totalPendiente += Math.max(0, totalFinal - pagado);
-  });
-  document.getElementById('ad-resumen-box').innerHTML = `
-    <div class="stat-grid" style="margin-bottom:14px">
-      <div class="stat-card" style="background:var(--greenlt);border-color:transparent">
-        <div class="num" style="color:var(--green)">${formatDineroCorto(totalCobrado)}</div>
-        <div class="lbl">✅ Total cobrado</div>
+  // Selector de período (Mes / Trimestre / Año), según la fecha de facturación de cada registro
+  const periodosMapAd = {};
+  STATE.administracion.forEach(a=>{ const k = keyPeriodo(a.ffact, ad_periodoTipo); if(k) periodosMapAd[k] = true; });
+  const periodosAd = Object.keys(periodosMapAd).sort().reverse();
+  if(ad_periodoValor && !periodosAd.includes(ad_periodoValor)) ad_periodoValor = '';
+  document.getElementById('ad-periodo-box').innerHTML = `
+    <div class="ad-periodo-row">
+      <span class="ad-periodo-label">Ver por</span>
+      <div class="ad-periodo-tabs">
+        <button class="ad-periodo-tab ${ad_periodoTipo==='mes'?'active':''}" onclick="ad_periodoTipo='mes';ad_periodoValor='';renderAdmin(document.getElementById('ad-search-input').value)">Mes</button>
+        <button class="ad-periodo-tab ${ad_periodoTipo==='trimestre'?'active':''}" onclick="ad_periodoTipo='trimestre';ad_periodoValor='';renderAdmin(document.getElementById('ad-search-input').value)">Trimestre</button>
+        <button class="ad-periodo-tab ${ad_periodoTipo==='anio'?'active':''}" onclick="ad_periodoTipo='anio';ad_periodoValor='';renderAdmin(document.getElementById('ad-search-input').value)">Año</button>
       </div>
-      <div class="stat-card" style="background:#fef3c7;border-color:transparent">
-        <div class="num" style="color:#7a4d00">${formatDineroCorto(totalPendiente)}</div>
-        <div class="lbl">⏳ Pendiente de cobro</div>
-      </div>
+      <select class="ad-periodo-select" onchange="ad_periodoValor=this.value;renderAdmin(document.getElementById('ad-search-input').value)">
+        <option value="">Todo</option>
+        ${periodosAd.map(k=>`<option value="${k}" ${k===ad_periodoValor?'selected':''}>${formatPeriodoLabel(k, ad_periodoTipo)}</option>`).join('')}
+      </select>
     </div>`;
+
+  let listaPeriodo = STATE.administracion.slice();
+  if(ad_periodoValor) listaPeriodo = listaPeriodo.filter(a=>keyPeriodo(a.ffact, ad_periodoTipo)===ad_periodoValor);
 
   document.getElementById('ad-filtro-cobro').innerHTML = `
     <button class="chip ${ad_filtroCobro==='todos'?'active':''}" onclick="ad_filtroCobro='todos';renderAdmin(document.getElementById('ad-search-input').value)">Todos</button>
-    <button class="chip ${ad_filtroCobro==='cobrado'?'active':''}" onclick="ad_filtroCobro='cobrado';renderAdmin(document.getElementById('ad-search-input').value)">✅ Cobrados</button>
-    <button class="chip ${ad_filtroCobro==='parcial'?'active':''}" onclick="ad_filtroCobro='parcial';renderAdmin(document.getElementById('ad-search-input').value)">🔶 Pago parcial</button>
-    <button class="chip ${ad_filtroCobro==='pendiente'?'active':''}" onclick="ad_filtroCobro='pendiente';renderAdmin(document.getElementById('ad-search-input').value)">⏳ Pendientes de cobro</button>`;
-  let lista = STATE.administracion.slice();
+    <button class="chip ${ad_filtroCobro==='cobrado'?'active':''}" onclick="ad_filtroCobro='cobrado';renderAdmin(document.getElementById('ad-search-input').value)">Cobrados</button>
+    <button class="chip ${ad_filtroCobro==='parcial'?'active':''}" onclick="ad_filtroCobro='parcial';renderAdmin(document.getElementById('ad-search-input').value)">Pago parcial</button>
+    <button class="chip ${ad_filtroCobro==='pendiente'?'active':''}" onclick="ad_filtroCobro='pendiente';renderAdmin(document.getElementById('ad-search-input').value)">Pendientes de cobro</button>`;
+  let lista = listaPeriodo.slice();
   if(ad_filtroCobro!=='todos') lista = lista.filter(a=>estadoCobroDe(a)===ad_filtroCobro);
   if(filtroTexto){
     lista = lista.filter(a=>{
@@ -3959,49 +4635,181 @@ function renderAdmin(filtroTexto){
       return (p?.nombre||'').toLowerCase().includes(filtroTexto) || (p?.cliente||'').toLowerCase().includes(filtroTexto);
     });
   }
-  // No cobrados primero, cobrados al final; dentro de cada grupo, más reciente fecha de facturación arriba
-  const ordenEstado = {pendiente:0, parcial:1, cobrado:2};
-  lista.sort((a,b)=>{
-    const oa = ordenEstado[estadoCobroDe(a)] ?? 0;
-    const ob = ordenEstado[estadoCobroDe(b)] ?? 0;
-    if(oa !== ob) return oa - ob;
-    return (parseFechaDMY(b.ffact)||0) - (parseFechaDMY(a.ffact)||0);
-  });
-  ad_listaActual = lista;
-  const cont = document.getElementById('ad-list');
-  if(lista.length===0){
-    cont.innerHTML = `<div class="empty"><div class="empty-ic">💼</div>No hay registros de Administración todavía.</div>`;
-    return;
+  // Orden por columna (por defecto: el último en facturar queda primero)
+  if(ad_ordenCol){
+    lista.sort((a,b)=>{
+      const va = adValorColumna(a, ad_ordenCol), vb = adValorColumna(b, ad_ordenCol);
+      let cmp;
+      if(typeof va==='number' && typeof vb==='number') cmp = va - vb;
+      else cmp = String(va).localeCompare(String(vb), 'es');
+      return ad_ordenDir==='asc' ? cmp : -cmp;
+    });
   }
-  cont.innerHTML = lista.map(a=>{
-    const p = STATE.proyectos.find(x=>x.id===a.proyectoId);
-    const estCobro = estadoCobroDe(a);
-    const cobrado = estCobro==='cobrado';
-    const colorBadge = estCobro==='cobrado' ? '#1e3a5f' : estCobro==='parcial' ? '#b3781f' : '#c9903c';
-    const textoBadge = estCobro==='cobrado' ? '✅ Cobrado' : estCobro==='parcial' ? '🔶 Pago parcial' : '⏳ Pendiente de cobro';
-    return `
-    <div class="card estado-${cobrado?'cobrado':'abierto'}" onclick="abrirAdmin('${a.id}')">
-      <div class="card-top">
-        <div>
-          <div style="font-size:15px;font-weight:800;color:#14183D">${p ? p.cliente : '(proyecto no encontrado)'}</div>
-          <div style="font-size:12.5px;font-weight:600;color:#22487A;margin-top:2px">${p ? p.nombre : ''}</div>
-          <div style="font-size:11.5px;color:#22487A;margin-top:3px">${p ? p.nro : ''}${a.ffact?' &nbsp; Facturado: '+a.ffact:''}</div>
-          <div style="font-size:11.5px;font-weight:700;color:#007b00;margin-top:3px">👷 ${p && p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable'}</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">
-          <span class="badge" style="background:var(--greenlt);color:var(--green)">${formatDinero(a.tipoFactura==='A' ? a.totalConIva : (a.totalNeto!=null ? a.totalNeto : a.total))}${a.descuentoPct>0?` <span style="opacity:.7;font-weight:600">(-${a.descuentoPct}%)</span>`:''}${a.tipoFactura==='A'?' <span style="opacity:.7;font-weight:600">c/IVA</span>':''}</span>
-          <span class="badge" style="background:${colorBadge};color:#fff">${textoBadge}</span>
-          ${estCobro==='parcial' ? `<span style="font-size:10.5px;color:var(--text3)">Saldo: ${formatDinero(a.saldoPendiente)}</span>` : ''}
-          ${(!cobrado && a.ffact) ? `<span style="font-size:10.5px;color:var(--text3)">${diasDesde(a.ffact)} días facturado</span>` : ''}
-        </div>
+  ad_listaActual = lista;
+
+  // Resumen: facturado, cobrado y pendiente de lo que se está viendo (período + estado + búsqueda)
+  let totalFacturado = 0, totalCobrado = 0, totalPendiente = 0, nCobrados = 0, nConSaldo = 0;
+  lista.forEach(a=>{
+    const totalFinal = Number(a.totalConIva!=null ? a.totalConIva : (a.totalNeto!=null ? a.totalNeto : a.total)) || 0;
+    const pagado = a.montoPagado!=null ? Number(a.montoPagado)||0 : (estadoCobroDe(a)==='cobrado' ? totalFinal : 0);
+    totalFacturado += totalFinal;
+    totalCobrado += Math.min(pagado, totalFinal);
+    const saldo = Math.max(0, totalFinal - pagado);
+    totalPendiente += saldo;
+    if(saldo<=0) nCobrados++; else nConSaldo++;
+  });
+  const filtrosActivos = [];
+  if(ad_periodoValor) filtrosActivos.push(formatPeriodoLabel(ad_periodoValor, ad_periodoTipo));
+  if(ad_filtroCobro!=='todos') filtrosActivos.push({cobrado:'Cobrados',parcial:'Pago parcial',pendiente:'Pendientes de cobro'}[ad_filtroCobro]);
+  if(filtroTexto) filtrosActivos.push('“'+filtroTexto+'”');
+  const pr = n=>`${n} proyecto${n===1?'':'s'}`;
+  document.getElementById('ad-resumen-box').innerHTML = `
+    <div class="stat-grid-3" style="margin-bottom:6px">
+      <div class="stat-card stat-card-subtle">
+        <div class="num">${formatDineroCorto(totalFacturado)}</div>
+        <div class="lbl">Total facturado</div>
+        <div class="stat-sub">${pr(lista.length)}</div>
       </div>
-      <div class="card-meta">
-        <span>Horas <b>${formatHoras(a.horas)}</b></span>
-        <span>Operarios <b>${(a.operarios||[]).length}</b></span>
-        <span>Costo/h <b>${formatDinero(a.costoHora)}</b></span>
+      <div class="stat-card stat-card-subtle tono-verde">
+        <div class="num">${formatDineroCorto(totalCobrado)}</div>
+        <div class="lbl">Cobrado</div>
+        <div class="stat-sub">${totalFacturado>0?Math.round(totalCobrado/totalFacturado*100):0}% · ${pr(nCobrados)} saldados</div>
       </div>
-    </div>`;
+      <div class="stat-card stat-card-subtle tono-ambar">
+        <div class="num">${formatDineroCorto(totalPendiente)}</div>
+        <div class="lbl">Pendiente</div>
+        <div class="stat-sub">${totalFacturado>0?Math.round(totalPendiente/totalFacturado*100):0}% · ${pr(nConSaldo)} con saldo</div>
+      </div>
+    </div>
+    <div class="stat-filtros">${filtrosActivos.length ? 'Resumen de: ' + filtrosActivos.join(' · ') : 'Resumen de todos los registros'}</div>`;
+
+  const totalPaginas = Math.max(1, Math.ceil(lista.length / AD_POR_PAGINA));
+  if(ad_paginaActual > totalPaginas) ad_paginaActual = totalPaginas;
+  const desde = (ad_paginaActual-1) * AD_POR_PAGINA;
+  const listaPagina = lista.slice(desde, desde + AD_POR_PAGINA);
+
+  const cols = adColumnasVisibles();
+  const head = document.getElementById('ad-table-head');
+  head.innerHTML = cols.map(key=>{
+    const col = AD_COLUMNAS.find(c=>c.key===key);
+    const flecha = ad_ordenCol===key ? (ad_ordenDir==='asc' ? ' ↑' : ' ↓') : '';
+    return `<th onclick="adOrdenarPor('${key}')">${col?col.label:key}${flecha}</th>`;
   }).join('');
+
+  const body = document.getElementById('ad-table-body');
+  if(lista.length===0){
+    body.innerHTML = `<tr><td colspan="${cols.length}" class="ad-table-empty">💼 No hay registros de Administración todavía.</td></tr>`;
+  } else {
+    body.innerHTML = listaPagina.map(a=>{
+      const estCobro = estadoCobroDe(a);
+      return `<tr class="ad-row-${estCobro}" onclick="abrirAdmin('${a.id}')">` +
+        cols.map(key=>`<td>${adCeldaHTML(a, key)}</td>`).join('') +
+        `</tr>`;
+    }).join('');
+  }
+
+  document.getElementById('ad-paginacion').innerHTML = `
+    <span>${lista.length} registro${lista.length===1?'':'s'}</span>
+    <div class="ad-pag-controles">
+      <button class="btn-tool sm" ${ad_paginaActual<=1?'disabled':''} onclick="ad_paginaActual--;renderAdmin(document.getElementById('ad-search-input').value)">Anterior</button>
+      <span>Página ${ad_paginaActual} de ${totalPaginas}</span>
+      <button class="btn-tool sm" ${ad_paginaActual>=totalPaginas?'disabled':''} onclick="ad_paginaActual++;renderAdmin(document.getElementById('ad-search-input').value)">Siguiente</button>
+    </div>`;
+}
+const AD_COLUMNAS = [
+  {key:'cliente', label:'Cliente', default:true},
+  {key:'proyecto', label:'Proyecto', default:true},
+  {key:'nro', label:'N° Proyecto', default:true},
+  {key:'ffact', label:'Facturado', default:true},
+  {key:'monto', label:'Monto', default:true},
+  {key:'estado', label:'Estado', default:true},
+  {key:'responsable', label:'Responsable', default:false},
+  {key:'horas', label:'Horas', default:false},
+  {key:'operarios', label:'Operarios', default:false},
+  {key:'costohora', label:'Costo/h', default:false},
+  {key:'saldo', label:'Saldo pendiente', default:false},
+];
+let ad_ordenCol = 'ffact';
+let ad_ordenDir = 'desc';
+let ad_paginaActual = 1;
+const AD_POR_PAGINA = 15;
+function adOrdenarPor(key){
+  if(ad_ordenCol===key) ad_ordenDir = ad_ordenDir==='asc' ? 'desc' : 'asc';
+  else { ad_ordenCol = key; ad_ordenDir = 'asc'; }
+  renderAdmin(document.getElementById('ad-search-input').value);
+}
+function adColumnasVisibles(){
+  try{
+    const g = JSON.parse(localStorage.getItem('ad_columnas_visibles'));
+    if(Array.isArray(g) && g.length) return AD_COLUMNAS.map(c=>c.key).filter(k=>g.includes(k));
+  }catch(e){}
+  return AD_COLUMNAS.filter(c=>c.default).map(c=>c.key);
+}
+function toggleSelectorColumnasAdmin(ev){
+  if(ev) ev.stopPropagation();
+  const dd = document.getElementById('ad-cols-dropdown');
+  const abrir = dd.style.display==='none';
+  if(!abrir){ dd.style.display='none'; return; }
+  const visibles = adColumnasVisibles();
+  dd.innerHTML = AD_COLUMNAS.map(c=>`
+    <label class="ad-cols-item">
+      <input type="checkbox" ${visibles.includes(c.key)?'checked':''} onchange="adToggleColumna('${c.key}',this.checked)">
+      ${c.label}
+    </label>`).join('');
+  dd.style.display = 'block';
+  setTimeout(()=>document.addEventListener('click', adCerrarSelectorColumnasUnaVez), 0);
+}
+function adCerrarSelectorColumnasUnaVez(){
+  document.getElementById('ad-cols-dropdown').style.display = 'none';
+  document.removeEventListener('click', adCerrarSelectorColumnasUnaVez);
+}
+function adToggleColumna(key, checked){
+  let visibles = adColumnasVisibles();
+  if(checked && !visibles.includes(key)) visibles.push(key);
+  if(!checked) visibles = visibles.filter(k=>k!==key);
+  if(visibles.length===0){ toast('Dejá al menos una columna visible'); return; }
+  localStorage.setItem('ad_columnas_visibles', JSON.stringify(visibles));
+  renderAdmin(document.getElementById('ad-search-input').value);
+}
+function adValorColumna(a, key){
+  const p = STATE.proyectos.find(x=>x.id===a.proyectoId);
+  switch(key){
+    case 'cliente': return p?.cliente || '';
+    case 'proyecto': return p?.nombre || '';
+    case 'nro': return p?.nro || '';
+    case 'ffact': return parseFechaDMY(a.ffact) || 0;
+    case 'monto': return Number(a.tipoFactura==='A' ? a.totalConIva : (a.totalNeto!=null?a.totalNeto:a.total)) || 0;
+    case 'estado': return estadoCobroDe(a);
+    case 'responsable': return p && p.usuario ? nombreUsuario(p.usuario) : '';
+    case 'horas': return Number(a.horas) || 0;
+    case 'operarios': return (a.operarios||[]).length;
+    case 'costohora': return Number(a.costoHora) || 0;
+    case 'saldo': return Number(a.saldoPendiente) || 0;
+  }
+  return '';
+}
+function adCeldaHTML(a, key){
+  const p = STATE.proyectos.find(x=>x.id===a.proyectoId);
+  if(key==='cliente') return `<b>${p ? p.cliente : '(proyecto no encontrado)'}</b>`;
+  if(key==='proyecto') return p ? (p.nombre||'—') : '—';
+  if(key==='nro') return p ? (p.nro||'—') : '—';
+  if(key==='ffact') return a.ffact || '—';
+  if(key==='monto'){
+    const monto = Number(a.tipoFactura==='A' ? a.totalConIva : (a.totalNeto!=null?a.totalNeto:a.total)) || 0;
+    return formatDinero(monto) + (a.descuentoPct>0?` <span class="ad-sub">(-${a.descuentoPct}%)</span>`:'') + (a.tipoFactura==='A'?' <span class="ad-sub">c/IVA</span>':'');
+  }
+  if(key==='estado'){
+    const estCobro = estadoCobroDe(a);
+    const colorBadge = estCobro==='cobrado' ? '#1e3a5f' : estCobro==='parcial' ? '#b3781f' : '#c9903c';
+    const textoBadge = estCobro==='cobrado' ? '✅ Cobrado' : estCobro==='parcial' ? '🔶 Parcial' : '⏳ Pendiente';
+    return `<span class="badge" style="background:${colorBadge};color:#fff">${textoBadge}</span>`;
+  }
+  if(key==='responsable') return p && p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable';
+  if(key==='horas') return formatHoras(a.horas);
+  if(key==='operarios') return (a.operarios||[]).length;
+  if(key==='costohora') return formatDinero(a.costoHora);
+  if(key==='saldo') return estadoCobroDe(a)==='parcial' ? formatDinero(a.saldoPendiente) : '—';
+  return '';
 }
 let gestion_tab = 'clientes';
 /* Si un operario aparece trabajando en algún proyecto pero nunca tuvo ficha en el catálogo,
@@ -4032,18 +4840,20 @@ async function renderGestion(){
   renderEquiposBox();
   renderUsuariosBox();
   renderOperariosBox();
+  renderEmpresaBox();
+  const cuentaTab = { clientes: STATE.clientes.length, operarios: STATE.operarios.length, usuarios: Object.keys(USUARIOS).length + USUARIOS_DB.length, equipos: STATE.equipos.length };
   document.getElementById('gestion-tabs').innerHTML = [
-    ['clientes','Clientes'], ['operarios','Operarios'], ['usuarios','Usuarios'], ['equipos','Equipos']
-  ].map(([k,l])=>`<button class="chip ${gestion_tab===k?'active':''}" onclick="cambiarTabGestion('${k}')">${l}</button>`).join('');
+    ['clientes','Clientes'], ['operarios','Operarios'], ['usuarios','Usuarios'], ['equipos','Equipos'], ['empresa','Empresa']
+  ].map(([k,l])=>`<button class="chip ${gestion_tab===k?'active':''}" onclick="cambiarTabGestion('${k}')">${l}${cuentaTab[k]!==undefined?` <span class="gt-cnt">${cuentaTab[k]}</span>`:''}</button>`).join('');
   cambiarTabGestion(gestion_tab);
 }
 function cambiarTabGestion(tab){
   gestion_tab = tab;
-  ['clientes','operarios','usuarios','equipos'].forEach(k=>{
+  ['clientes','operarios','usuarios','equipos','empresa'].forEach(k=>{
     document.getElementById('tab-'+k).style.display = (k===tab) ? 'block' : 'none';
   });
   document.querySelectorAll('#gestion-tabs .chip').forEach(btn=>btn.classList.remove('active'));
-  const idx = ['clientes','operarios','usuarios','equipos'].indexOf(tab);
+  const idx = ['clientes','operarios','usuarios','equipos','empresa'].indexOf(tab);
   const btns = document.querySelectorAll('#gestion-tabs .chip');
   if(btns[idx]) btns[idx].classList.add('active');
 }
@@ -4070,19 +4880,14 @@ function renderFacturarBox(){
     </div>`;
 }
 
-/* Equipos: lista completa editable */
+/* Equipos */
 function renderEquiposBox(){
   const cont = document.getElementById('ad-equipos-box');
-  if(!STATE.equipos.length){ cont.innerHTML=''; return; }
   cont.innerHTML = `
-    <div class="box">
-      <div class="section-head" style="margin-bottom:10px">Equipos</div>
-      <div class="search-bar" style="margin-bottom:10px">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" placeholder="Buscar equipo..." oninput="filtrarListaEquipos(this.value)">
-      </div>
-      <div id="equipos-lista-inner"></div>
-    </div>`;
+    <div class="ad-toolbar">
+      <div class="ad-toolbar-left">${gtBuscador('Buscar equipo o cliente...','filtrarListaEquipos')}</div>
+    </div>
+    <div id="equipos-lista-inner"></div>`;
   filtrarListaEquipos('');
 }
 function filtrarListaEquipos(filtroTexto){
@@ -4092,48 +4897,38 @@ function filtrarListaEquipos(filtroTexto){
     const cli = STATE.clientes.find(c=>c.id===e.clienteId);
     return (e.nombre||'').toLowerCase().includes(filtroTexto) || (cli?.nombre||'').toLowerCase().includes(filtroTexto);
   });
-  document.getElementById('equipos-lista-inner').innerHTML = lista.map(e=>{
+  const filas = lista.map(e=>{
     const cli = STATE.clientes.find(c=>c.id===e.clienteId);
-    return `
-        <div class="link-row">
-          <span>${e.nombre} <span style="color:var(--text2)">— ${cli?cli.nombre:'sin cliente'}</span>${e.estado==='pendiente'?'<span class="pend-tag">Pendiente</span>':''}</span>
-          <div style="display:flex;gap:6px">
-            <button class="btn secondary sm" onclick="abrirModalEquipo('${e.id}')">Editar</button>
-            <button class="btn secondary sm" style="color:var(--red)" onclick="eliminarEquipo('${e.id}')">Eliminar</button>
-          </div>
-        </div>`;
-  }).join('') || `<div style="font-size:12.5px;color:var(--text3);padding:8px 0">Sin resultados.</div>`;
+    return `<tr onclick="abrirModalEquipo('${e.id}')">
+      <td><b>${e.nombre||''}</b></td>
+      <td>${cli?cli.nombre:'<span style="color:var(--text3)">Sin cliente</span>'}</td>
+      <td>${gtEstado(e.estado)}</td>
+      <td>${gtAcciones(`abrirModalEquipo('${e.id}')`, `eliminarEquipo('${e.id}')`)}</td></tr>`;
+  });
+  document.getElementById('equipos-lista-inner').innerHTML = gtTabla([['Equipo'],['Cliente'],['Estado'],['']], filas, 'Sin equipos cargados.');
 }
 
 /* Operarios: lista completa, con aprobación pendiente igual que clientes/equipos */
 function renderOperariosBox(){
   const cont = document.getElementById('ad-operarios-box');
   cont.innerHTML = `
-    <div class="box">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div class="section-head">Operarios</div>
-        <button class="btn secondary sm" onclick="abrirModalOperario()">+ Nuevo operario</button>
-      </div>
-      <div class="search-bar" style="margin-bottom:10px">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" placeholder="Buscar operario..." oninput="filtrarListaOperarios(this.value)">
-      </div>
-      <div id="operarios-lista-inner"></div>
-    </div>`;
+    <div class="ad-toolbar">
+      <div class="ad-toolbar-left">${gtBuscador('Buscar operario...','filtrarListaOperarios')}</div>
+      <button class="btn-tool" onclick="abrirModalOperario()">+ Nuevo operario</button>
+    </div>
+    <div id="operarios-lista-inner"></div>`;
   filtrarListaOperarios('');
 }
 function filtrarListaOperarios(filtroTexto){
   filtroTexto = (filtroTexto||'').toLowerCase();
   let lista = STATE.operarios.slice().sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||''));
   if(filtroTexto) lista = lista.filter(o=>(o.nombre||'').toLowerCase().includes(filtroTexto));
-  document.getElementById('operarios-lista-inner').innerHTML = lista.map(o=>`
-        <div class="link-row">
-          <span>🦺 ${o.nombre}${o.estado==='pendiente'?'<span class="pend-tag">Pendiente</span>':''}${o.usuario?' <span class="pend-tag" style="background:var(--accentlt);color:var(--accent)">📱 Con acceso</span>':''}</span>
-          <div style="display:flex;gap:6px">
-            <button class="btn secondary sm" onclick="abrirModalOperario('${o.id}')">Editar</button>
-            <button class="btn secondary sm" style="color:var(--red)" onclick="eliminarOperario('${o.id}')">Eliminar</button>
-          </div>
-        </div>`).join('') || `<div style="font-size:12.5px;color:var(--text3);padding:8px 0">Sin resultados.</div>`;
+  const filas = lista.map(o=>`<tr onclick="abrirModalOperario('${o.id}')">
+      <td><b>${o.nombre||''}</b></td>
+      <td class="hide-m">${o.usuario ? `<span class="mono">${o.usuario}</span> ${gtPill('azu','Con acceso')}` : '<span style="color:var(--text3)">Sin acceso a la app</span>'}</td>
+      <td>${gtEstado(o.estado)}</td>
+      <td>${gtAcciones(`abrirModalOperario('${o.id}')`, `eliminarOperario('${o.id}')`)}</td></tr>`);
+  document.getElementById('operarios-lista-inner').innerHTML = gtTabla([['Operario'],['Acceso','hide-m'],['Estado'],['']], filas, 'Sin operarios cargados.');
 }
 let operario_editId = null;
 function abrirModalOperario(id){
@@ -4197,29 +4992,66 @@ async function ejecutarEliminarOperario(id){
 /* Usuarios: cuentas de sistema (fijas) + creadas por Administración */
 function renderUsuariosBox(){
   const cont = document.getElementById('ad-usuarios-box');
-  const fijos = Object.entries(USUARIOS).map(([usuario,c])=>`
-    <div class="link-row">
-      <span>${c.nombre} <span style="color:var(--text2)">(${usuario} · ${c.rol==='administracion'?'Administración':c.rol==='gerente'?'Gerente':'Usuario'})</span></span>
-      <span style="font-size:11px;color:var(--text3)">Cuenta de sistema</span>
-    </div>`).join('');
-  const creados = USUARIOS_DB.map(u=>`
-    <div class="link-row">
-      <span>${u.nombre} <span style="color:var(--text2)">(${u.usuario} · ${u.rol==='administracion'?'Administración':u.rol==='gerente'?'Gerente':'Usuario'})</span></span>
-      <div style="display:flex;gap:6px">
-        <button class="btn secondary sm" onclick="abrirModalUsuario('${u.id}')">Editar</button>
-        <button class="btn secondary sm" style="color:var(--red)" onclick="eliminarUsuario('${u.id}')">Eliminar</button>
-      </div>
-    </div>`).join('');
+  const rolTxt = r=> r==='administracion'?'Administración':r==='gerente'?'Gerente':r==='operario'?'Operario':'Usuario';
+  const fijos = Object.entries(USUARIOS).map(([usuario,c])=>`<tr style="cursor:default">
+      <td><b>${c.nombre}</b></td><td><span class="mono">${usuario}</span></td><td>${gtPill('gri', rolTxt(c.rol))}</td>
+      <td style="text-align:right;color:var(--text3);font-size:11.5px">Cuenta de sistema</td></tr>`);
+  const creados = USUARIOS_DB.map(u=>`<tr onclick="abrirModalUsuario('${u.id}')">
+      <td><b>${u.nombre}</b></td><td><span class="mono">${u.usuario}</span></td><td>${gtPill('azu', rolTxt(u.rol))}</td>
+      <td>${gtAcciones(`abrirModalUsuario('${u.id}')`, `eliminarUsuario('${u.id}')`)}</td></tr>`);
   cont.innerHTML = `
-    <div class="box">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div class="section-head">Usuarios</div>
-        <button class="btn secondary sm" onclick="abrirModalUsuario()">+ Nuevo usuario</button>
-      </div>
-      ${fijos}${creados}
-    </div>`;
+    <div class="ad-toolbar">
+      <div class="ad-toolbar-left"></div>
+      <button class="btn-tool" onclick="abrirModalUsuario()">+ Nuevo usuario</button>
+    </div>
+    ${gtTabla([['Nombre'],['Usuario'],['Rol'],['']], [...fijos, ...creados])}`;
 }
 
+
+/* Empresa: logo que sale en el encabezado de todos los PDF */
+function renderEmpresaBox(){
+  const cont = document.getElementById('ad-empresa-box');
+  if(!cont) return;
+  const puede = currentUserRol==='administracion';
+  cont.innerHTML = `
+    <div class="box pf-ident">
+      <div class="section-head" style="margin-bottom:4px">Logo de la empresa</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:12px">Se muestra en el encabezado de todos los PDF (OT, Informes y Facturación). Conviene una imagen horizontal, con fondo transparente o blanco.</div>
+      <div class="emp-logo-prev">${LOGO_EMPRESA ? `<img src="${LOGO_EMPRESA}" alt="Logo">` : '<span style="color:var(--text3);font-size:12.5px">Todavía no cargaste un logo — los PDF usan el texto "A.A.C."</span>'}</div>
+      ${puede ? `<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn-tool" onclick="document.getElementById('emp-logo-input').click()">${LOGO_EMPRESA?'Cambiar logo':'Subir logo'}</button>
+        ${LOGO_EMPRESA?'<button class="btn-tool gt-del" style="color:var(--red)" onclick="quitarLogoEmpresa()">Quitar</button>':''}
+        <input type="file" id="emp-logo-input" accept="image/*" style="display:none" onchange="subirLogoEmpresa(event)">
+      </div>` : '<div style="font-size:12px;color:var(--text3);margin-top:10px">Solo Administración puede cambiarlo.</div>'}
+    </div>`;
+}
+function subirLogoEmpresa(ev){
+  const file = (ev.target.files||[])[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    const img = new Image();
+    img.onload = async ()=>{
+      const esc = Math.min(1, 480/img.width, 200/img.height);
+      const c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(img.width*esc)); c.height = Math.max(1, Math.round(img.height*esc));
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      LOGO_EMPRESA = c.toDataURL('image/png');
+      await guardarEnDB('configuracion', { id:'empresa', logo: LOGO_EMPRESA });
+      renderEmpresaBox();
+      toast('Logo guardado — ya sale en los PDF');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  ev.target.value = '';
+}
+async function quitarLogoEmpresa(){
+  LOGO_EMPRESA = '';
+  await guardarEnDB('configuracion', { id:'empresa', logo:'' });
+  renderEmpresaBox();
+  toast('Logo quitado');
+}
 
 let editAdminId = null;
 let af_operarios = [];
@@ -4386,7 +5218,8 @@ function abrirNuevoAdmin(proyectoIdPreseleccionado){
   af_horasPonderadas = 0;
   poblarSelectorProyectos(proyectoIdPreseleccionado||'');
   document.getElementById('af-proyecto').value = proyectoIdPreseleccionado || '';
-  ['af-freq','af-fejec','af-ffact','af-fpago','af-nrofact','af-obs','af-monto-pagado'].forEach(id=>document.getElementById(id).value='');
+  ['af-nrofact','af-obs','af-monto-pagado'].forEach(id=>document.getElementById(id).value='');
+  ['af-freq','af-fejec','af-ffact','af-fpago'].forEach(id=>document.getElementById(id).value=hoyDMY());
   document.getElementById('af-tipo-factura').value = '';
   ['af-costohora','af-costohoras-total','af-horas-ponderadas','af-precio-combustible','af-costo-km','af-km-traslado','af-total','af-traslado','af-materiales','af-gastos','af-horas','af-descuento'].forEach(id=>document.getElementById(id).value='');
   onCambiaProyectoAdmin();
@@ -4409,7 +5242,7 @@ function abrirAdmin(id){
   renderDetalleAdmin();
   document.getElementById('af-freq').value = a.freq||'';
   document.getElementById('af-fejec').value = a.fejec||'';
-  document.getElementById('af-ffact').value = a.ffact||'';
+  document.getElementById('af-ffact').value = a.ffact || hoyDMY();
   document.getElementById('af-fpago').value = a.fpago||'';
   document.getElementById('af-monto-pagado').value = a.montoPagado ? formatDinero(a.montoPagado) : '';
   document.getElementById('af-nrofact').value = a.nrofact||'';
@@ -4563,7 +5396,7 @@ async function guardarAdmin(){
   obj.proyectoId = proyectoId;
   obj.freq = document.getElementById('af-freq').value;
   obj.fejec = document.getElementById('af-fejec').value;
-  obj.ffact = document.getElementById('af-ffact').value;
+  obj.ffact = document.getElementById('af-ffact').value || hoyDMY();
   obj.fpago = document.getElementById('af-fpago').value;
   obj.montoPagado = parseDineroInput(document.getElementById('af-monto-pagado'));
   obj.nrofact = document.getElementById('af-nrofact').value;
@@ -4833,6 +5666,8 @@ function exportarExcelFacturacion(){
       'Responsable': p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable',
       'Fecha requerimiento': p.fechaRequerimiento || '',
       'Requerimiento': p.requerimiento || '',
+      'Presupuestado': p.esPresupuestado==='si' ? 'Sí' : 'No',
+      'Fecha aprobación': p.fechaAprobacion || '',
       'Presupuesto': Number(p.presupuestoMonto) || 0,
       'Cantidad OTs': (p.ots||[]).length,
       'Cantidad Informes': (p.informes||[]).length,
@@ -4904,6 +5739,8 @@ async function restaurarProyecto(i){
 <script>
 /* ==================== ESTADO ==================== */
 let PROYECTOS = [];
+let PROYECTOS_TODOS = [];   // incluye cerrados/solicitados: sirve para mostrar el nombre de trabajos ya planificados
+function proyAll(pred){ return PROYECTOS.find(pred) || PROYECTOS_TODOS.find(pred); }
 let USUARIOS_PLAN = [];
 let OPERARIOS = [];
 let ASIGNACIONES = [];
@@ -5037,7 +5874,7 @@ function guardarUsuarioActual(){
   toast('Listo, ya sabemos quién sos');
 }
 function loginResponsableDe(a){
-  if(a.tipo==='obra') return PROYECTOS.find(x=>x.id===a.proyectoId)?.usuario || null;
+  if(a.tipo==='obra') return proyAll(x=>x.id===a.proyectoId)?.usuario || null;
   if(a.tipo==='servicio') return a.responsableId || null;
   return null;
 }
@@ -5105,7 +5942,8 @@ function contarPendientesPropios(){
 function actualizarBadgeNotificaciones(){
   const n = contarPendientesPropios();
   const btn = document.getElementById('btn-notificaciones');
-  btn.textContent = n>0 ? `📣 ${n}` : '📣';
+  const num = document.getElementById('btn-notif-num');
+  if(num){ num.textContent = n; num.style.display = n>0 ? 'flex' : 'none'; }
   btn.classList.toggle('con-alerta', n>0);
 }
 function avisosDescartadosLocal(){
@@ -5193,7 +6031,7 @@ function abrirNotificaciones(){
     html += `<h4 class="est-titulo">Trabajos tuyos afectados</h4>`;
     html += items.map(({a,p})=>{
       const nombreOp = nombreOperario(p.operarioId);
-      const titulo = a.tipo==='obra' ? (PROYECTOS.find(x=>x.id===a.proyectoId)?.cliente||'Obra') : (a.clienteServicio||'Servicio');
+      const titulo = a.tipo==='obra' ? (proyAll(x=>x.id===a.proyectoId)?.cliente||'Obra') : (a.clienteServicio||'Servicio');
       return `<div class="notif-item">
         <div class="notif-texto">🚫 <b>${nombreOp}</b> va a estar ausente el <b>${fechaLegible(p.fecha)}</b>${p.motivo?` (${p.motivo})`:''} y está asignado a <b>${titulo}</b> ese día.</div>
         <div class="notif-acciones">
@@ -5251,7 +6089,7 @@ async function resolverPendiente(assignmentId, pendienteId, accion){
   if(!a) return;
   const p = (a.pendientes||[]).find(x=>x.id===pendienteId);
   if(!p) return;
-  const tituloTrabajo = a.tipo==='obra' ? (PROYECTOS.find(x=>x.id===a.proyectoId)?.cliente||'este trabajo') : (a.clienteServicio||'este trabajo');
+  const tituloTrabajo = a.tipo==='obra' ? (proyAll(x=>x.id===a.proyectoId)?.cliente||'este trabajo') : (a.clienteServicio||'este trabajo');
 
   if(accion==='eliminar'){
     if(!confirm(`¿Denegar y sacar "${tituloTrabajo}" del ${fechaLegible(p.fecha)}? Esta acción no se puede deshacer.`)) return;
@@ -5293,6 +6131,7 @@ async function cargarTodo(){
         window.db.getAll('planificacion_bloques')
       ]);
       PROYECTOS = pr.filter(p=>!p.eliminado && (p.estado==='abierto' || p.estado==='presupuesto'));
+      PROYECTOS_TODOS = pr.slice();
       USUARIOS_PLAN = us.filter(u=>!u.eliminado);
       OPERARIOS = op.filter(o=>!o.eliminado && o.estado!=='pendiente');
       const todasAsig = pl.map(a=>({ operarios:[], tipo:a.tipo||'obra', fechas:a.fechas||(a.fechaInicio?[a.fechaInicio]:[]), horariosPorFecha:a.horariosPorFecha||{}, decisionesFinde:a.decisionesFinde||{}, pendientes:a.pendientes||[], respuestas:a.respuestas||[], ...a }));
@@ -5473,7 +6312,7 @@ function filtrarObras(v){ renderObras(v); }
 function actualizarBannerSeleccion(){
   const banner = document.getElementById('banner-seleccion');
   if(obraSeleccionadaId){
-    const p = PROYECTOS.find(x=>x.id===obraSeleccionadaId);
+    const p = proyAll(x=>x.id===obraSeleccionadaId);
     document.getElementById('banner-seleccion-texto').textContent = `📁 ${p?p.cliente:'Obra'} seleccionada — tocá un día para asignarla`;
     banner.style.display = 'flex';
   } else {
@@ -5553,11 +6392,22 @@ function diaTagHTML(a,f){
   return `<span class="asig-dias">Día ${nro}/${ordenadas.length}</span>`;
 }
 function nombreOperario(id){ const o = OPERARIOS.find(x=>x.id===id); return o?o.nombre:'—'; }
-function chipsOperariosHTML(ids, limite=2){
+function chipsOperariosHTML(a){
+  const ids = a.operarios||[];
+  if(!ids.length) return '';
   const nombres = ids.map(nombreOperario);
-  const visibles = nombres.slice(0,limite).map(n=>`<span class="chip-persona operario">🦺 ${n}</span>`).join('');
-  const restantes = nombres.length - limite;
-  return visibles + (restantes>0 ? `<span class="chip-persona mas">+${restantes}</span>` : '');
+  const restantes = nombres.length - 1;
+  const extra = restantes>0 ? ` +${restantes}` : '';
+  return `<span class="chip-persona operario chip-click" onclick="event.stopPropagation();verOperariosAsignados('${a.id}')" title="Tocá para ver a todos los operarios asignados">🦺 ${nombres[0]}${extra}</span>`;
+}
+function verOperariosAsignados(id){
+  const a = ASIGNACIONES.find(x=>x.id===id);
+  if(!a) return;
+  const nombres = (a.operarios||[]).map(nombreOperario);
+  const lista = nombres.length
+    ? nombres.map(n=>`<div class="info-parrafo">🦺 ${n}</div>`).join('')
+    : '<div class="info-parrafo">No hay operarios asignados.</div>';
+  mostrarInfo(`Operarios asignados (${nombres.length})`, lista);
 }
 function tituloYSub(a){
   if(a.tipo==='ausencia'){
@@ -5567,7 +6417,7 @@ function tituloYSub(a){
   if(a.tipo==='servicio'){
     return { titulo:'🔧 '+(a.clienteServicio||'Servicio'), sub: nombreResponsable(a.responsableId) || 'Sin responsable' };
   }
-  const p = PROYECTOS.find(x=>x.id===a.proyectoId) || {cliente:'(obra no encontrada)'};
+  const p = proyAll(x=>x.id===a.proyectoId) || {cliente:'(obra no encontrada)'};
   return { titulo: p.cliente, sub: nombreResponsable(p.usuario) || 'Sin responsable' };
 }
 function abrirEdicion(a,f){
@@ -5598,7 +6448,7 @@ function abrirResumen(id, f){
     const h = horarioParaFecha(a,f);
     let cliente, responsable;
     if(a.tipo==='obra'){
-      const p = PROYECTOS.find(x=>x.id===a.proyectoId) || {};
+      const p = proyAll(x=>x.id===a.proyectoId) || {};
       cliente = p.cliente || '(obra no encontrada)';
       responsable = nombreResponsable(p.usuario) || 'Sin responsable';
       titulo = '📁 ' + cliente;
@@ -5615,6 +6465,7 @@ function abrirResumen(id, f){
       <div class="resumen-trabajo-wrap">${botonEstadoTrabajoHTML(a, f)}</div>
       ${inicioTxt}
       <div class="resumen-fila"><span>Cliente</span><b>${cliente}</b></div>
+      ${a.lugar ? `<div class="resumen-fila"><span>Lugar</span><b>📍 ${a.lugar}</b></div>` : ''}
       <div class="resumen-fila"><span>Responsable</span><b>${responsable}</b></div>
       <div class="resumen-fila"><span>Operarios</span><b>${opsTexto}</b></div>
       <div class="resumen-fila"><span>Horario</span><b>${horario}</b></div>
@@ -5707,14 +6558,14 @@ function filaCompactaHTML(a,f){
 function tarjetaAsignacionHTML(a, f){
   const incompleta = esIncompleta(a);
   const dot = incompleta ? '<span class="dot-card-incompleto" title="Faltan datos (operarios y/u horario)"></span>' : '';
-  const badgeNuevo = esNuevoParaMi(a) ? '<span class="badge-nuevo" title="Te asignaron esto — todavía no lo abriste">🆕 Nuevo</span>' : '';
+  const badgeNuevo = esNuevoParaMi(a) ? '<span class="badge-nuevo" title="Te asignaron esto — todavía no lo abriste">Nuevo</span>' : '';
   const _estadoHoy = estadoTrabajoDia(a, f);
-  const badgeEstado = _estadoHoy?.estado==='en_curso' ? '<span class="badge-estado en-curso">▶ En curso</span>'
-    : _estadoHoy?.estado==='finalizado' ? '<span class="badge-estado hecho">✅ Hecho</span>' : '';
+  const badgeEstado = _estadoHoy?.estado==='en_curso' ? '<span class="badge-estado en-curso">En curso</span>'
+    : _estadoHoy?.estado==='finalizado' ? '<span class="badge-estado hecho">Hecho</span>' : '';
 
   if(a.tipo==='ausencia'){
     const {titulo} = tituloYSub(a);
-    const horario = (a.horaDesde||a.horaHasta) ? `<span class="asig-horario">🕒 ${mostrarHora(a.horaDesde)} a ${mostrarHora(a.horaHasta)}</span>` : `<span class="asig-horario">🕒 Todo el día</span>`;
+    const horario = (a.horaDesde||a.horaHasta) ? `<span class="asig-horario">${mostrarHora(a.horaDesde)} a ${mostrarHora(a.horaHasta)}</span>` : `<span class="asig-horario">Todo el día</span>`;
     return `
       <div class="asig-card tipo-ausencia" draggable="true" ondragstart="onDragStartAsignacion(event,'${a.id}','${f}')" onclick="event.stopPropagation();abrirResumen('${a.id}','${f}')">
         <div class="asig-cliente">${titulo}</div>
@@ -5726,29 +6577,36 @@ function tarjetaAsignacionHTML(a, f){
   const h = horarioParaFecha(a,f);
   if(a.tipo==='servicio'){
     const resp = nombreResponsable(a.responsableId);
-    const ops = chipsOperariosHTML(a.operarios||[]);
+    const ops = chipsOperariosHTML(a);
     const respChip = resp ? `<span class="chip-persona">👷 ${resp}</span>` : '';
-    const horario = (h.horaDesde||h.horaHasta) ? `<span class="asig-horario">🕒 ${mostrarHora(h.horaDesde)} a ${mostrarHora(h.horaHasta)}</span>` : '';
+    const horario = (h.horaDesde||h.horaHasta) ? `<span class="asig-horario">${mostrarHora(h.horaDesde)} a ${mostrarHora(h.horaHasta)}</span>` : '';
     return `
       <div class="asig-card tipo-servicio" draggable="true" ondragstart="onDragStartAsignacion(event,'${a.id}','${f}')" onclick="event.stopPropagation();abrirResumen('${a.id}','${f}')">
         ${dot}${badgeNuevo}
-        <div class="asig-cliente">🔧 ${a.clienteServicio||'Servicio'}</div>
-        <div class="asig-nro">${a.descripcionServicio||''}${diaTagHTML(a,f)}</div>
-        ${horario}${badgeEstado}
+        <div class="asig-cliente">${a.clienteServicio||'Servicio'}</div>
+        <div class="asig-nro"><span class="asig-lugar">Servicio</span>${a.descripcionServicio||''}${diaTagHTML(a,f)}</div>
+        ${horario}
+        <div class="asig-fila-estado">${badgeEstado}<span class="asig-meta">${(a.operarios||[]).length ? (a.operarios||[]).length+' operario'+((a.operarios||[]).length===1?'':'s') : 'Sin operarios'}</span></div>
         <div class="asig-personas">${respChip}${ops}</div>
       </div>`;
   }
-  const p = PROYECTOS.find(x=>x.id===a.proyectoId) || {cliente:'(obra no encontrada)', nro:'', usuario:null};
+  const p = proyAll(x=>x.id===a.proyectoId) || {cliente:'(obra no encontrada)', nro:'', usuario:null};
   const resp = nombreResponsable(p.usuario);
-  const ops = chipsOperariosHTML(a.operarios||[]);
+  const ops = chipsOperariosHTML(a);
   const respChip = resp ? `<span class="chip-persona">👷 ${resp}</span>` : '';
-  const horario = (h.horaDesde||h.horaHasta) ? `<span class="asig-horario">🕒 ${mostrarHora(h.horaDesde)} a ${mostrarHora(h.horaHasta)}</span>` : '';
+  const horasDia = horasEntre(h.horaDesde, h.horaHasta);
+  const horario = (h.horaDesde||h.horaHasta) ? `<span class="asig-horario">${mostrarHora(h.horaDesde)} a ${mostrarHora(h.horaHasta)}${horasDia?` <em>· ${formatHoras(horasDia)}</em>`:''}</span>` : '';
+  const nOps = (a.operarios||[]).length;
+  const metaOps = `<span class="asig-meta">${nOps ? nOps+' operario'+(nOps===1?'':'s') : 'Sin operarios'}${p.tipo?' · '+p.tipo.charAt(0).toUpperCase()+p.tipo.slice(1):''}</span>`;
+  const cerrado = p.estado==='cerrado' ? '<span class="asig-lugar" style="background:var(--redlt);color:var(--red)">Cerrado</span>' : '';
   return `
     <div class="asig-card tipo-obra" draggable="true" ondragstart="onDragStartAsignacion(event,'${a.id}','${f}')" onclick="event.stopPropagation();abrirResumen('${a.id}','${f}')">
       ${dot}${badgeNuevo}
       <div class="asig-cliente">${p.cliente}</div>
-      <div class="asig-nro">${p.nro||''}${diaTagHTML(a,f)}</div>
-      ${horario}${badgeEstado}
+      <div class="asig-nro">${p.nro||''}${a.lugar?`<span class="asig-lugar">${a.lugar}</span>`:''}${cerrado}${diaTagHTML(a,f)}</div>
+      ${p.nombre?`<div class="asig-proy" title="${(p.nombre||'').replace(/"/g,'&quot;')}">${p.nombre}</div>`:''}
+      ${horario}
+      <div class="asig-fila-estado">${badgeEstado}${metaOps}</div>
       <div class="asig-personas">${respChip}${ops}</div>
     </div>`;
 }
@@ -5989,7 +6847,7 @@ function calcularEstadisticas(fechaDesdeStr, fechaHastaStr){
       });
 
       let loginResp = a.tipo==='obra'
-        ? (PROYECTOS.find(x=>x.id===a.proyectoId)?.usuario || null)
+        ? (proyAll(x=>x.id===a.proyectoId)?.usuario || null)
         : (a.responsableId || null);
       if(loginResp){
         const nombre = nombreResponsable(loginResp) || loginResp;
@@ -6165,7 +7023,7 @@ function estadoOperarioEnFecha(operarioId, fecha, horaDesde, horaHasta){
     if((a.operarios||[]).includes(operarioId)){
       const h = horarioParaFecha(a, fecha);
       if(seSuperponen(horaDesde,horaHasta,h.horaDesde,h.horaHasta)){
-        const nombre = a.tipo==='obra' ? (PROYECTOS.find(x=>x.id===a.proyectoId)?.cliente||'otra obra') : (a.clienteServicio||'otro servicio');
+        const nombre = a.tipo==='obra' ? (proyAll(x=>x.id===a.proyectoId)?.cliente||'otra obra') : (a.clienteServicio||'otro servicio');
         return { ocupado:true, texto:`Ocupado en ${nombre} (${mostrarHora(h.horaDesde)}-${mostrarHora(h.horaHasta)})` };
       }
     }
@@ -6214,12 +7072,14 @@ function abrirModalAsignar(fecha, proyectoId, asignacionId, tipoForzado){
 
   const esObra = modalTipoActual==='obra';
   document.getElementById('ma-responsable-box').style.display = esObra ? 'flex' : 'none';
+  document.getElementById('ma-obra-lugar-field').style.display = esObra ? 'block' : 'none';
+  document.getElementById('ma-obra-lugar').value = existente?.lugar || '';
   document.getElementById('ma-servicio-cliente-field').style.display = esObra ? 'none' : 'block';
   document.getElementById('ma-servicio-desc-field').style.display = esObra ? 'none' : 'block';
   document.getElementById('ma-servicio-resp-field').style.display = esObra ? 'none' : 'block';
 
   if(esObra){
-    const p = PROYECTOS.find(x=>x.id===(proyectoId||existente?.proyectoId)) || {};
+    const p = proyAll(x=>x.id===(proyectoId||existente?.proyectoId)) || {};
     proyectoModalId = p.id || proyectoId;
     document.getElementById('ma-titulo').textContent = p.cliente || '(sin cliente)';
     document.getElementById('ma-sub').textContent = `${p.nro||''}${p.nombre?' — '+p.nombre:''}`;
@@ -6274,6 +7134,7 @@ async function guardarAsignacion(){
   if(modalTipoActual==='obra'){
     if(!proyectoModalId){ toast('Elegí una obra'); return; }
     datos.proyectoId = proyectoModalId;
+    datos.lugar = document.getElementById('ma-obra-lugar').value.trim() || null;
   } else {
     datos.clienteServicio = document.getElementById('ma-servicio-cliente').value.trim();
     datos.descripcionServicio = document.getElementById('ma-servicio-desc').value.trim();
@@ -6309,7 +7170,7 @@ async function guardarAsignacion(){
     cerrarModales();
     renderCalendario();
     const nombresNuevos = (a.operarios||[]).map(nombreOperario).join(', ') || '(sin operarios)';
-    const titulo = a.tipo==='obra' ? (PROYECTOS.find(x=>x.id===a.proyectoId)?.cliente||'este trabajo') : (a.clienteServicio||'este trabajo');
+    const titulo = a.tipo==='obra' ? (proyAll(x=>x.id===a.proyectoId)?.cliente||'este trabajo') : (a.clienteServicio||'este trabajo');
     const sinAcceso = (a.operarios||[]).filter(id=>!tieneAccesoALaApp(id)).map(nombreOperario);
     const avisoTxt = sinAcceso.length
       ? `⚠️ <b>${sinAcceso.join(', ')}</b> todavía no tiene usuario propio para entrar a la app, así que avisale por tu cuenta (WhatsApp, de palabra, etc.). Se lo podés cargar en Gestión → Operarios.`
@@ -6420,7 +7281,7 @@ async function guardarAusencia(){
       });
       try{ if(window.db) await window.db.set('planificacion_bloques', x.id, x); }catch(e){ console.warn(e); }
       avisos++;
-      const titulo = x.tipo==='obra' ? (PROYECTOS.find(p=>p.id===x.proyectoId)?.cliente||'(obra)') : (x.clienteServicio||'(servicio)');
+      const titulo = x.tipo==='obra' ? (proyAll(p=>p.id===x.proyectoId)?.cliente||'(obra)') : (x.clienteServicio||'(servicio)');
       const loginResp = loginResponsableDe(x);
       const nombreResp = loginResp ? (nombreResponsable(loginResp)||loginResp) : null;
       detalleAvisos.push({ titulo, nombreResp });
