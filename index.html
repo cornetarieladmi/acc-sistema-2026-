@@ -257,7 +257,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .gt-acc .btn-tool.sm{padding:4px 10px;font-size:11.5px}.gt-acc .gt-del{color:var(--red)}.gt-acc .gt-del:hover{border-color:var(--red);color:var(--red)}
 #scr-gestion .ad-toolbar{margin-top:2px}
 @media(max-width:640px){.gt-table td{white-space:normal}.gt-acc{flex-wrap:wrap}}
-.emp-logo-prev{border:1.5px dashed var(--border2);border-radius:var(--r);background:var(--surface);min-height:90px;display:flex;align-items:center;justify-content:center;padding:14px}.emp-logo-prev img{max-width:100%;max-height:110px}
+.emp-logo-prev{border:1.5px dashed var(--border2);border-radius:var(--r);background:repeating-conic-gradient(#e6eaf1 0% 25%,#f4f6fa 0% 50%) 50%/16px 16px;min-height:90px;display:flex;align-items:center;justify-content:center;padding:14px}.emp-logo-prev img{max-width:100%;max-height:110px}
 .stat-sub{font-size:11px;color:var(--text3);margin-top:3px}.stat-filtros{font-size:11.5px;color:rgba(255,255,255,.65);margin:0 2px 12px}
 .busq-tag{flex-shrink:0;border:none;background:var(--accentlt);color:var(--accent);font-size:11.5px;font-weight:700;border-radius:12px;padding:2px 10px;cursor:pointer;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.busq-tag:hover{background:var(--accent);color:#fff}
 .btn-act-ico{display:inline-flex;align-items:center;gap:7px}.btn-act-ico .pdf-icon{font-size:8.5px;padding:2px 5px;border-radius:4px}
@@ -467,12 +467,12 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 
 /* MAIN / SEMANAS APILADAS */
 #scr-planificacion .main{flex:1;display:flex;flex-direction:column;min-width:0}
-#scr-planificacion .cal-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;display:flex;flex-direction:column;gap:0}
+#scr-planificacion .cal-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:0 14px 14px;display:flex;flex-direction:column;gap:0}
 #scr-planificacion .cal-scroll::-webkit-scrollbar{width:7px}
 #scr-planificacion .cal-scroll::-webkit-scrollbar-track{background:transparent}
 #scr-planificacion .cal-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
 #scr-planificacion .cal-scroll::-webkit-scrollbar-thumb:hover{background:var(--accent)}
-#scr-planificacion .grilla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-shrink:0}
+#scr-planificacion .grilla-wrap{overflow:visible;flex-shrink:0;min-width:980px;margin-top:14px}
 #scr-planificacion .grilla-wrap::-webkit-scrollbar{height:7px}
 #scr-planificacion .grilla-wrap::-webkit-scrollbar-track{background:transparent}
 #scr-planificacion .grilla-wrap::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
@@ -592,7 +592,11 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 #scr-planificacion .obra-resp{font-weight:600;color:var(--text2)}
 
 /* tarjetas más grandes, con más datos */
-#scr-planificacion .day-col{height:372px}
+#scr-planificacion .day-col{height:auto;min-height:150px;padding-bottom:6px}
+#scr-planificacion .day-dow{text-transform:uppercase;font-size:10px;letter-spacing:.04em;color:var(--text2);font-weight:800;margin-right:2px}
+#scr-planificacion .grilla-encabezado{box-shadow:0 2px 6px rgba(0,0,0,.18)}
+/* todas las tarjetas del calendario con el mismo tamaño */
+#scr-planificacion .asig-card{height:242px;min-height:242px;max-height:242px}
 #scr-planificacion .asig-card{max-height:276px;padding:10px 12px 9px}
 #scr-planificacion .asig-cliente{font-size:14.5px}
 #scr-planificacion .asig-proy{margin-top:5px;font-size:11.5px;line-height:1.35;color:var(--text2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
@@ -1121,7 +1125,8 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 
     <div class="box">
       <div class="section-head" style="margin-bottom:4px">Horas y operarios</div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:12px">El técnico a cargo se lleva 5% fijo (no depende de sus horas). El 95% restante se reparte entre los demás operarios según sus horas trabajadas.</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:12px">El responsable del proyecto (a cargo) se lleva 5% fijo (no depende de sus horas). El 95% restante se reparte entre quienes hicieron el trabajo, según sus horas.</div>
+      <div id="af-op-desact" style="display:none;background:var(--amberlt);border:1.5px solid var(--amber);border-radius:8px;padding:8px 10px;margin-bottom:10px;font-size:12.5px;color:var(--amber);font-weight:600">⚠️ Las horas u operarios de esta facturación no coinciden con las OT/Informes del proyecto. <button type="button" class="btn-tool" style="margin-left:6px" onclick="recalcularDesdeOTeInformes(true)">Actualizar desde el proyecto</button></div>
       <div class="field"><label>Total horas trabajadas</label><input type="text" inputmode="decimal" id="af-horas" placeholder="0hs" oninput="calcularCostoHoraAdmin()" onblur="formatearInputHoras(this);calcularCostoHoraAdmin()"></div>
       <div style="overflow-x:auto">
         <table class="op-table"><thead><tr><th>Operario</th><th style="text-align:center">A cargo</th><th style="text-align:right">Horas</th><th style="text-align:center">%</th><th style="text-align:right">$/hora</th><th></th></tr></thead>
@@ -2350,7 +2355,7 @@ async function cargarDatos(){
       STATE.operarios = op.filter(x=>!x.eliminado);
       po.forEach(o=> PASSWORD_OVERRIDES[o.id] = o.pass);
       window._trashPr = pr.filter(x=>x.eliminado);
-      try{ const cfg = await window.db.getAll('configuracion'); const e = cfg.find(x=>x.id==='empresa'); LOGO_EMPRESA = (e && e.logo) || ''; }catch(_){}
+      try{ const cfg = await window.db.getAll('configuracion'); const e = cfg.find(x=>x.id==='empresa'); LOGO_EMPRESA = (e && e.logo) || ''; LOGO_FONDO = (e && e.logoFondo) || 'claro'; }catch(_){}
     }
   }catch(e){
     console.warn('No se pudo leer Firebase, se trabaja en memoria', e);
@@ -3993,25 +3998,47 @@ async function compartirPDF(doc, nombreArchivo){
 function limpiarNombreArchivo(s){
   return (s||'').replace(/[\/\\:*?"<>|]/g,'').replace(/\s+/g,' ').trim();
 }
+let LOGO_FONDO = 'claro';   // 'claro' = encabezado blanco (logo normal) · 'azul' = banda azul (logo claro/blanco)
 let LOGO_EMPRESA = '';   // dataURL del logo (se carga desde Gestión → Empresa)
 function pdfEncabezado(doc, subtitulo, folio, fecha){
+  // Dibuja el logo respetando sus proporciones dentro de una caja máxima, centrado verticalmente en la banda
+  const dibujarLogo = (x, bandaAlto, maxW, maxH)=>{
+    const props = doc.getImageProperties(LOGO_EMPRESA);
+    const ratio = props.width / props.height;
+    let w = maxW, h = w / ratio;
+    if(h > maxH){ h = maxH; w = h * ratio; }
+    doc.addImage(LOGO_EMPRESA, props.fileType || 'PNG', x, (bandaAlto - h)/2, w, h);
+    return w;
+  };
+  if(LOGO_EMPRESA && LOGO_FONDO !== 'azul'){
+    // Membrete claro: logo a la izquierda, datos del documento a la derecha y una línea de acento
+    try{
+      dibujarLogo(14, 27, 56, 17);
+      doc.setTextColor(92,103,121);
+      doc.setFont(undefined,'normal'); doc.setFontSize(8.5);
+      doc.text(String(subtitulo||'').toUpperCase(), 196, 10.5, {align:'right', charSpace:0.3});
+      doc.setTextColor(20,26,43);
+      doc.setFont(undefined,'bold'); doc.setFontSize(14);
+      doc.text(String(folio||''), 196, 17.5, {align:'right'});
+      doc.setTextColor(92,103,121);
+      doc.setFont(undefined,'normal'); doc.setFontSize(8.5);
+      doc.text('Fecha: ' + (fecha||'-'), 196, 23, {align:'right'});
+      doc.setFillColor(26,86,219);
+      doc.rect(0, 27.5, 210, 1.2, 'F');
+      doc.setTextColor(20,26,43);
+      return 38;
+    }catch(e){ console.warn('No se pudo dibujar el logo en el PDF', e); }
+  }
+  // Banda azul (sin logo, o logo claro sobre fondo azul)
   doc.setFillColor(26,86,219);
   doc.rect(0,0,210,26,'F');
   let xTexto = 14;
+  let conLogo = false;
   if(LOGO_EMPRESA){
-    try{
-      const props = doc.getImageProperties(LOGO_EMPRESA);
-      const ratio = props.width / props.height;
-      const ancho = Math.min(46, Math.max(14, 18 * ratio));
-      const altoReal = ancho / ratio;
-      doc.setFillColor(255,255,255);
-      doc.roundedRect(10, 3, ancho+6, 20, 2, 2, 'F');
-      doc.addImage(LOGO_EMPRESA, props.fileType || 'PNG', 13, 3 + (20-altoReal)/2, ancho, altoReal);
-      xTexto = 10 + ancho + 6 + 6;
-    }catch(e){ console.warn('No se pudo dibujar el logo en el PDF', e); xTexto = 14; }
+    try{ const w = dibujarLogo(14, 26, 46, 16); xTexto = 14 + w + 8; conLogo = true; }
+    catch(e){ console.warn('No se pudo dibujar el logo en el PDF', e); }
   }
   doc.setTextColor(255,255,255);
-  const conLogo = xTexto !== 14;
   doc.setFont(undefined,'bold'); doc.setFontSize(19);
   if(!conLogo) doc.text('A.A.C.', xTexto, 16);
   doc.setFont(undefined,'normal'); doc.setFontSize(conLogo ? 11 : 9.5);
@@ -4306,8 +4333,10 @@ function statsDeProyectoPeriodo(p, periodoValor, periodoTipo){
 function statsDeProyecto(p){
   const adminRec = STATE.administracion.find(a=>a.proyectoId===p.id);
   if(adminRec){
+    // Las horas reales son las de las OT/Informes; las de Facturación solo se usan si el proyecto no tiene horas cargadas
+    const horasReales = [...(p.ots||[]), ...(p.informes||[])].reduce((s0,it)=>s0+(it.operarios||[]).reduce((s2,o)=>s2+(Number(o.horas)||0),0),0);
     return {
-      horas: Number(adminRec.horas)||0,
+      horas: horasReales>0 ? horasReales : (Number(adminRec.horas)||0),
       operarios: (adminRec.operarios||[]).map(o=>({nombre:o.nombre||'(sin nombre)', pct:Number(o.pct)||0, horas:Number(o.horas)||0, costoHora:Number(o.costoHora)||0})),
       fuente: 'administracion',
       total: Number(adminRec.total)||0
@@ -5207,10 +5236,63 @@ function renderEmpresaBox(){
       <div class="emp-logo-prev">${LOGO_EMPRESA ? `<img src="${LOGO_EMPRESA}" alt="Logo">` : '<span style="color:var(--text3);font-size:12.5px">Todavía no cargaste un logo — los PDF usan el texto "A.A.C."</span>'}</div>
       ${puede ? `<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
         <button class="btn-tool" onclick="document.getElementById('emp-logo-input').click()">${LOGO_EMPRESA?'Cambiar logo':'Subir logo'}</button>
+        ${LOGO_EMPRESA?'<button class="btn-tool" onclick="limpiarFondoLogo()" title="Saca el fondo liso del logo para que se integre al PDF">Quitar fondo</button>':''}
         ${LOGO_EMPRESA?'<button class="btn-tool gt-del" style="color:var(--red)" onclick="quitarLogoEmpresa()">Quitar</button>':''}
         <input type="file" id="emp-logo-input" accept="image/*" style="display:none" onchange="subirLogoEmpresa(event)">
-      </div>` : '<div style="font-size:12px;color:var(--text3);margin-top:10px">Solo Administración puede cambiarlo.</div>'}
+      </div>
+      ${LOGO_EMPRESA ? `<div style="margin-top:14px;font-size:12px;color:var(--text2);font-weight:700">Encabezado del PDF</div>
+      <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+        <button class="chip ${LOGO_FONDO!=='azul'?'active':''}" onclick="cambiarFondoLogo('claro')">Blanco (logo normal)</button>
+        <button class="chip ${LOGO_FONDO==='azul'?'active':''}" onclick="cambiarFondoLogo('azul')">Banda azul (logo claro)</button>
+      </div>` : ''}` : '<div style="font-size:12px;color:var(--text3);margin-top:10px">Solo Administración puede cambiarlo.</div>'}
     </div>`;
+}
+/* Prepara el logo: lo pasa a buen tamaño, le quita el fondo liso (blanco o de color) con borde suave y recorta los márgenes vacíos */
+function prepararLogo(img, quitarFondo){
+  const esc0 = Math.min(1, 1400/img.width, 600/img.height);
+  const W = Math.max(1, Math.round(img.width*esc0)), H = Math.max(1, Math.round(img.height*esc0));
+  const c0 = document.createElement('canvas'); c0.width=W; c0.height=H;
+  const x0 = c0.getContext('2d', {willReadFrequently:true}); x0.drawImage(img,0,0,W,H);
+  const im = x0.getImageData(0,0,W,H), d = im.data;
+  if(quitarFondo){
+    // color de fondo = promedio de las 4 esquinas (solo si son parecidas entre sí y opacas)
+    const pts = [[0,0],[W-1,0],[0,H-1],[W-1,H-1]].map(([x,y])=>{ const i=(y*W+x)*4; return [d[i],d[i+1],d[i+2],d[i+3]]; });
+    const opacas = pts.every(p=>p[3]>200);
+    const bg = [0,1,2].map(k=>Math.round(pts.reduce((s,p)=>s+p[k],0)/4));
+    const dist = (i)=>Math.hypot(d[i]-bg[0], d[i+1]-bg[1], d[i+2]-bg[2]);
+    const parecidas = pts.every(p=>Math.hypot(p[0]-bg[0],p[1]-bg[1],p[2]-bg[2])<40);
+    if(opacas && parecidas){
+      const TOL = 46, quitado = new Uint8Array(W*H), cola = [];
+      const empujar = (x,y)=>{ const p=y*W+x; if(!quitado[p] && dist(p*4)<TOL){ quitado[p]=1; cola.push(p); } };
+      for(let x=0;x<W;x++){ empujar(x,0); empujar(x,H-1); }
+      for(let y=0;y<H;y++){ empujar(0,y); empujar(W-1,y); }
+      while(cola.length){
+        const p = cola.pop(), x = p%W, y = (p/W)|0;
+        if(x>0) empujar(x-1,y); if(x<W-1) empujar(x+1,y); if(y>0) empujar(x,y-1); if(y<H-1) empujar(x,y+1);
+      }
+      for(let p=0;p<W*H;p++){
+        const i=p*4;
+        if(quitado[p]){ d[i+3]=0; continue; }
+        // borde suave: los píxeles pegados al fondo, y parecidos a él, se vuelven semitransparentes
+        const x=p%W, y=(p/W)|0;
+        const toca = (x>0&&quitado[p-1])||(x<W-1&&quitado[p+1])||(y>0&&quitado[p-W])||(y<H-1&&quitado[p+W]);
+        if(toca){ const dd = dist(i); if(dd < TOL*1.9) d[i+3] = Math.round(255*Math.min(1, Math.max(0,(dd-TOL)/(TOL*0.9)))); }
+      }
+      x0.putImageData(im,0,0);
+    }
+  }
+  // recortar márgenes vacíos (transparentes o blancos)
+  let minX=W, minY=H, maxX=-1, maxY=-1;
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    const i=(y*W+x)*4;
+    const vacio = d[i+3]<12 || (d[i]>245 && d[i+1]>245 && d[i+2]>245 && d[i+3]>=12 && !quitarFondo);
+    if(!vacio){ if(x<minX)minX=x; if(x>maxX)maxX=x; if(y<minY)minY=y; if(y>maxY)maxY=y; }
+  }
+  if(maxX<0){ minX=0; minY=0; maxX=W-1; maxY=H-1; }
+  const pad = 4, sx=Math.max(0,minX-pad), sy=Math.max(0,minY-pad), sw=Math.min(W,maxX+pad+1)-sx, sh=Math.min(H,maxY+pad+1)-sy;
+  const c = document.createElement('canvas'); c.width=sw; c.height=sh;
+  c.getContext('2d').drawImage(c0,sx,sy,sw,sh,0,0,sw,sh);
+  return c.toDataURL('image/png');
 }
 function subirLogoEmpresa(ev){
   const file = (ev.target.files||[])[0];
@@ -5219,23 +5301,36 @@ function subirLogoEmpresa(ev){
   reader.onload = e=>{
     const img = new Image();
     img.onload = async ()=>{
-      const esc = Math.min(1, 480/img.width, 200/img.height);
-      const c = document.createElement('canvas');
-      c.width = Math.max(1, Math.round(img.width*esc)); c.height = Math.max(1, Math.round(img.height*esc));
-      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-      LOGO_EMPRESA = c.toDataURL('image/png');
-      await guardarEnDB('configuracion', { id:'empresa', logo: LOGO_EMPRESA });
+      LOGO_EMPRESA = prepararLogo(img, true);
+      await guardarEnDB('configuracion', { id:'empresa', logo: LOGO_EMPRESA, logoFondo: LOGO_FONDO });
       renderEmpresaBox();
-      toast('Logo guardado — ya sale en los PDF');
+      toast('Logo guardado — fondo quitado y recortado');
     };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
   ev.target.value = '';
 }
+function limpiarFondoLogo(){
+  if(!LOGO_EMPRESA) return;
+  const img = new Image();
+  img.onload = async ()=>{
+    LOGO_EMPRESA = prepararLogo(img, true);
+    await guardarEnDB('configuracion', { id:'empresa', logo: LOGO_EMPRESA, logoFondo: LOGO_FONDO });
+    renderEmpresaBox();
+    toast('Fondo del logo quitado');
+  };
+  img.src = LOGO_EMPRESA;
+}
+async function cambiarFondoLogo(v){
+  LOGO_FONDO = v;
+  await guardarEnDB('configuracion', { id:'empresa', logo: LOGO_EMPRESA, logoFondo: LOGO_FONDO });
+  renderEmpresaBox();
+  toast('Encabezado de PDF: ' + (v==='azul' ? 'banda azul' : 'blanco'));
+}
 async function quitarLogoEmpresa(){
   LOGO_EMPRESA = '';
-  await guardarEnDB('configuracion', { id:'empresa', logo:'' });
+  await guardarEnDB('configuracion', { id:'empresa', logo:'', logoFondo: LOGO_FONDO });
   renderEmpresaBox();
   toast('Logo quitado');
 }
@@ -5371,9 +5466,11 @@ function recalcularDesdeOTeInformes(avisar){
       acumulado[key] = (acumulado[key]||0) + (Number(o.horas)||0);
     });
   });
-  const tecnico = (p.ots&&p.ots[0]&&p.ots[0].tecnico) || (p.informes&&p.informes[0]&&p.informes[0].tecnico) || '';
-  af_operarios = Object.entries(acumulado).map(([nombre,horas])=>({nombre, aCargo: nombre===tecnico, horas, pct:0, costoHora:0}));
-  if(tecnico && !af_operarios.some(o=>o.nombre===tecnico)){
+  // El 5% fijo es para el RESPONSABLE del proyecto; el 95% restante, para quienes hicieron el trabajo (según sus horas).
+  const tecnico = (p.usuario ? nombreUsuario(p.usuario) : '') || (p.ots&&p.ots[0]&&p.ots[0].tecnico) || (p.informes&&p.informes[0]&&p.informes[0].tecnico) || '';
+  const nt = normalizarNombreOperario(tecnico);
+  af_operarios = Object.entries(acumulado).map(([nombre,horas])=>({nombre, aCargo: !!nt && normalizarNombreOperario(nombre)===nt, horas, pct:0, costoHora:0}));
+  if(tecnico && !af_operarios.some(o=>o.aCargo)){
     af_operarios.unshift({nombre:tecnico, aCargo:true, horas:0, pct:5, costoHora:0});
   }
   const totalHoras = Object.values(acumulado).reduce((s,h)=>s+h,0);
@@ -5398,6 +5495,21 @@ function recalcularDesdeOTeInformes(avisar){
   calcularCostoHoraAdmin();
   autocompletarTotalDesdePresupuesto(p);
   if(avisar) toast('Datos recalculados desde las OT e Informes del proyecto');
+  actualizarAvisoOperariosAdmin();
+}
+/* Avisa si los operarios/horas del proyecto cambiaron después de cargar la facturación */
+function actualizarAvisoOperariosAdmin(){
+  const box = document.getElementById('af-op-desact'); if(!box) return;
+  const p = STATE.proyectos.find(x=>x.id===document.getElementById('af-proyecto').value);
+  if(!p || !editAdminId){ box.style.display='none'; return; }
+  const horasDe = lista=>{ const m={}; lista.forEach(o=>{ const k=normalizarNombreOperario(o.nombre); if(k) m[k]=(m[k]||0)+(Number(o.horas)||0); }); Object.keys(m).forEach(k=>{ if(!(m[k]>0)) delete m[k]; }); return m; };
+  const actual = horasDe([...(p.ots||[]), ...(p.informes||[])].flatMap(it=>it.operarios||[]));
+  const guardado = horasDe(af_operarios);
+  const ks = new Set([...Object.keys(actual), ...Object.keys(guardado)]);
+  const sumActual = Object.values(actual).reduce((x,y)=>x+y,0);
+  const totalCampo = parseHorasInput(document.getElementById('af-horas'));
+  const difiere = [...ks].some(k=>Math.abs((actual[k]||0)-(guardado[k]||0))>0.01) || Math.abs(totalCampo - sumActual) > 0.01;
+  box.style.display = difiere ? 'block' : 'none';
 }
 function abrirNuevoAdmin(proyectoIdPreseleccionado){
   editAdminId = null;
@@ -5451,6 +5563,7 @@ function abrirAdmin(id){
   document.getElementById('af-enviar-btn').style.display = 'block';
   document.getElementById('af-del-btn').style.display = currentUserRol==='gerente' ? 'none' : 'block';
   renderOperariosAdmin();
+  actualizarAvisoOperariosAdmin();
   calcularCostoHoraAdmin();
   showScreen('scr-admin-form');
 }
@@ -7040,7 +7153,7 @@ function renderVistaCalendario(){
              ondragover="onDragOverDia(event,'${f}')" ondragleave="onDragLeaveDia(event,'${f}')"
              ondrop="onDropDia(event,'${f}')">
           <div class="day-head" onclick="onClickDia('${f}')">
-            <span class="day-fecha">${formatoCorto(d)}${hayIncompletas?'<span class="dot-incompleto" title="Hay entradas con datos incompletos"></span>':''}</span>
+            <span class="day-fecha"><span class="day-dow">${DIAS_NOMBRE[(d.getDay()+6)%7].slice(0,3)}</span> ${formatoCorto(d)}${hayIncompletas?'<span class="dot-incompleto" title="Hay entradas con datos incompletos"></span>':''}</span>
             ${cantTrabajo>0 ? `<span class="badge-cantidad">${cantTrabajo}</span>` : ''}${cantAusencia>0 ? `<span class="badge-ausencia">${cantAusencia}</span>` : ''}
             <button class="btn-add-dia" title="Cargar servicio o ausencia" onclick="event.stopPropagation();abrirModalTipo('${f}')">+</button>
           </div>
