@@ -819,6 +819,10 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
     <button id="pf-save-btn-top" onclick="guardarProyecto()" style="padding:6px 14px;border:none;border-radius:var(--r);background:var(--surface);color:var(--accent);font-size:13px;font-weight:800">Guardar</button>
   </div>
   <div class="content" id="pf-content">
+    <div id="pf-resp-banner" style="display:flex;align-items:center;gap:10px;background:var(--accentlt);border:1.5px solid var(--accent);border-radius:var(--r);padding:10px 12px;margin-bottom:12px">
+      <span style="font-size:22px">👷</span>
+      <div style="font-size:12px;color:var(--text2);line-height:1.3">Responsable del proyecto<b id="pf-resp-nombre" style="display:block;font-size:15px;color:var(--text)">—</b></div>
+    </div>
     <div class="box" id="pf-facturado-banner" style="display:none;background:#fef3c7;border:1.5px solid #f5c542;color:#7a4d00;font-size:12.5px;padding:12px 14px;line-height:1.5">
       🔒 Este proyecto ya fue facturado. Solo Administración puede modificarlo.
     </div>
@@ -1088,7 +1092,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
             <option value="C">Factura C</option>
           </select>
         </div>
-        <div class="field c4"><label>Costo de hora ($)</label><input type="text" id="af-costohora" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
+        <div class="field c4"><label id="af-costohora-label">Costo de hora ($)</label><input type="text" id="af-costohora" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"><div id="af-pres-nota" style="display:none;font-size:11px;color:var(--muted,#666);margin-top:4px;line-height:1.35"></div></div>
 
         <div class="field c3"><label title="Suma de (horas × índice) de cada OT/Informe del proyecto">Horas × Índice</label><input type="text" id="af-horas-ponderadas" readonly class="af-ro"></div>
         <div class="field c3"><label>Costo de horas (total)</label><input type="text" id="af-costohoras-total" readonly class="af-ro"></div>
@@ -2813,6 +2817,7 @@ function abrirNuevoProyecto(){
   pf_fotos = [];
   pf_archivos = [];
   pf_presupuestoArchivo = null;
+  mostrarResponsableProyecto(null);
   document.getElementById('pf-presupuesto-moneda').value = 'ARS';
   renderArchivoPresupuesto();
   renderOTList();
@@ -2927,11 +2932,19 @@ function abrirProyecto(id){
   document.getElementById('pf-save-btn-bottom').style.display = facturadoBloqueado ? 'none' : 'block';
   document.getElementById('pf-del-btn').style.display = (currentUserRol!=='gerente' && !facturadoBloqueado && (currentUserRol==='administracion' || p.usuario===currentUser)) ? 'block' : 'none';
   document.getElementById('pf-finalizar-btn').style.display = (currentUserRol!=='gerente' && !facturadoBloqueado && p.estado!=='cerrado') ? 'block' : 'none';
+  mostrarResponsableProyecto(p);
   onCambiaEstadoProyecto();
   actualizarAvisoNroRepetido();
   showScreen('scr-proyecto-form');
   pf_snapshotInicial = snapshotProyectoForm();
   iniciarAutoguardadoBorrador();
+}
+function mostrarResponsableProyecto(p){
+  const el = document.getElementById('pf-resp-nombre'); if(!el) return;
+  const u = p ? p.usuario : currentUser;
+  const sin = !u;
+  el.textContent = sin ? 'Sin responsable (nadie lo tomó todavía)' : (nombreUsuario(u) + (u===currentUser ? ' (vos)' : ''));
+  el.style.color = sin ? '#c0362c' : '';
 }
 function onCambiaEstadoProyecto(){
   const esPresupuesto = document.getElementById('pf-estado').value === 'presupuesto';
@@ -2950,6 +2963,7 @@ async function tomarProyecto(){
   document.getElementById('pf-estado').value = 'abierto';
   document.getElementById('pf-tomar-box').style.display = 'none';
   onCambiaEstadoProyecto();
+  mostrarResponsableProyecto(p);
   toast('Proyecto tomado — ahora sos el responsable');
 }
 function poblarSelectTransferir(actual){
@@ -4288,24 +4302,24 @@ function fechaCierreTrimestre(p, periodoTipo){
   return f && keyPeriodo(f, periodoTipo) ? f : null;
 }
 function horasTotalesPorOperario(p){
-  let st = statsDeProyecto(p);
-  if(!(st.horas>0) && !st.operarios.some(o=>Number(o.horas)>0)){
-    // El registro de Administración no tiene horas cargadas: usar las de las OT/Informes del proyecto
-    const acum = {};
-    [...(p.ots||[]), ...(p.informes||[])].forEach(it=>(it.operarios||[]).forEach(o=>{
-      const k = normalizarNombreOperario(o.nombre) || '(sin nombre)';
-      acum[k] = (acum[k]||0) + (Number(o.horas)||0);
-    }));
-    const tot = Object.values(acum).reduce((x,y)=>x+y,0);
-    return {mapa:acum, total:tot};
-  }
+  // Solo horas REALES trabajadas (OT/Informes). El 5% del responsable es un porcentaje de reparto, no suma horas.
+  const acum = {};
+  [...(p.ots||[]), ...(p.informes||[])].forEach(it=>(it.operarios||[]).forEach(o=>{
+    const k = normalizarNombreOperario(o.nombre) || '(sin nombre)';
+    acum[k] = (acum[k]||0) + (Number(o.horas)||0);
+  }));
+  let tot = Object.values(acum).reduce((x,y)=>x+y,0);
+  if(tot>0) return {mapa:acum, total:tot};
+  // Sin OT/Informes con horas: usar las horas cargadas en Facturación (solo las de quienes realmente tienen horas)
+  const st = statsDeProyecto(p);
   const m = {};
   st.operarios.forEach(o=>{
+    const h = Number(o.horas)||0; if(!(h>0)) return;
     const k = normalizarNombreOperario(o.nombre) || '(sin nombre)';
-    const h = Number(o.horas) || ((Number(o.pct)||0)/100*st.horas);
     m[k] = (m[k]||0) + h;
   });
-  return {mapa:m, total: Object.values(m).reduce((x,y)=>x+y,0) || st.horas};
+  tot = Object.values(m).reduce((x,y)=>x+y,0);
+  return {mapa:m, total:tot};
 }
 function statsDeProyectoPeriodo(p, periodoValor, periodoTipo){
   const fc = fechaCierreTrimestre(p, periodoTipo);
@@ -5380,12 +5394,7 @@ function onCambiaProyectoAdmin(){
 /* Si el proyecto tiene monto de presupuesto y el Total Facturado todavía está vacío/0, lo completa solo.
    Corre siempre (registro nuevo o ya existente) para que no haga falta salir y volver a entrar. */
 function autocompletarTotalDesdePresupuesto(p){
-  if(!p || !p.presupuestoMonto) return;
-  const actual = parseDineroInput(document.getElementById('af-total'));
-  if(actual === 0){
-    document.getElementById('af-total').value = formatDinero(p.presupuestoMonto);
-    calcularCostoHoraAdmin();
-  }
+  calcularCostoHoraAdmin();
 }
 function renderDetalleAdmin(){
   const id = document.getElementById('af-proyecto').value;
@@ -5634,10 +5643,20 @@ function calcularIvaAdmin(totalNeto){
     box.style.display = 'none';
   }
 }
+function presupuestoVigenteAdmin(){
+  const pid = document.getElementById('af-proyecto')?.value;
+  const p = pid ? STATE.proyectos.find(x=>x.id===pid) : null;
+  if(!p || !p.presupuestoMonto) return 0;
+  if(p.presupuestoMoneda && p.presupuestoMoneda!=='ARS') return 0;
+  if(editAdminId){ const r=STATE.administracion.find(x=>x.id===editAdminId); if(r && r.presupuestoIncluyeGastos===undefined) return 0; } // registros viejos no se tocan
+  return Math.round(Number(p.presupuestoMonto)||0);
+}
 function calcularCostoHoraAdmin(){
-  const costoHora = parseDineroInput(document.getElementById('af-costohora'));
+  const presupuesto = presupuestoVigenteAdmin();
+  const inpCH = document.getElementById('af-costohora');
+  let costoHora = parseDineroInput(inpCH);
   document.getElementById('af-horas-ponderadas').value = formatHorasComa(af_horasPonderadas);
-  const costoHorasTotal = Math.round(costoHora * af_horasPonderadas);
+  let costoHorasTotal = Math.round(costoHora * af_horasPonderadas);
   document.getElementById('af-costohoras-total').value = formatDinero(costoHorasTotal);
 
   const precioCombustible = parseDineroInput(document.getElementById('af-precio-combustible'));
@@ -5649,7 +5668,27 @@ function calcularCostoHoraAdmin(){
 
   const materiales = parseDineroInput(document.getElementById('af-materiales'));
   const gastos = parseDineroInput(document.getElementById('af-gastos'));
-  const total = Math.round(costoHorasTotal + traslado + materiales + gastos);
+  let total = Math.round(costoHorasTotal + traslado + materiales + gastos);
+  const nota = document.getElementById('af-pres-nota');
+  const lbl = document.getElementById('af-costohora-label');
+  if(presupuesto > 0){
+    // Con presupuesto: el total es el presupuesto y los gastos están incluidos adentro.
+    const costos = traslado + materiales + gastos;
+    const paraHoras = presupuesto - costos;
+    costoHora = (af_horasPonderadas > 0 && paraHoras > 0) ? Math.round(paraHoras / af_horasPonderadas) : 0;
+    inpCH.value = formatDinero(costoHora);
+    inpCH.readOnly = true; inpCH.classList.add('af-ro');
+    costoHorasTotal = Math.max(0, paraHoras);
+    total = presupuesto;
+    document.getElementById('af-costohoras-total').value = formatDinero(costoHorasTotal);
+    lbl.textContent = 'Valor de la hora que queda ($)';
+    nota.style.display = 'block';
+    nota.textContent = 'Presupuesto ' + formatDinero(presupuesto) + ' − gastos incluidos ' + formatDinero(costos) + ' = ' + formatDinero(Math.max(0,paraHoras)) + (af_horasPonderadas>0 ? ' ÷ ' + formatHorasComa(af_horasPonderadas) : ' (sin horas cargadas)') + (paraHoras<=0 ? ' · ¡los gastos superan el presupuesto!' : '');
+  } else {
+    inpCH.readOnly = false; inpCH.classList.remove('af-ro');
+    lbl.textContent = 'Costo de hora ($)';
+    nota.style.display = 'none';
+  }
   document.getElementById('af-total').value = formatDinero(total);
 
   const descuentoPct = Math.min(100, Math.max(0, parseFloat((document.getElementById('af-descuento').value||'0').replace(',','.')) || 0));
@@ -5704,6 +5743,7 @@ async function guardarAdmin(){
   obj.nrofact = document.getElementById('af-nrofact').value;
   obj.tipoFactura = document.getElementById('af-tipo-factura').value;
   obj.costoHora = parseDineroInput(document.getElementById('af-costohora'));
+  obj.presupuestoIncluyeGastos = presupuestoVigenteAdmin() > 0;
   obj.horasPonderadas = af_horasPonderadas;
   obj.precioCombustible = parseDineroInput(document.getElementById('af-precio-combustible'));
   obj.costoKm = Math.round(obj.precioCombustible / 4);
@@ -5714,6 +5754,11 @@ async function guardarAdmin(){
   obj.horas = parseHorasInput(document.getElementById('af-horas'));
   obj.costoHorasTotal = Math.round(obj.costoHora * af_horasPonderadas);
   obj.total = Math.round(obj.costoHorasTotal + obj.traslado + obj.materiales + obj.gastos);
+  if(obj.presupuestoIncluyeGastos){
+    const pres = presupuestoVigenteAdmin();
+    obj.total = pres;
+    obj.costoHorasTotal = Math.max(0, pres - obj.traslado - obj.materiales - obj.gastos);
+  }
   obj.descuentoPct = Math.min(100, Math.max(0, parseFloat((document.getElementById('af-descuento').value||'0').replace(',','.')) || 0));
   obj.totalNeto = Math.round(obj.total * (1 - obj.descuentoPct/100));
   obj.iva = obj.tipoFactura==='A' ? Math.round(obj.totalNeto * 0.21) : 0;
