@@ -282,6 +282,12 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .toast.show{opacity:1}
 .chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .chip{padding:6px 13px;border-radius:20px;font-size:12.5px;font-weight:600;border:1.5px solid var(--border2);background:var(--surface);color:var(--text2)}
+.pu-box{display:flex;align-items:center;gap:8px;width:max-content;max-width:100%;margin:2px 0 12px;padding:0 6px 0 12px;background:var(--surface);border:1.5px solid var(--border2);border-radius:22px;position:relative}
+.pu-box .pu-ico{flex:none}
+.pu-select{appearance:none;-webkit-appearance:none;border:none;background:transparent;color:var(--text);font-size:13.5px;font-weight:700;padding:9px 30px 9px 0;min-width:170px;outline:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2364708a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.pu-box:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(47,109,246,.2)}
+#py-scope .chip-select{padding:6px 28px 6px 13px}
+#py-scope .chip-select.activo{border-color:var(--accent);color:var(--accent2);font-weight:800}
 .chip-select{width:auto;padding:8px 30px 8px 13px;border-radius:20px;font-size:12.5px;font-weight:600;border:1.5px solid var(--border2);background:var(--surface);color:var(--text2);margin-bottom:12px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235c6779' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
 .chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
 #st-scope-filters .chip-select{margin-bottom:0;padding:6px 28px 6px 13px}
@@ -380,7 +386,12 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 #pf-content.pf-readonly select{pointer-events:none;background:var(--bg);opacity:.75}
 #pf-content.pf-readonly .pf-edit-action{display:none !important}
 .foto-thumb{position:relative;width:64px;height:64px;border-radius:8px;overflow:hidden;border:1.5px solid var(--border)}
-.foto-thumb img{width:100%;height:100%;object-fit:cover}
+.foto-thumb img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
+#visor-foto{position:fixed;inset:0;z-index:99999;background:rgba(5,10,25,.94);display:none;align-items:center;justify-content:center;flex-direction:column;padding:14px}
+#visor-foto.open{display:flex}
+#visor-foto img{max-width:100%;max-height:82vh;object-fit:contain;border-radius:8px}
+#visor-foto .vf-bar{display:flex;gap:10px;margin-top:12px}
+#visor-foto .vf-bar button,#visor-foto .vf-bar a{background:#fff;color:#141a2b;border:none;border-radius:10px;padding:10px 16px;font-weight:700;font-size:14px;text-decoration:none}
 .foto-thumb button{position:absolute;top:2px;right:2px;background:rgba(192,54,44,0.9);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;line-height:1}
 .firma-canvas{width:100%;height:150px;border:1.5px dashed var(--border2);border-radius:var(--r);background:var(--surface);touch-action:none;display:block}
 .pend-tag{font-size:10px;font-weight:700;color:#fff;background:#7a2620;padding:2px 7px;border-radius:10px;margin-left:6px}
@@ -731,6 +742,10 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 <body>
 
 <!-- LOGIN -->
+<div id="visor-foto" onclick="if(event.target===this)cerrarVisorFoto()">
+  <img id="visor-foto-img" alt="">
+  <div class="vf-bar"><a id="visor-foto-dl" download="foto.jpg">⬇ Descargar</a><button type="button" onclick="cerrarVisorFoto()">Cerrar</button></div>
+</div>
 <div class="screen active" id="scr-login">
   <div class="login-glow login-glow-1"></div>
   <div class="login-glow login-glow-2"></div>
@@ -741,12 +756,13 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
       <div class="login-sub">Proyectos · OT · Informes · Administración</div>
     </div>
     <div class="login-body">
-      <div class="field"><label>Usuario</label><input type="text" id="lg-user" placeholder="Usuario" autocomplete="username" onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('lg-pass').focus();}"></div>
+      <datalist id="lg-recordados"></datalist>
+      <div class="field"><label>Usuario</label><input type="text" id="lg-user" name="username" placeholder="Usuario" list="lg-recordados" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" onkeydown="if(event.key==='Enter'){event.preventDefault();loginIrAPass();}"></div>
       <div class="field">
         <label>Contraseña</label>
         <div style="position:relative">
-          <input type="password" id="lg-pass" placeholder="••••••••" autocomplete="current-password" style="padding-right:44px" onkeydown="if(event.key==='Enter'){event.preventDefault();hacerLogin();}">
-          <button type="button" onclick="toggleVerPassword()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;padding:6px;color:var(--text3)">👁️</button>
+          <input type="password" id="lg-pass" name="password" placeholder="••••••••" autocomplete="current-password" enterkeyhint="go" style="padding-right:44px" onkeydown="if(event.key==='Enter'){event.preventDefault();hacerLogin();}">
+          <button type="button" tabindex="-1" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="toggleVerPassword()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;padding:6px;color:var(--text3)">👁️</button>
         </div>
       </div>
       <div class="err" id="lg-err"></div>
@@ -1103,6 +1119,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="field c3"><label>Traslado ($)</label><input type="text" id="af-traslado" readonly class="af-ro"></div>
         <div class="field c3"><label>Materiales ($)</label><input type="text" id="af-materiales" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
         <div class="field c3"><label>Otros gastos ($)</label><input type="text" id="af-gastos" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()"></div>
+        <div class="field" style="grid-column:1/-1"><label style="display:flex;align-items:center;gap:8px;font-weight:700;text-transform:none;letter-spacing:0"><input type="checkbox" id="af-pdf-mostrar-gastos" style="width:auto"> Mostrar materiales y otros gastos en el PDF <span style="font-weight:500;color:var(--text2);font-size:11.5px">(proyectos bajo presupuesto)</span></label></div>
 
         <div class="field c5"><label>Total facturado ($)</label><input type="text" id="af-total" readonly class="af-ro af-big"></div>
         <div class="field c2"><label>Descuento (%)</label><input type="text" id="af-descuento" inputmode="decimal" placeholder="0" oninput="calcularCostoHoraAdmin()"></div>
@@ -1497,6 +1514,11 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
       <div id="ma-findes" style="display:none">
         <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text2);margin-bottom:8px">Este rango incluye sábado y/o domingo</label>
         <div id="ma-findes-lista"></div>
+      </div>
+      <div id="ma-alcance" style="display:none;background:var(--accentlt);border:1.5px solid var(--accent);border-radius:var(--r);padding:10px 12px;margin-bottom:12px;font-size:13px">
+        <div style="font-weight:800;margin-bottom:6px">¿A qué días aplican los cambios?</div>
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><input type="radio" name="ma-alcance-r" value="dia" checked onchange="setAlcanceAsignacion('dia')"> <span>Solo el <b id="ma-alcance-fecha">día elegido</b></span></label>
+        <label style="display:flex;align-items:center;gap:8px"><input type="radio" name="ma-alcance-r" value="todos" onchange="setAlcanceAsignacion('todos')"> <span>Todos los días del proyecto (<span id="ma-alcance-n"></span>)</span></label>
       </div>
       <div class="grupo-personas">
         <h4>Operarios <span style="color:var(--red)">*</span> (obligatorio)</h4>
@@ -2175,6 +2197,20 @@ function habilitarEnterEntreCampos(selector){
 ['#pf-content', '#af-content', '#modal-item-sheet', '#modal-cliente-sheet', '#modal-equipo-sheet', '#modal-usuario-sheet', '#modal-password-sheet', '#modal-operario-sheet'].forEach(habilitarEnterEntreCampos);
 
 /* ==================== LOGIN ==================== */
+/* Memoria de usuarios: solo se guardan los que ingresaron bien (nunca los intentos con error) */
+function usuariosRecordados(){ try{ return JSON.parse(localStorage.getItem('login_usuarios_ok')||'[]'); }catch(e){ return []; } }
+function recordarUsuarioLogin(u){
+  try{ const l = usuariosRecordados().filter(x=>x.toLowerCase()!==u.toLowerCase()); l.unshift(u); localStorage.setItem('login_usuarios_ok', JSON.stringify(l.slice(0,8))); }catch(e){}
+}
+function cargarUsuariosRecordados(){
+  const l = usuariosRecordados();
+  const dl = document.getElementById('lg-recordados'); if(dl) dl.innerHTML = l.map(u=>`<option value="${u.replace(/"/g,'&quot;')}"></option>`).join('');
+  const inp = document.getElementById('lg-user'); if(inp && !inp.value && l[0]) inp.value = l[0];
+}
+function loginIrAPass(){
+  // Se pasa el foco después de que el teclado termina de procesar el "Siguiente", si no el teclado lo cierra
+  setTimeout(()=>{ const c=document.getElementById('lg-pass'); c.focus({preventScroll:true}); const n=c.value.length; try{c.setSelectionRange(n,n);}catch(e){} }, 60);
+}
 function toggleVerPassword(){
   const campo = document.getElementById('lg-pass');
   campo.type = campo.type === 'password' ? 'text' : 'password';
@@ -2196,6 +2232,7 @@ async function hacerLogin(){
   }
   if(!cuenta || cuenta.pass !== p){ err.textContent = 'Usuario o contraseña incorrectos.'; return; }
   err.textContent = '';
+  recordarUsuarioLogin(cuenta.usuario || u);
   currentUser = u;
   currentUserRol = cuenta.rol;
   currentOperarioId = cuenta.rol==='operario' ? cuenta.operarioId : null;
@@ -2333,6 +2370,7 @@ function ejecutarCierreSesion(){
   document.getElementById('nav-gestion').style.display = 'none';
   document.getElementById('lg-user').value = '';
   document.getElementById('lg-pass').value = '';
+  cargarUsuariosRecordados();
   document.getElementById('lg-err').textContent = '';
   showScreen('scr-login');
 }
@@ -2502,6 +2540,13 @@ function irA(seccion){
 
 /* ==================== PROYECTOS ==================== */
 let py_scope = 'mios';
+let py_usuario = '';
+function usuariosConProyectos(){ return [...new Set(STATE.proyectos.map(p=>p.usuario).filter(Boolean))].sort((x,y)=>nombreUsuario(x).localeCompare(nombreUsuario(y))); }
+function selectUsuarioProyectosHTML(){
+  const us = usuariosConProyectos();
+  return `<select class="chip-select py-chip-usr ${py_usuario?'activo':''}" style="margin-bottom:0" onchange="py_usuario=this.value;renderProyectos()"><option value="" ${!py_usuario?'selected':''}>Usuario: todos</option>${us.map(u=>`<option value="${u}" ${u===py_usuario?'selected':''}>${nombreUsuario(u)} (${STATE.proyectos.filter(p=>p.usuario===u).length})</option>`).join('')}</select>`;
+}
+function veTodosLosProyectos(){ return currentUserRol==='administracion' || currentUserRol==='gerente'; }
 let py_filtroEstado = 'todos';
 function tieneAdmin(proyectoId){ return STATE.administracion.some(a=>a.proyectoId===proyectoId); }
 function proyectoFacturado(proyectoId){
@@ -2540,10 +2585,14 @@ function renderProyectos(filtroTexto){
   const solicitadosCount = STATE.proyectos.filter(p=>p.estado==='solicitado').length;
   document.getElementById('py-scope').innerHTML = `
     <button class="chip ${py_scope==='mios'?'active':''}" onclick="py_scope='mios';renderProyectos()">Mis proyectos</button>
-    <button class="chip ${py_scope==='todos'?'active':''}" onclick="py_scope='todos';renderProyectos()">Todos</button>
+    ${veTodosLosProyectos()?`<button class="chip ${py_scope==='todos'?'active':''}" onclick="py_scope='todos';renderProyectos()">Todos</button>${py_scope==='todos'?selectUsuarioProyectosHTML():''}`:''}
     <button class="chip ${py_scope==='solicitados'?'active':''}" onclick="py_scope='solicitados';renderProyectos()">Solicitados${solicitadosCount?' ('+solicitadosCount+')':''}</button>`;
 
+  if(!veTodosLosProyectos() && py_scope==='todos') py_scope = 'mios';
+  if(py_scope==='usuario') py_scope = 'todos';
   let lista;
+  const selUsr = document.getElementById('py-usuario-box');
+  if(selUsr) selUsr.remove();
   if(py_scope==='mios'){
     document.getElementById('py-title').textContent = 'Mis Proyectos';
     lista = STATE.proyectos.filter(p=>p.usuario===currentUser);
@@ -2573,9 +2622,11 @@ function renderProyectos(filtroTexto){
     lista = STATE.proyectos.filter(p=>p.estado==='solicitado').slice().sort((a,b)=>(b.fechaCreacion||0)-(a.fechaCreacion||0));
     document.getElementById('py-count').textContent = lista.length + ' sin responsable';
   } else {
-    document.getElementById('py-title').textContent = 'Todos los Proyectos';
-    lista = STATE.proyectos.slice().sort((a,b)=> (b.fechaCreacion||0) - (a.fechaCreacion||0));
-    document.getElementById('py-count').textContent = lista.length + ' proyecto' + (lista.length===1?'':'s') + ' en total';
+    const us = usuariosConProyectos();
+    if(py_usuario && !us.includes(py_usuario)) py_usuario = '';
+    document.getElementById('py-title').textContent = py_usuario ? 'Proyectos de ' + nombreUsuario(py_usuario) : 'Todos los Proyectos';
+    lista = STATE.proyectos.filter(p=>!py_usuario || p.usuario===py_usuario).sort((x,y)=> (y.fechaCreacion||0) - (x.fechaCreacion||0));
+    document.getElementById('py-count').textContent = lista.length + ' proyecto' + (lista.length===1?'':'s') + (py_usuario?'':' en total');
   }
   if(filtroTexto) lista = lista.filter(p=>
     (p.nombre||'').toLowerCase().includes(filtroTexto) ||
@@ -2939,6 +2990,11 @@ function abrirProyecto(id){
   pf_snapshotInicial = snapshotProyectoForm();
   iniciarAutoguardadoBorrador();
 }
+function tecnicoResponsable(p, fallback){
+  // Siempre el responsable ORIGINAL del proyecto, no quien lo está mirando
+  if(p && p.usuario) return nombreUsuario(p.usuario);
+  return fallback || '';
+}
 function mostrarResponsableProyecto(p){
   const el = document.getElementById('pf-resp-nombre'); if(!el) return;
   const u = p ? p.usuario : currentUser;
@@ -3274,7 +3330,7 @@ function renderOTList(){
       return `<tr onclick="abrirModalItem('ot','${o.id}')">
         <td class="mono">${o.fecha||'sin fecha'}</td>
         <td class="pf-wrap">${equipos}</td>
-        <td class="hide-m">${o.tecnico||'<span style="color:var(--text3)">—</span>'}</td>
+        <td class="hide-m">${tecnicoResponsable(STATE.proyectos.find(x=>x.id===editProyectoId), o.tecnico)||'<span style="color:var(--text3)">—</span>'}</td>
         <td class="hide-m">${pfNombresOperarios(o.operarios)}</td>
         <td class="num mono">${horas?formatHoras(horas):'—'}</td>
         <td>${pfAcciones('ot', o.id, 'pf_ots')}</td></tr>`;
@@ -3435,7 +3491,8 @@ function abrirModalItem(tipo, id){
   document.getElementById('item-traslado-km-admin-box').style.display = 'block';
 
   document.getElementById('item-fecha').value = it?.fecha || hoyDMY();
-  document.getElementById('item-tecnico').value = currentUserRol==='administracion' ? (it?.tecnico || '') : nombreUsuario(currentUser);
+  { const pTec = editProyectoId ? STATE.proyectos.find(x=>x.id===editProyectoId) : null;
+    document.getElementById('item-tecnico').value = pTec ? tecnicoResponsable(pTec, it?.tecnico) : (it?.tecnico || (currentUserRol==='administracion' ? '' : nombreUsuario(currentUser))); }
   document.getElementById('item-equipo-input').value = '';
   document.getElementById('item-requerimiento').value = it?.requerimiento || ''; rtCargar('item-requerimiento', it?.requerimientoHtml);
   document.getElementById('item-trabajo').value = it?.trabajo || ''; rtCargar('item-trabajo', it?.trabajoHtml);
@@ -3708,11 +3765,25 @@ function manejarFotos(event, cual){
   });
   event.target.value = '';
 }
+function verFoto(src){
+  const v = document.getElementById('visor-foto');
+  document.getElementById('visor-foto-img').src = src;
+  document.getElementById('visor-foto-dl').href = src;
+  v.classList.add('open');
+}
+function cerrarVisorFoto(){ document.getElementById('visor-foto').classList.remove('open'); document.getElementById('visor-foto-img').src=''; }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') cerrarVisorFoto(); });
+function puedeQuitarAdjuntos(){
+  if(currentUserRol==='gerente') return false;
+  if(currentUserRol==='administracion') return true;
+  const p = editProyectoId ? STATE.proyectos.find(x=>x.id===editProyectoId) : null;
+  return !p || !p.usuario || p.usuario===currentUser;
+}
 function renderFotos(cual){
   const destino = cual==='inicio' ? item_fotosInicio : item_fotosFin;
   const cont = document.getElementById('item-fotos-'+cual);
   cont.innerHTML = destino.map((src,i)=>`
-    <div class="foto-thumb"><img src="${src}"><button onclick="(${cual==='inicio'?'item_fotosInicio':'item_fotosFin'}).splice(${i},1);renderFotos('${cual}')">✕</button></div>
+    <div class="foto-thumb"><img src="${src}" onclick="verFoto(this.src)">${puedeQuitarAdjuntos()?`<button onclick="(${cual==='inicio'?'item_fotosInicio':'item_fotosFin'}).splice(${i},1);renderFotos('${cual}')">✕</button>`:''}</div>
   `).join('');
 }
 
@@ -3760,7 +3831,7 @@ function renderArchivosItem(){
       <span class="archivo-icono">${iconoArchivo(a.tipo,a.nombre)}</span>
       <span class="archivo-nombre" onclick="descargarArchivoAdjunto(item_archivos[${i}].data, item_archivos[${i}].nombre)" title="Descargar">${a.nombre}</span>
       <span class="archivo-tam">${formatTamano(a.tamano)}</span>
-      <button class="mini-del" type="button" onclick="item_archivos.splice(${i},1);renderArchivosItem()">✕</button>
+      ${puedeQuitarAdjuntos()?`<button class="mini-del" type="button" onclick="item_archivos.splice(${i},1);renderArchivosItem()">✕</button>`:''}
     </div>`).join('') || `<div style="font-size:12px;color:var(--text3);margin-bottom:6px">Sin archivos adjuntos.</div>`;
 }
 
@@ -3859,7 +3930,7 @@ function renderFotosProyecto(){
   const cont = document.getElementById('pf-fotos-grid');
   if(!cont) return;
   cont.innerHTML = pf_fotos.map((src,i)=>`
-    <div class="foto-thumb"><img src="${src}"><button onclick="pf_fotos.splice(${i},1);renderFotosProyecto()">✕</button></div>
+    <div class="foto-thumb"><img src="${src}" onclick="verFoto(this.src)">${puedeQuitarAdjuntos()?`<button onclick="pf_fotos.splice(${i},1);renderFotosProyecto()">✕</button>`:''}</div>
   `).join('');
 }
 function manejarArchivosProyecto(event){
@@ -3875,7 +3946,7 @@ function renderArchivosProyecto(){
       <span class="archivo-icono">${iconoArchivo(a.tipo,a.nombre)}</span>
       <span class="archivo-nombre" onclick="descargarArchivoAdjunto(pf_archivos[${i}].data, pf_archivos[${i}].nombre)" title="Descargar">${a.nombre}</span>
       <span class="archivo-tam">${formatTamano(a.tamano)}</span>
-      <button class="mini-del" type="button" onclick="pf_archivos.splice(${i},1);renderArchivosProyecto()">✕</button>
+      ${puedeQuitarAdjuntos()?`<button class="mini-del" type="button" onclick="pf_archivos.splice(${i},1);renderArchivosProyecto()">✕</button>`:''}
     </div>`).join('') || `<div style="font-size:12px;color:var(--text3);margin-bottom:6px">Sin archivos adjuntos.</div>`;
 }
 
@@ -4140,7 +4211,7 @@ function exportarPdfItem(tipo, id, accion){
 
   // 3. Técnico y operarios
   y = pdfSeccion(doc, y, 3, 'Técnico y horarios');
-  y = pdfFila(doc, y, 'Técnico responsable', it.tecnico);
+  y = pdfFila(doc, y, 'Técnico responsable', tecnicoResponsable(proyecto, it.tecnico));
   if((it.operarios||[]).length){
     it.operarios.forEach(o=>{
       y = pdfFila(doc, y, o.nombre||'Operario', `${o.desde||'--'} a ${o.hasta||'--'} (${formatHoras(o.horas)})`);
@@ -4218,7 +4289,7 @@ function exportarPdfItem(tipo, id, accion){
       doc.setFont(undefined,'normal'); doc.setTextColor(20,26,43);
       y += 6;
       const horasOt = (o.operarios||[]).reduce((s,op)=>s+(Number(op.horas)||0),0);
-      y = pdfFila(doc, y, 'Técnico responsable', o.tecnico);
+      y = pdfFila(doc, y, 'Técnico responsable', tecnicoResponsable(proyecto, o.tecnico));
       y = pdfFila(doc, y, 'Equipo / Sistema', (o.equipos||[]).map(e=>e.nombre).join(', '));
       y = pdfFila(doc, y, 'Horas totales', formatHoras(horasOt));
       y = pdfFila(doc, y, 'Trabajo realizado', o.trabajo);
@@ -4235,7 +4306,7 @@ function exportarPdfItem(tipo, id, accion){
       doc.setFont(undefined,'normal'); doc.setTextColor(20,26,43);
       y += 6;
       const horasInf = (inf.operarios||[]).reduce((s,op)=>s+(Number(op.horas)||0),0);
-      y = pdfFila(doc, y, 'Técnico responsable', inf.tecnico);
+      y = pdfFila(doc, y, 'Técnico responsable', tecnicoResponsable(proyecto, inf.tecnico));
       y = pdfFila(doc, y, 'Horas totales', formatHoras(horasInf));
       y = pdfFila(doc, y, 'Trabajo realizado', inf.trabajo);
       y += 3;
@@ -4377,6 +4448,47 @@ function toggleStatProyecto(id){
   if(st_expandido.has(id)) st_expandido.delete(id); else st_expandido.add(id);
   renderStats();
 }
+
+/* ===== Gastos y materiales (de las OT/Informes) por cliente y por obra, respetando los filtros de Estadísticas ===== */
+let st_selGastos = new Set();
+function gastosDeProyecto(p){
+  let items = [...(p.ots||[]), ...(p.informes||[])];
+  if(st_periodoValor) items = items.filter(it=>keyPeriodo(it.fecha, st_periodoTipo)===st_periodoValor);
+  const mat = items.reduce((s,it)=>s+(it.materiales||[]).reduce((s2,m)=>s2+(Number(m.cantidad)||0)*(Number(m.precio)||0),0),0);
+  const otros = items.reduce((s,it)=>s+(it.gastos||[]).reduce((s2,g)=>s2+(Number(g.costo)||0),0),0);
+  return {mat, otros, tot: mat+otros};
+}
+function stToggleGasto(id, chk){ if(chk) st_selGastos.add(id); else st_selGastos.delete(id); renderStats(); }
+function stLimpiarSelGastos(){ st_selGastos.clear(); renderStats(); }
+function htmlGastosStats(porProyecto){
+  const filas = porProyecto.map(({p})=>({p, g:gastosDeProyecto(p)})).filter(x=>x.g.tot>0);
+  const sel = filas.filter(x=>st_selGastos.has(x.p.id));
+  const base = sel.length ? sel : filas;
+  const suma = lista=>lista.reduce((t,x)=>({mat:t.mat+x.g.mat, otros:t.otros+x.g.otros, tot:t.tot+x.g.tot}), {mat:0,otros:0,tot:0});
+  const T = suma(base);
+  const porCli = {};
+  base.forEach(x=>{ const c = x.p.cliente||'(sin cliente)'; (porCli[c] = porCli[c]||[]).push(x); });
+  const cliHTML = Object.entries(porCli).map(([c,l])=>({c, n:l.length, t:suma(l)})).sort((a,b)=>b.t.tot-a.t.tot).map(r=>
+    `<tr><td>${r.c}<div style="font-size:10.5px;color:var(--text2)">${r.n} obra${r.n===1?'':'s'}</div></td><td style="text-align:right">${formatDinero(r.t.mat)}</td><td style="text-align:right">${formatDinero(r.t.otros)}</td><td style="text-align:right"><b>${formatDinero(r.t.tot)}</b></td></tr>`).join('');
+  const obrasHTML = filas.slice().sort((a,b)=>b.g.tot-a.g.tot).map(x=>
+    `<tr><td style="width:28px"><input type="checkbox" ${st_selGastos.has(x.p.id)?'checked':''} onchange="stToggleGasto('${x.p.id}',this.checked)"></td><td><span onclick="abrirProyecto('${x.p.id}')" style="cursor:pointer"><b>${x.p.nro||''}</b> ${x.p.cliente||''}<div style="font-size:10.5px;color:var(--text2)">${x.p.nombre||''}</div></span></td><td style="text-align:right">${formatDinero(x.g.mat)}</td><td style="text-align:right">${formatDinero(x.g.otros)}</td><td style="text-align:right"><b>${formatDinero(x.g.tot)}</b></td></tr>`).join('');
+  const titulo = sel.length ? `Seleccionadas (${sel.length} obra${sel.length===1?'':'s'})` : `Todas las obras filtradas (${filas.length})`;
+  return `<div class="box">
+    <div class="section-head" style="margin-bottom:4px">Gastos y materiales por cliente / obra${st_periodoValor?' — '+formatPeriodoLabel(st_periodoValor, st_periodoTipo):''}</div>
+    <div style="font-size:11.5px;color:var(--text2);margin-bottom:10px">Sale de los materiales y otros gastos cargados en las OT e Informes. Usá los filtros de arriba (cliente en el buscador, período, usuario) o tildá obras puntuales para sumarlas.</div>
+    <div class="stat-grid" style="margin-bottom:10px">
+      <div class="stat-card"><div class="num" style="font-size:18px">${formatDinero(T.mat)}</div><div class="lbl">Materiales</div></div>
+      <div class="stat-card"><div class="num" style="font-size:18px">${formatDinero(T.otros)}</div><div class="lbl">Otros gastos</div></div>
+      <div class="stat-card" style="grid-column:1/-1"><div class="num" style="font-size:20px">${formatDinero(T.tot)}</div><div class="lbl">Total — ${titulo}</div></div>
+    </div>
+    ${filas.length ? `
+    <div style="font-weight:800;font-size:12.5px;margin:6px 0">Por cliente</div>
+    <div class="ad-table-wrap"><table class="ad-table"><thead><tr><th>Cliente</th><th>Materiales</th><th>Otros</th><th>Total</th></tr></thead><tbody>${cliHTML}</tbody></table></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:12px 0 6px"><span style="font-weight:800;font-size:12.5px">Por obra</span>${sel.length?`<button class="chip" onclick="stLimpiarSelGastos()">Quitar selección</button>`:''}</div>
+    <div class="ad-table-wrap"><table class="ad-table"><thead><tr><th></th><th>Obra</th><th>Materiales</th><th>Otros</th><th>Total</th></tr></thead><tbody>${obrasHTML}</tbody></table></div>`
+    : `<div class="empty" style="padding:14px 10px">No hay gastos ni materiales cargados en las obras filtradas.</div>`}
+  </div>`;
+}
 function renderStats(filtroTexto){
   filtroTexto = busquedaEfectiva('st', (filtroTexto!==undefined ? filtroTexto : (document.getElementById('st-search')?.value||'')));
 
@@ -4479,7 +4591,7 @@ function renderStats(filtroTexto){
       ${filasOperariosPeriodo || `<div class="empty" style="padding:20px 10px">No hay horas cargadas con fecha todavía.</div>`}
     </div>`;
 
-  if(currentUserRol==='administracion'){
+  if(currentUserRol==='administracion' || currentUserRol==='gerente'){
     const idsEnScope = new Set(lista.map(p=>p.id));
     const adminEnPeriodo = STATE.administracion.filter(a=>{
       if(!idsEnScope.has(a.proyectoId)) return false;
@@ -4551,7 +4663,7 @@ function renderStats(filtroTexto){
     </div>`;
   }
 
-  const mostrarFacturado = currentUserRol==='administracion';
+  const mostrarFacturado = currentUserRol==='administracion' || currentUserRol==='gerente';
   if(st_ordenCol){
     porProyecto.sort((x,y)=>{
       const va = stValorColumna(x, st_ordenCol), vb = stValorColumna(y, st_ordenCol);
@@ -4567,6 +4679,7 @@ function renderStats(filtroTexto){
     const flecha = st_ordenCol===key ? (st_ordenDir==='asc' ? ' ↑' : ' ↓') : '';
     return `<th onclick="stOrdenarPor('${key}')">${col?col.label:key}${flecha}</th>`;
   }).join('');
+  html += htmlGastosStats(porProyecto);
   html += `<div class="section-head" style="margin:16px 0 10px;color:#fff">Detalle por proyecto</div>`;
   if(porProyecto.length===0){
     html += `<div class="empty" style="padding:30px 10px">No hay proyectos para mostrar.</div>`;
@@ -4613,7 +4726,7 @@ function stCeldaHTML(p, stats, key){
   if(key==='ots') return (p.ots||[]).length;
   if(key==='informes') return (p.informes||[]).length;
   if(key==='horas') return formatHoras(stats.horas);
-  if(key==='total') return (currentUserRol==='administracion' && stats.fuente==='administracion') ? formatDinero(stats.total) : '—';
+  if(key==='total') return ((currentUserRol==='administracion' || currentUserRol==='gerente') && stats.fuente==='administracion') ? formatDinero(stats.total) : '—';
   return '';
 }
 
@@ -5530,6 +5643,7 @@ function abrirNuevoAdmin(proyectoIdPreseleccionado){
   ['af-nrofact','af-obs','af-monto-pagado'].forEach(id=>document.getElementById(id).value='');
   ['af-freq','af-fejec','af-ffact','af-fpago'].forEach(id=>document.getElementById(id).value=hoyDMY());
   document.getElementById('af-tipo-factura').value = '';
+  document.getElementById('af-pdf-mostrar-gastos').checked = false;
   ['af-costohora','af-costohoras-total','af-horas-ponderadas','af-precio-combustible','af-costo-km','af-km-traslado','af-total','af-traslado','af-materiales','af-gastos','af-horas','af-descuento'].forEach(id=>document.getElementById(id).value='');
   onCambiaProyectoAdmin();
   document.getElementById('af-pdf-btn').style.display = 'none';
@@ -5565,6 +5679,7 @@ function abrirAdmin(id){
   document.getElementById('af-traslado').value = a.traslado ? formatDinero(a.traslado) : '';
   document.getElementById('af-materiales').value = a.materiales ? formatDinero(a.materiales) : '';
   document.getElementById('af-gastos').value = a.gastos ? formatDinero(a.gastos) : '';
+  document.getElementById('af-pdf-mostrar-gastos').checked = !!a.pdfMostrarGastos;
   document.getElementById('af-horas').value = a.horas ? formatHorasComa(a.horas) : '';
   document.getElementById('af-obs').value = a.obs||'';
   autocompletarTotalDesdePresupuesto(p);
@@ -5744,6 +5859,7 @@ async function guardarAdmin(){
   obj.tipoFactura = document.getElementById('af-tipo-factura').value;
   obj.costoHora = parseDineroInput(document.getElementById('af-costohora'));
   obj.presupuestoIncluyeGastos = presupuestoVigenteAdmin() > 0;
+  obj.pdfMostrarGastos = document.getElementById('af-pdf-mostrar-gastos').checked;
   obj.horasPonderadas = af_horasPonderadas;
   obj.precioCombustible = parseDineroInput(document.getElementById('af-precio-combustible'));
   obj.costoKm = Math.round(obj.precioCombustible / 4);
@@ -5784,7 +5900,7 @@ function exportarPdfAdmin(accion){
   const items = [...((p&&p.ots)||[]), ...((p&&p.informes)||[])];
   const equipos = [...new Set(items.flatMap(it=>(it.equipos||[]).map(e=>e.nombre)))].join(', ');
   const requerimiento = (p&&p.requerimiento) || (p&&p.ots&&p.ots.find(o=>o.requerimiento)?.requerimiento) || '';
-  const responsable = (p&&p.ots&&p.ots[0]&&p.ots[0].tecnico) || (p&&p.informes&&p.informes[0]&&p.informes[0].tecnico) || '';
+  const responsable = (p&&p.usuario ? nombreUsuario(p.usuario) : '') || (p&&p.ots&&p.ots[0]&&p.ots[0].tecnico) || (p&&p.informes&&p.informes[0]&&p.informes[0].tecnico) || '';
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -5808,15 +5924,23 @@ function exportarPdfAdmin(accion){
   y += 4;
 
   y = pdfSeccion(doc, y, 3, 'Facturación');
-  y = pdfFila(doc, y, 'Costo de hora', `${formatDinero(a.costoHora)}  (${formatHoras(a.horas)})`);
-  y = pdfFila(doc, y, 'Costo de horas', formatDinero(a.costoHorasTotal!=null ? a.costoHorasTotal : (a.costoHora*a.horas)));
-  y = pdfFila(doc, y, 'Costo de traslado', `${formatDinero(a.traslado)}  (${a.kmTraslado || 0} km)`);
-  y = pdfFila(doc, y, 'Costo de materiales', formatDinero(a.materiales));
-  agruparParaPdf(items.flatMap(it=>it.materiales||[]), m=>m.nombre||'Material', m=>(Number(m.cantidad)||0)*(Number(m.precio)||0), m=>m.cantidad||1)
-    .forEach(g=> y = pdfFila(doc, y, `   • ${g.nombre}${g.cant>1?` (${g.cant})`:''}`, formatDinero(g.total)));
-  y = pdfFila(doc, y, 'Otros gastos', formatDinero(a.gastos));
-  agruparParaPdf(items.flatMap(it=>it.gastos||[]), g=>g.tipo||'Gasto', g=>Number(g.costo)||0)
-    .forEach(g=> y = pdfFila(doc, y, `   • ${g.nombre}${g.cant>1?` (${g.cant})`:''}`, formatDinero(g.total)));
+  // Proyecto bajo presupuesto: los gastos están incluidos en el total, así que materiales y otros gastos son opcionales
+  const bajoPresupuesto = !!a.presupuestoIncluyeGastos || !!(p && (Number(p.presupuestoMonto)>0 || p.presupuestoArchivo));
+  if(!bajoPresupuesto){
+    y = pdfFila(doc, y, 'Costo de hora', `${formatDinero(a.costoHora)}  (${formatHoras(a.horas)})`);
+    y = pdfFila(doc, y, 'Costo de horas', formatDinero(a.costoHorasTotal!=null ? a.costoHorasTotal : (a.costoHora*a.horas)));
+    y = pdfFila(doc, y, 'Costo de traslado', `${formatDinero(a.traslado)}  (${a.kmTraslado || 0} km)`);
+  }
+  if(!bajoPresupuesto || (a.pdfMostrarGastos && Number(a.materiales)>0)){
+    y = pdfFila(doc, y, 'Costo de materiales', formatDinero(a.materiales));
+    agruparParaPdf(items.flatMap(it=>it.materiales||[]), m=>m.nombre||'Material', m=>(Number(m.cantidad)||0)*(Number(m.precio)||0), m=>m.cantidad||1)
+      .forEach(g=> y = pdfFila(doc, y, `   • ${g.nombre}${g.cant>1?` (${g.cant})`:''}`, formatDinero(g.total)));
+  }
+  if(!bajoPresupuesto || (a.pdfMostrarGastos && Number(a.gastos)>0)){
+    y = pdfFila(doc, y, 'Otros gastos', formatDinero(a.gastos));
+    agruparParaPdf(items.flatMap(it=>it.gastos||[]), g=>g.tipo||'Gasto', g=>Number(g.costo)||0)
+      .forEach(g=> y = pdfFila(doc, y, `   • ${g.nombre}${g.cant>1?` (${g.cant})`:''}`, formatDinero(g.total)));
+  }
   y = pdfFila(doc, y, 'Total facturado', formatDinero(a.total));
   if(a.descuentoPct>0){
     y = pdfFila(doc, y, 'Descuento', a.descuentoPct + '%');
@@ -5894,9 +6018,9 @@ function exportarPdfAdmin(accion){
       const horaInicioInf = horariosInf.length ? horariosInf.map(o=>o.desde).sort()[0] : '';
       const horaFinInf = horariosInf.length ? horariosInf.map(o=>o.hasta).sort().slice(-1)[0] : '';
       const operariosTextoInf = (inf.operarios||[]).filter(o=>o.nombre).map(o=>o.nombre).join(', ');
-      let alturaEstimadaInf = 6 + estimarAlturaValor(doc, operariosTextoInf) + estimarAlturaValor(doc, inf.tecnico)
-        + (horaInicioInf||horaFinInf ? estimarAlturaValor(doc, `${horaInicioInf||'-'} a ${horaFinInf||'-'}`) : 0)
-        + estimarAlturaValor(doc, formatHoras(horasTotalesInf))
+      let alturaEstimadaInf = 6 + estimarAlturaValor(doc, operariosTextoInf) + estimarAlturaValor(doc, tecnicoResponsable(p, inf.tecnico))
+        + (!bajoPresupuesto && (horaInicioInf||horaFinInf) ? estimarAlturaValor(doc, `${horaInicioInf||'-'} a ${horaFinInf||'-'}`) : 0)
+        + (!bajoPresupuesto ? estimarAlturaValor(doc, formatHoras(horasTotalesInf)) : 0)
         + estimarAlturaValor(doc, inf.trabajo) + 3
         + estimarAlturaFotos((inf.fotosInicio||[]).length) + estimarAlturaFotos((inf.fotosFin||[]).length);
       if(y + alturaEstimadaInf > 282 && alturaEstimadaInf <= 262){ doc.addPage(); y = 20; }
@@ -5905,10 +6029,10 @@ function exportarPdfAdmin(accion){
       doc.text(`Informe ${idx+1}${inf.fecha?' — '+inf.fecha:''}`, 18, y);
       doc.setFont(undefined,'normal'); doc.setTextColor(20,26,43);
       y += 6;
-      y = pdfFila(doc, y, 'Técnico responsable', inf.tecnico);
+      y = pdfFila(doc, y, 'Técnico responsable', tecnicoResponsable(p, inf.tecnico));
       y = pdfFila(doc, y, 'Operarios', operariosTextoInf);
-      if(horaInicioInf || horaFinInf) y = pdfFila(doc, y, 'Horario', `${horaInicioInf||'-'} a ${horaFinInf||'-'}`);
-      y = pdfFila(doc, y, 'Horas totales', formatHoras(horasTotalesInf));
+      if(!bajoPresupuesto && (horaInicioInf || horaFinInf)) y = pdfFila(doc, y, 'Horario', `${horaInicioInf||'-'} a ${horaFinInf||'-'}`);
+      if(!bajoPresupuesto) y = pdfFila(doc, y, 'Horas totales', formatHoras(horasTotalesInf));
       y = pdfFila(doc, y, 'Trabajo realizado', inf.trabajo);
       y += 3;
       const agregarFotosAdminInf = (titulo, fotos)=>{
@@ -6101,6 +6225,7 @@ let proyectoModalId = null;
 let modalTipoActual = 'obra';
 let fechaNuevaEntrada = null;
 let marcadosOperarios = new Set();
+let alcanceAsignacion = 'todos'; // 'dia' = los cambios aplican solo al día tocado (parte el bloque)
 let decisionesFinde = {};
 let resumenActualId = null;
 let reemplazandoAusente = null;
@@ -7411,7 +7536,18 @@ function onCambioFindeHora(f, campo, valor){
   decisionesFinde[f][campo] = valor;
   renderOperariosCheckboxes();
 }
+function setAlcanceAsignacion(modo){
+  alcanceAsignacion = modo;
+  const dia = modo==='dia';
+  const d = document.getElementById('ma-dias');
+  const ex = editandoAsignacionId ? ASIGNACIONES.find(a=>a.id===editandoAsignacionId) : null;
+  d.disabled = dia;
+  d.value = dia ? 1 : (ex?.fechas?.length || 1);
+  document.getElementById('ma-fecha-lbl').value = fechaLegible(dia ? fechaModalYMD : fechaInicioCalculo);
+  recalcularFindesUI();
+}
 function recalcularFindesUI(){
+  if(alcanceAsignacion==='dia'){ document.getElementById('ma-findes').style.display='none'; document.getElementById('ma-findes-lista').innerHTML=''; renderOperariosCheckboxes(); return; }
   const cantidadDias = Math.max(1, parseInt(document.getElementById('ma-dias').value,10) || 1);
   const candidatos = detectarFindesEnRango(fechaInicioCalculo, cantidadDias);
   const wrap = document.getElementById('ma-findes');
@@ -7436,6 +7572,9 @@ function recalcularFindesUI(){
   renderOperariosCheckboxes();
 }
 function previsualizarFechasConHorario(){
+  if(alcanceAsignacion==='dia' && fechaModalYMD){
+    return [{ fecha:fechaModalYMD, horaDesde:document.getElementById('ma-hora-desde').value, horaHasta:document.getElementById('ma-hora-hasta').value }];
+  }
   const cantidadDias = Math.max(1, parseInt(document.getElementById('ma-dias').value,10) || 1);
   const horaDesdeBase = document.getElementById('ma-hora-desde').value;
   const horaHastaBase = document.getElementById('ma-hora-hasta').value;
@@ -7549,9 +7688,20 @@ function abrirModalAsignar(fecha, proyectoId, asignacionId, tipoForzado){
   document.getElementById('ma-hora-desde').value = existente?.horaDesde || '08:00';
   document.getElementById('ma-hora-hasta').value = existente?.horaHasta || '17:00';
 
-  recalcularFindesUI(); // también dispara renderOperariosCheckboxes()
-
   const cantidadDias = existente?.fechas?.length || 1;
+  const permiteDia = !!(existente && existente.tipo!=='ausencia' && cantidadDias>1 && (existente.fechas||[]).includes(fecha));
+  alcanceAsignacion = permiteDia ? 'dia' : 'todos';
+  document.getElementById('ma-alcance').style.display = permiteDia ? 'block' : 'none';
+  if(permiteDia){
+    document.querySelector('input[name="ma-alcance-r"][value="dia"]').checked = true;
+    document.getElementById('ma-alcance-fecha').textContent = fechaLegible(fecha);
+    document.getElementById('ma-alcance-n').textContent = cantidadDias+' días';
+    setAlcanceAsignacion('dia');
+  } else {
+    document.getElementById('ma-dias').disabled = false;
+    recalcularFindesUI(); // también dispara renderOperariosCheckboxes()
+  }
+
   document.getElementById('ma-btn-quitar-dia').style.display = asignacionId ? 'block' : 'none';
   document.getElementById('ma-btn-eliminar-todo').style.display = (asignacionId && cantidadDias>1) ? 'block' : 'none';
   document.getElementById('modal-asignar').classList.add('open');
@@ -7596,7 +7746,30 @@ async function guardarAsignacion(){
 
   let a;
   const quienGuarda = usuarioActual || operarioActual;
-  if(editandoAsignacionId){
+  const origen = editandoAsignacionId ? ASIGNACIONES.find(x=>x.id===editandoAsignacionId) : null;
+  if(origen && alcanceAsignacion==='dia' && (origen.fechas||[]).length>1 && origen.fechas.includes(fechaModalYMD)){
+    // Cambio SOLO para este día: se separa el día en su propio bloque y el resto queda como estaba
+    const f = fechaModalYMD;
+    const nuevo = JSON.parse(JSON.stringify(origen));
+    nuevo.id = uid('pl'); nuevo.fechaCreacion = Date.now();
+    Object.assign(nuevo, datos, { fechas:[f] });
+    nuevo.horariosPorFecha = datos.horariosPorFecha[f] ? { [f]: datos.horariosPorFecha[f] } : {};
+    nuevo.decisionesFinde = decisionesFinde[f] ? { [f]: decisionesFinde[f] } : {};
+    nuevo.estadoPorFecha = origen.estadoPorFecha && origen.estadoPorFecha[f] ? { [f]: origen.estadoPorFecha[f] } : undefined;
+    if(!nuevo.estadoPorFecha) delete nuevo.estadoPorFecha;
+    const viejos = new Set(origen.operarios||[]);
+    const aQuitar = new Set();
+    (datos.operarios||[]).filter(id=>!viejos.has(id)).forEach(id=>{ aQuitar.add(id); const u=usuarioEquivalenteDeOperario(id); if(u) aQuitar.add(u.usuario); });
+    nuevo.vistoPor = (origen.vistoPor||[]).filter(id=>!aQuitar.has(id));
+    if(quienGuarda && !nuevo.vistoPor.includes(quienGuarda)) nuevo.vistoPor.push(quienGuarda);
+    origen.fechas = origen.fechas.filter(x=>x!==f);
+    if(origen.estadoPorFecha) delete origen.estadoPorFecha[f];
+    if(origen.horariosPorFecha) delete origen.horariosPorFecha[f];
+    ASIGNACIONES.push(nuevo);
+    try{ if(window.db){ await window.db.set('planificacion_bloques', origen.id, origen); await window.db.set('planificacion_bloques', nuevo.id, nuevo); } }
+    catch(e){ console.warn(e); toast('No se pudo guardar en la nube'); }
+    a = nuevo;
+  } else if(editandoAsignacionId){
     a = ASIGNACIONES.find(x=>x.id===editandoAsignacionId);
     if(!a) return;
     const operariosViejos = new Set(a.operarios||[]);
@@ -7958,6 +8131,7 @@ document.addEventListener('input', function(e){
 });
 
 cargarTodo();
+cargarUsuariosRecordados();
 </script>
 </body>
 </html>
