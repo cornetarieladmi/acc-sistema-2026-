@@ -88,6 +88,12 @@ input,select,textarea{font-family:var(--sans)}
 .login-card{width:100%;max-width:372px;background:var(--surface);border-radius:26px;box-shadow:0 30px 80px rgba(2,8,30,0.45);overflow:hidden;position:relative;z-index:1}
 .login-head{padding:36px 28px 18px;text-align:center}
 .login-badge{width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#1d4fc4,#1e3a8a);display:flex;align-items:center;justify-content:center;font-size:21px;margin:0 auto 14px;box-shadow:0 10px 22px rgba(37,99,235,.35)}
+.login-head.con-logo{padding:30px 28px 16px;background:radial-gradient(ellipse 80% 90% at 50% 0%,rgba(37,99,235,.13),rgba(37,99,235,0) 72%);position:relative}
+.login-head.con-logo::after{content:'';position:absolute;left:12%;right:12%;bottom:0;height:1px;background:linear-gradient(90deg,transparent,#d5deee,transparent)}
+.login-head.con-logo .login-mark{display:none}
+.login-head.con-logo .login-sub{margin-top:12px}
+#login-logo{box-sizing:border-box;width:250px;height:150px;padding:0;border-radius:50%;background:#0b1530;border:0;object-fit:cover;box-shadow:0 0 0 7px rgba(37,99,235,.07),0 14px 30px rgba(15,35,90,.16);animation:logoEntra .7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes logoEntra{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}}
 .login-mark{font-family:var(--sans);font-size:19px;font-weight:800;color:#0f172a;letter-spacing:.12em}
 .login-sub{font-size:11.5px;color:#64748b;margin-top:5px;letter-spacing:.01em}
 .login-body{padding:10px 30px 32px}
@@ -751,7 +757,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
   <div class="login-glow login-glow-2"></div>
   <div class="login-card">
     <div class="login-head">
-      <div class="login-badge">🔐</div>
+      <img id="login-logo" alt="Logo" style="display:none;object-fit:cover;margin:0 auto"><div class="login-badge" id="login-badge">🔐</div>
       <div class="login-mark">A.A.C.</div>
       <div class="login-sub">Proyectos · OT · Informes · Administración</div>
     </div>
@@ -1945,6 +1951,7 @@ async function precargarUsuarios(){
       overrides.forEach(o=> PASSWORD_OVERRIDES[o.id] = o.pass);
       const op = await window.db.getAll('operarios');
       OPERARIOS_LOGIN = op.filter(x=>!x.eliminado && x.usuario && x.pass);
+      try{ const cfg = await window.db.getAll('configuracion'); const e = cfg.find(x=>x.id==='empresa'); if(e){ LOGO_EMPRESA = e.logo || ''; LOGO_FONDO = e.logoFondo || 'claro'; aplicarLogoLogin(); } }catch(_){}
     }
   }catch(e){ console.warn('No se pudieron precargar usuarios', e); }
 }
@@ -2397,7 +2404,7 @@ async function cargarDatos(){
       STATE.operarios = op.filter(x=>!x.eliminado);
       po.forEach(o=> PASSWORD_OVERRIDES[o.id] = o.pass);
       window._trashPr = pr.filter(x=>x.eliminado);
-      try{ const cfg = await window.db.getAll('configuracion'); const e = cfg.find(x=>x.id==='empresa'); LOGO_EMPRESA = (e && e.logo) || ''; LOGO_FONDO = (e && e.logoFondo) || 'claro'; }catch(_){}
+      try{ const cfg = await window.db.getAll('configuracion'); const e = cfg.find(x=>x.id==='empresa'); LOGO_EMPRESA = (e && e.logo) || ''; LOGO_FONDO = (e && e.logoFondo) || 'claro'; aplicarLogoLogin(); }catch(_){}
     }
   }catch(e){
     console.warn('No se pudo leer Firebase, se trabaja en memoria', e);
@@ -4084,21 +4091,39 @@ function limpiarNombreArchivo(s){
   return (s||'').replace(/[\/\\:*?"<>|]/g,'').replace(/\s+/g,' ').trim();
 }
 let LOGO_FONDO = 'claro';   // 'claro' = encabezado blanco (logo normal) · 'azul' = banda azul (logo claro/blanco)
+function aplicarLogoLogin(){
+  const im=document.getElementById('login-logo'), bd=document.getElementById('login-badge'); if(!im||!bd) return;
+  const hd=im.closest('.login-head');
+  if(LOGO_EMPRESA){ if(im.getAttribute('src')!==LOGO_EMPRESA) im.src=LOGO_EMPRESA; im.style.display='block'; bd.style.display='none'; hd.classList.add('con-logo'); }
+  else { im.style.display='none'; bd.style.display=''; hd.classList.remove('con-logo'); }
+  im.onload = ()=>{ const r = im.naturalWidth/(im.naturalHeight||1); const w = 250; im.style.width = w+'px'; im.style.height = Math.max(110, Math.min(220, Math.round(w/Math.max(.9, Math.min(r, 2.4)))))+'px'; };
+  if(im.complete && im.naturalWidth) im.onload();
+  try{ if(LOGO_EMPRESA) localStorage.setItem('logo_empresa_cache', LOGO_EMPRESA); else localStorage.removeItem('logo_empresa_cache'); }catch(e){}
+}
 let LOGO_EMPRESA = '';   // dataURL del logo (se carga desde Gestión → Empresa)
 function pdfEncabezado(doc, subtitulo, folio, fecha){
   // Dibuja el logo respetando sus proporciones dentro de una caja máxima, centrado verticalmente en la banda
   const dibujarLogo = (x, bandaAlto, maxW, maxH)=>{
+    // Logo dentro de un óvalo horizontal: la imagen llena todo el óvalo (recortada por su borde)
     const props = doc.getImageProperties(LOGO_EMPRESA);
     const ratio = props.width / props.height;
-    let w = maxW, h = w / ratio;
-    if(h > maxH){ h = maxH; w = h * ratio; }
-    doc.addImage(LOGO_EMPRESA, props.fileType || 'PNG', x, (bandaAlto - h)/2, w, h);
-    return w;
+    const ovW = maxW, ovH = maxH;
+    let w = ovW, h = w / ratio;
+    if(h < ovH){ h = ovH; w = h * ratio; }          // cubrir
+    const cx = x + ovW/2, cy = bandaAlto/2;
+    doc.saveGraphicsState();
+    doc.ellipse(cx, cy, ovW/2, ovH/2, null); doc.clip(); doc.discardPath();
+    doc.setFillColor(255,255,255); doc.rect(x, cy-ovH/2, ovW, ovH, 'F');
+    doc.addImage(LOGO_EMPRESA, props.fileType || 'PNG', cx - w/2, cy - h/2, w, h);
+    doc.restoreGraphicsState();
+    doc.setDrawColor(190,205,232); doc.setLineWidth(0.5);
+    doc.ellipse(cx, cy, ovW/2, ovH/2, 'S');
+    return ovW;
   };
   if(LOGO_EMPRESA && LOGO_FONDO !== 'azul'){
     // Membrete claro: logo a la izquierda, datos del documento a la derecha y una línea de acento
     try{
-      dibujarLogo(14, 27, 56, 17);
+      dibujarLogo(14, 27, 52, 21);
       doc.setTextColor(92,103,121);
       doc.setFont(undefined,'normal'); doc.setFontSize(8.5);
       doc.text(String(subtitulo||'').toUpperCase(), 196, 10.5, {align:'right', charSpace:0.3});
@@ -4120,7 +4145,7 @@ function pdfEncabezado(doc, subtitulo, folio, fecha){
   let xTexto = 14;
   let conLogo = false;
   if(LOGO_EMPRESA){
-    try{ const w = dibujarLogo(14, 26, 46, 16); xTexto = 14 + w + 8; conLogo = true; }
+    try{ const w = dibujarLogo(14, 26, 44, 19); xTexto = 14 + w + 8; conLogo = true; }
     catch(e){ console.warn('No se pudo dibujar el logo en el PDF', e); }
   }
   doc.setTextColor(255,255,255);
@@ -5430,6 +5455,7 @@ function subirLogoEmpresa(ev){
     img.onload = async ()=>{
       LOGO_EMPRESA = prepararLogo(img, true);
       await guardarEnDB('configuracion', { id:'empresa', logo: LOGO_EMPRESA, logoFondo: LOGO_FONDO });
+      aplicarLogoLogin();
       renderEmpresaBox();
       toast('Logo guardado — fondo quitado y recortado');
     };
@@ -5443,6 +5469,7 @@ function limpiarFondoLogo(){
   const img = new Image();
   img.onload = async ()=>{
     LOGO_EMPRESA = prepararLogo(img, true);
+    aplicarLogoLogin();
     await guardarEnDB('configuracion', { id:'empresa', logo: LOGO_EMPRESA, logoFondo: LOGO_FONDO });
     renderEmpresaBox();
     toast('Fondo del logo quitado');
@@ -5457,6 +5484,7 @@ async function cambiarFondoLogo(v){
 }
 async function quitarLogoEmpresa(){
   LOGO_EMPRESA = '';
+  aplicarLogoLogin();
   await guardarEnDB('configuracion', { id:'empresa', logo:'', logoFondo: LOGO_FONDO });
   renderEmpresaBox();
   toast('Logo quitado');
@@ -8131,6 +8159,8 @@ document.addEventListener('input', function(e){
 });
 
 cargarTodo();
+try{ const lc=localStorage.getItem('logo_empresa_cache'); if(lc && !LOGO_EMPRESA){ LOGO_EMPRESA=lc; } }catch(e){}
+aplicarLogoLogin();
 cargarUsuariosRecordados();
 </script>
 </body>
