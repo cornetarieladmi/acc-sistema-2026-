@@ -1166,6 +1166,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
           <label style="font-size:11.5px;color:#991b1b">Materiales y gastos adicionales ($)</label>
           <input type="text" id="af-adicionales" inputmode="numeric" placeholder="0" oninput="calcularCostoHoraAdmin()" onblur="formatearInputDinero(this);calcularCostoHoraAdmin()">
           <div style="font-size:11px;color:#991b1b;opacity:.8;margin-top:3px">Se completa con lo marcado como adicional en las OT e Informes. Se suma al presupuesto.</div>
+          <div id="af-adic-aviso" style="display:none;margin-top:8px;font-size:11.5px;font-weight:700;color:#92400e;background:#fffbeb;border:1px solid #f5c542;border-radius:8px;padding:7px 9px"></div>
           <label class="chk"><input type="checkbox" id="af-traslado-adicional" onchange="calcularCostoHoraAdmin()"> El traslado es adicional (no está incluido en el presupuesto)</label>
         </div></div>
         <div class="field" style="grid-column:1/-1"><label style="display:flex;align-items:center;gap:8px;font-weight:700;text-transform:none;letter-spacing:0"><input type="checkbox" id="af-pdf-mostrar-gastos" style="width:auto"> Mostrar materiales y otros gastos en el PDF <span style="font-weight:500;color:var(--text2);font-size:11.5px">(proyectos bajo presupuesto)</span></label></div>
@@ -5940,6 +5941,15 @@ function calcularCostoHoraAdmin(){
   let total = Math.round(costoHorasTotal + traslado + materiales + gastos);
   const adicionales = presupuesto > 0 ? parseDineroInput(document.getElementById('af-adicionales')) : 0;
   document.getElementById('af-adic-field').style.display = presupuesto > 0 ? 'block' : 'none';
+  { const av = document.getElementById('af-adic-aviso'); const pp = STATE.proyectos.find(x=>x.id===document.getElementById('af-proyecto').value);
+    if(av){
+      if(presupuesto>0 && pp){
+        const its = [...(pp.ots||[]), ...(pp.informes||[])];
+        const enItems = its.flatMap(it=>it.materiales||[]).filter(m=>m.adicional).reduce((t,m)=>t+(Number(m.cantidad)||0)*(Number(m.precio)||0),0) + its.flatMap(it=>it.gastos||[]).filter(g=>g.adicional).reduce((t,g)=>t+(Number(g.costo)||0),0);
+        if(Math.abs(enItems - adicionales) >= 0.5){ av.style.display='block'; av.textContent = '⚠ En las OT e Informes hay '+formatDinero(enItems)+' marcados como adicionales y acá figuran '+formatDinero(adicionales)+'. Si querés que coincidan, tocá "Recalcular desde OT e Informes".'; }
+        else av.style.display='none';
+      } else av.style.display='none';
+    } }
   const nota = document.getElementById('af-pres-nota');
   const lbl = document.getElementById('af-costohora-label');
   if(presupuesto > 0){
@@ -6118,6 +6128,12 @@ function exportarPdfAdmin(accion){
       .forEach(g=> y = pdfFila(doc, y, `   • ${g.nombre}${g.cant>1?` (${g.cant})`:''}`, formatDinero(g.total), true));
     agruparParaPdf(items.flatMap(it=>it.gastos||[]).filter(g=>g.adicional), g=>g.tipo||'Gasto', g=>Number(g.costo)||0)
       .forEach(g=> y = pdfFila(doc, y, `   • ${g.nombre}${g.cant>1?` (${g.cant})`:''}`, formatDinero(g.total), true));
+    // Para que la cuenta cierre: si el adicional cargado en Facturación es distinto de lo marcado en las OT/Informes, la diferencia se muestra aparte
+    const listado = (a.trasladoAdicional ? Number(a.traslado)||0 : 0)
+      + items.flatMap(it=>it.materiales||[]).filter(m=>m.adicional).reduce((t,m)=>t+(Number(m.cantidad)||0)*(Number(m.precio)||0),0)
+      + items.flatMap(it=>it.gastos||[]).filter(g=>g.adicional).reduce((t,g)=>t+(Number(g.costo)||0),0);
+    const dif = Math.round(((Number(a.adicionales)||0) - listado)*100)/100;
+    if(Math.abs(dif) >= 0.5) y = pdfFila(doc, y, `   • ${dif>0?'Otros adicionales':'Ajuste'} (Facturación)`, formatDinero(dif), true);
   }
   y = pdfFila(doc, y, 'Total facturado', formatDinero(a.total));
   if(a.descuentoPct>0){
