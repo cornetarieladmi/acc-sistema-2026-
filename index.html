@@ -1169,6 +1169,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
           <div id="af-adic-aviso" style="display:none;margin-top:8px;font-size:11.5px;font-weight:700;color:#92400e;background:#fffbeb;border:1px solid #f5c542;border-radius:8px;padding:7px 9px"></div>
           <label class="chk"><input type="checkbox" id="af-traslado-adicional" onchange="calcularCostoHoraAdmin()"> El traslado es adicional (no está incluido en el presupuesto)</label>
         </div></div>
+        <div class="field" style="grid-column:1/-1"><label style="display:flex;align-items:center;gap:8px;font-weight:700;text-transform:none;letter-spacing:0"><input type="checkbox" id="af-pdf-mostrar-horas" style="width:auto"> Mostrar horas trabajadas en el PDF <span style="font-weight:500;color:var(--text2);font-size:11.5px">(horario y horas de cada informe + total; proyectos bajo presupuesto)</span></label></div>
         <div class="field" style="grid-column:1/-1"><label style="display:flex;align-items:center;gap:8px;font-weight:700;text-transform:none;letter-spacing:0"><input type="checkbox" id="af-pdf-mostrar-gastos" style="width:auto"> Mostrar materiales y otros gastos en el PDF <span style="font-weight:500;color:var(--text2);font-size:11.5px">(proyectos bajo presupuesto)</span></label></div>
 
         <div class="field c5"><label>Total facturado ($)</label><input type="text" id="af-total" readonly class="af-ro af-big"></div>
@@ -5795,6 +5796,7 @@ function abrirNuevoAdmin(proyectoIdPreseleccionado){
   ['af-freq','af-fejec','af-ffact','af-fpago'].forEach(id=>document.getElementById(id).value=hoyDMY());
   document.getElementById('af-tipo-factura').value = '';
   document.getElementById('af-pdf-mostrar-gastos').checked = false;
+  document.getElementById('af-pdf-mostrar-horas').checked = false;
   document.getElementById('af-adicionales').value = '';
   document.getElementById('af-traslado-adicional').checked = false;
   ['af-costohora','af-costohoras-total','af-horas-ponderadas','af-precio-combustible','af-costo-km','af-km-traslado','af-total','af-traslado','af-materiales','af-gastos','af-horas','af-descuento'].forEach(id=>document.getElementById(id).value='');
@@ -5833,6 +5835,7 @@ function abrirAdmin(id){
   document.getElementById('af-materiales').value = a.materiales ? formatDinero(a.materiales) : '';
   document.getElementById('af-gastos').value = a.gastos ? formatDinero(a.gastos) : '';
   document.getElementById('af-pdf-mostrar-gastos').checked = !!a.pdfMostrarGastos;
+  document.getElementById('af-pdf-mostrar-horas').checked = !!a.pdfMostrarHoras;
   { const ai = a.adicionalesItems!=null ? a.adicionalesItems : (a.adicionales||0); document.getElementById('af-adicionales').value = ai ? formatDinero(ai) : ''; }
   document.getElementById('af-traslado-adicional').checked = !!a.trasladoAdicional;
   document.getElementById('af-horas').value = a.horas ? formatHorasComa(a.horas) : '';
@@ -6028,6 +6031,7 @@ async function guardarAdmin(seguir){
   obj.costoHora = parseDineroInput(document.getElementById('af-costohora'));
   obj.presupuestoIncluyeGastos = presupuestoVigenteAdmin() > 0;
   obj.pdfMostrarGastos = document.getElementById('af-pdf-mostrar-gastos').checked;
+  obj.pdfMostrarHoras = document.getElementById('af-pdf-mostrar-horas').checked;
   obj.adicionalesItems = obj.presupuestoIncluyeGastos ? parseDineroInput(document.getElementById('af-adicionales')) : 0;
   obj.trasladoAdicional = obj.presupuestoIncluyeGastos && document.getElementById('af-traslado-adicional').checked;
   obj.horasPonderadas = af_horasPonderadas;
@@ -6110,6 +6114,7 @@ function exportarPdfAdmin(accion){
     y = pdfFila(doc, y, 'Costo de horas', formatDinero(a.costoHorasTotal!=null ? a.costoHorasTotal : (a.costoHora*a.horas)));
     y = pdfFila(doc, y, 'Costo de traslado', `${formatDinero(a.traslado)}  (${a.kmTraslado || 0} km)`);
   }
+  if(bajoPresupuesto && a.pdfMostrarHoras) y = pdfFila(doc, y, 'Horas trabajadas (total)', formatHoras(a.horas));
   if(!bajoPresupuesto || (a.pdfMostrarGastos && Number(a.materiales)>0)){
     y = pdfFila(doc, y, 'Costo de materiales', formatDinero(a.materiales));
     agruparParaPdf(items.flatMap(it=>it.materiales||[]).filter(m=>!(bajoPresupuesto && m.adicional)), m=>m.nombre||'Material', m=>(Number(m.cantidad)||0)*(Number(m.precio)||0), m=>m.cantidad||1)
@@ -6213,8 +6218,8 @@ function exportarPdfAdmin(accion){
       const horaFinInf = horariosInf.length ? horariosInf.map(o=>o.hasta).sort().slice(-1)[0] : '';
       const operariosTextoInf = (inf.operarios||[]).filter(o=>o.nombre).map(o=>o.nombre).join(', ');
       let alturaEstimadaInf = 6 + estimarAlturaValor(doc, operariosTextoInf) + estimarAlturaValor(doc, tecnicoResponsable(p, inf.tecnico))
-        + (!bajoPresupuesto && (horaInicioInf||horaFinInf) ? estimarAlturaValor(doc, `${horaInicioInf||'-'} a ${horaFinInf||'-'}`) : 0)
-        + (!bajoPresupuesto ? estimarAlturaValor(doc, formatHoras(horasTotalesInf)) : 0)
+        + ((!bajoPresupuesto || a.pdfMostrarHoras) && (horaInicioInf||horaFinInf) ? estimarAlturaValor(doc, `${horaInicioInf||'-'} a ${horaFinInf||'-'}`) : 0)
+        + ((!bajoPresupuesto || a.pdfMostrarHoras) ? estimarAlturaValor(doc, formatHoras(horasTotalesInf)) : 0)
         + estimarAlturaValor(doc, inf.trabajo) + 3
         + estimarAlturaFotos((inf.fotosInicio||[]).length) + estimarAlturaFotos((inf.fotosFin||[]).length);
       if(y + alturaEstimadaInf > 282 && alturaEstimadaInf <= 262){ doc.addPage(); y = 20; }
@@ -6225,8 +6230,8 @@ function exportarPdfAdmin(accion){
       y += 6;
       y = pdfFila(doc, y, 'Técnico responsable', tecnicoResponsable(p, inf.tecnico));
       y = pdfFila(doc, y, 'Operarios', operariosTextoInf);
-      if(!bajoPresupuesto && (horaInicioInf || horaFinInf)) y = pdfFila(doc, y, 'Horario', `${horaInicioInf||'-'} a ${horaFinInf||'-'}`);
-      if(!bajoPresupuesto) y = pdfFila(doc, y, 'Horas totales', formatHoras(horasTotalesInf));
+      if((!bajoPresupuesto || a.pdfMostrarHoras) && (horaInicioInf || horaFinInf)) y = pdfFila(doc, y, 'Horario', `${horaInicioInf||'-'} a ${horaFinInf||'-'}`);
+      if(!bajoPresupuesto || a.pdfMostrarHoras) y = pdfFila(doc, y, 'Horas trabajadas', formatHoras(horasTotalesInf));
       y = pdfFila(doc, y, 'Trabajo realizado', inf.trabajo);
       y += 3;
       const agregarFotosAdminInf = (titulo, fotos)=>{
