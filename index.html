@@ -907,7 +907,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="field c12"><label>Nombre del proyecto *</label><input type="text" id="pf-nombre" placeholder="Ej: Mantenimiento correctivo — Compresor Norte"></div>
 
         <div class="field c12"><label>Tipo de proyecto</label>
-          <select id="pf-interno" onchange="syncRequeridosCliente()">
+          <select id="pf-interno" onchange="onCambiaTipoProyecto()">
             <option value="no">💰 Con cobranza</option>
             <option value="si">🛠 Desarrollo / Interno (sin cobranza)</option>
           </select>
@@ -1998,7 +1998,7 @@ async function precargarUsuarios(){
     }
   }catch(e){ console.warn('No se pudieron precargar usuarios', e); }
 }
-precargarUsuarios();
+const PRECARGA_USUARIOS = precargarUsuarios();
 
 function toast(msg){
   const t = document.getElementById('toast');
@@ -2270,7 +2270,17 @@ async function hacerLogin(){
   const p = document.getElementById('lg-pass').value;
   const err = document.getElementById('lg-err');
   if(!u || !p){ err.textContent = 'Completá usuario y contraseña.'; return; }
+  // Esperar a que terminen de bajar usuarios y contraseñas cambiadas (si no, la 1ª vez compara con la contraseña vieja)
+  try{ await PRECARGA_USUARIOS; }catch(_){}
   let cuenta = buscarCuenta(u);
+  if(cuenta && cuenta.pass !== p && window.db){
+    // Si no coincide, se vuelve a pedir la contraseña vigente al servidor antes de rechazar
+    try{
+      const ov = await window.db.getAll('password_overrides');
+      ov.forEach(o=> PASSWORD_OVERRIDES[o.id] = o.pass);
+      cuenta = buscarCuenta(u);
+    }catch(e){ console.warn('No se pudo releer contraseñas', e); }
+  }
   if(!cuenta && window.db){
     // Puede que el usuario/operario se haya creado hace poco y todavía no se haya sincronizado: reintentamos
     try{
@@ -3085,8 +3095,17 @@ function mostrarResponsableProyecto(p){
   el.style.color = sin ? '#c0362c' : '';
 }
 /* Cliente y contacto: obligatorios en proyectos con cobranza, opcionales en desarrollo / trabajo interno */
+function onCambiaTipoProyecto(){
+  // Desarrollo / Interno: no tiene presupuesto, así que arranca "Abierto" y no ofrece "Presupuesto"
+  const interno = document.getElementById('pf-interno').value === 'si';
+  const est = document.getElementById('pf-estado');
+  if(interno && est.value==='presupuesto') est.value = 'abierto';
+  onCambiaEstadoProyecto();
+}
 function syncRequeridosCliente(){
   const interno = document.getElementById('pf-interno').value === 'si';
+  const opP = document.querySelector('#pf-estado option[value="presupuesto"]');
+  if(opP){ opP.disabled = interno; opP.hidden = interno; }
   const t = interno ? '(opcional)' : '*';
   ['pf-cli-req','pf-con-req'].forEach(id=>{ const e=document.getElementById(id); if(e) e.textContent = t; });
   const sel = document.getElementById('pf-cliente-select');
@@ -3096,7 +3115,8 @@ function onCambiaEstadoProyecto(){
   syncRequeridosCliente();
   const esPresupuesto = document.getElementById('pf-estado').value === 'presupuesto';
   const monto = parseDineroInput(document.getElementById('pf-presupuesto-monto'));
-  document.getElementById('pf-presupuesto-box').style.display = (esPresupuesto || monto>0) ? 'block' : 'none';
+  const interno = document.getElementById('pf-interno').value === 'si';
+  document.getElementById('pf-presupuesto-box').style.display = (!interno && (esPresupuesto || monto>0)) ? 'block' : 'none';
 }
 async function tomarProyecto(){
   if(bloqueadoPorSoloLectura()) return;
