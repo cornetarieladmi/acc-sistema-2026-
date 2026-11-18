@@ -30,6 +30,7 @@
   try{
     firebase.initializeApp(cfg);
     const db = firebase.firestore();
+    try{ db.settings({ experimentalAutoDetectLongPolling:true, merge:true }); }catch(_){}
     window.db = {
       async getAll(col){
         const snap = await db.collection(col).get();
@@ -2425,6 +2426,18 @@ function ejecutarCierreSesion(){
 }
 
 /* ==================== CARGA DE DATOS ==================== */
+function mostrarErrorConexion(e){
+  const cod = (e && (e.code || e.name)) || 'error';
+  const det = (e && e.message) || String(e);
+  let b = document.getElementById('banner-conexion');
+  if(!b){ b = document.createElement('div'); b.id='banner-conexion';
+    b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99999;background:#a52d24;color:#fff;padding:10px 14px;font:600 13px Inter,sans-serif;text-align:center';
+    document.body.appendChild(b); }
+  b.innerHTML = '⚠️ No se pudieron cargar los datos ('+cod+'). '+
+    '<button onclick="location.reload()" style="margin-left:8px;padding:4px 10px;border-radius:6px;border:0;font-weight:700;cursor:pointer">Reintentar</button>'+
+    '<button onclick="this.parentNode.remove()" style="margin-left:6px;padding:4px 10px;border-radius:6px;border:0;cursor:pointer">Cerrar</button>'+
+    '<div style="font-weight:400;font-size:11px;margin-top:4px;opacity:.9">'+String(det).replace(/</g,'&lt;').slice(0,220)+'</div>';
+}
 async function cargarDatos(){
   toast('Cargando datos...');
   try{
@@ -2450,8 +2463,9 @@ async function cargarDatos(){
     }
   }catch(e){
     console.warn('No se pudo leer Firebase, se trabaja en memoria', e);
-    toast('Sin conexión — trabajando en memoria');
+    mostrarErrorConexion(e);
   }
+  if(!window.db) mostrarErrorConexion({code:'sin-firebase', message:'No cargó la librería de Firebase (¿bloqueada por una extensión o antivirus?)'});
   actualizarBadgeGestion();
   actualizarBadgeFacturacion();
   // Al entrar con un usuario siempre se arranca en Proyectos: "Mis proyectos" (Administración y Gerente: "Todos")
@@ -3076,7 +3090,7 @@ function syncRequeridosCliente(){
   const t = interno ? '(opcional)' : '*';
   ['pf-cli-req','pf-con-req'].forEach(id=>{ const e=document.getElementById(id); if(e) e.textContent = t; });
   const sel = document.getElementById('pf-cliente-select');
-  if(sel && sel.options[0]) sel.options[0].textContent = interno ? '— Sin cliente —' : '— Elegir cliente —';
+  if(sel && sel.options[0]) sel.options[0].textContent = interno ? '— A.A.C (por defecto) —' : '— Elegir cliente —';
 }
 function onCambiaEstadoProyecto(){
   syncRequeridosCliente();
@@ -4082,7 +4096,7 @@ async function guardarProyecto(){
   obj.presupuestoArchivo = pf_presupuestoArchivo;
   obj.nombre = nombre;
   obj.clienteId = clienteId;
-  obj.cliente = clienteId ? (clienteObj?.nombre || obj.cliente || '') : '';
+  obj.cliente = clienteId ? (clienteObj?.nombre || obj.cliente || '') : (esInterno ? 'A.A.C' : '');
   obj.obs = document.getElementById('pf-obs').value;
   obj.obsHtml = rtHtml('pf-obs');
   obj.contacto = contacto;
