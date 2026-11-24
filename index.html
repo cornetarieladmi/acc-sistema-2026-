@@ -93,7 +93,7 @@ input,select,textarea{font-family:var(--sans)}
 .login-head.con-logo::after{content:'';position:absolute;left:12%;right:12%;bottom:0;height:1px;background:linear-gradient(90deg,transparent,#d5deee,transparent)}
 .login-head.con-logo .login-mark{display:none}
 .login-head.con-logo .login-sub{margin-top:12px}
-#login-logo{box-sizing:border-box;width:250px;height:150px;padding:0;border-radius:50%;background:#0b1530;border:0;object-fit:cover;box-shadow:0 0 0 7px rgba(37,99,235,.07),0 14px 30px rgba(15,35,90,.16);animation:logoEntra .7s cubic-bezier(.2,.8,.2,1) both}
+#login-logo{box-sizing:border-box;width:250px;height:150px;padding:0;border-radius:50%;background:#0b1530;border:0;object-fit:cover;box-shadow:0 0 0 7px rgba(37,99,235,.07),0 14px 30px rgba(15,35,90,.16)}
 @keyframes logoEntra{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}}
 .login-mark{font-family:var(--sans);font-size:19px;font-weight:800;color:#0f172a;letter-spacing:.12em}
 .login-sub{font-size:11.5px;color:#64748b;margin-top:5px;letter-spacing:.01em}
@@ -780,8 +780,9 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
   <div class="login-glow login-glow-1"></div>
   <div class="login-glow login-glow-2"></div>
   <div class="login-card">
-    <div class="login-head">
+    <div class="login-head" id="login-head-0">
       <img id="login-logo" alt="Logo" style="display:none;object-fit:cover;margin:0 auto"><div class="login-badge" id="login-badge">🔐</div>
+      <script>try{var _l=localStorage.getItem('logo_empresa_cache');if(_l){var _i=document.getElementById('login-logo');_i.src=_l;_i.style.display='block';document.getElementById('login-badge').style.display='none';document.getElementById('login-head-0').classList.add('con-logo');}}catch(e){}</script>
       <div class="login-mark">A.A.C.</div>
       <div class="login-sub">Proyectos · OT · Informes · Administración</div>
     </div>
@@ -2318,6 +2319,7 @@ async function hacerLogin(){
   document.getElementById('nav-facturacion').style.display = (currentUserRol==='administracion'||currentUserRol==='gerente') ? 'flex' : 'none';
   document.getElementById('nav-gestion').style.display = (currentUserRol==='administracion'||currentUserRol==='gerente') ? 'flex' : 'none';
   cargarDatos();
+  cargarTodo(true);
 }
 function toggleUserMenu(e){
   e.stopPropagation();
@@ -6954,8 +6956,8 @@ async function actualizarDatos(){
   await cargarTodo();
   toast('Datos actualizados');
 }
-async function cargarTodo(){
-  toast('Cargando...');
+async function cargarTodo(silencioso){
+  if(!silencioso) toast('Cargando...');
   try{
     if(window.db){
       const [pr, us, op, pl] = await Promise.all([
@@ -6975,7 +6977,7 @@ async function cargarTodo(){
     }
   }catch(e){
     console.warn('No se pudo conectar a Firebase', e);
-    toast('Sin conexión — revisá tu internet');
+    if(!silencioso) toast('Sin conexión — revisá tu internet');
   }
   renderObras();
   renderCalendario();
@@ -8390,7 +8392,6 @@ document.addEventListener('input', function(e){
   else if(['ma-hora-desde','ma-hora-hasta'].includes(e.target.id)) renderOperariosCheckboxes();
 });
 
-cargarTodo();
 try{ const lc=localStorage.getItem('logo_empresa_cache'); if(lc && !LOGO_EMPRESA){ LOGO_EMPRESA=lc; } }catch(e){}
 aplicarLogoLogin();
 aplicarNombresRoles();
