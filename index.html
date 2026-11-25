@@ -6663,7 +6663,17 @@ async function marcarVistoParaMi(a){
 }
 /* ===== AUSENCIAS: aviso a todos + permiso (solo operarios piden permiso a Administración / Gerencia) ===== */
 function esOperarioPuro(){ return !!operarioActual && !usuarioActual; }
-function esAprobadorActual(){ const r = rolActualPlan(); return !!usuarioActual && (r==='administracion' || r==='gerente'); }
+/* Aprueban los permisos de ausencia: Administración, Gerencia y, además, Diego, Ariel y Guillermo */
+const APROBADORES_AUSENCIA = ['diego','ariel','guillermo'];
+function esAprobadorActual(){
+  if(!usuarioActual) return false;
+  const r = rolActualPlan();
+  if(r==='administracion' || r==='gerente') return true;
+  const norm = t => String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+  const u = USUARIOS_PLAN.find(x=>x.usuario===usuarioActual);
+  const claves = [usuarioActual, u && u.usuario, u && u.nombre].map(norm).filter(Boolean);
+  return claves.some(k => APROBADORES_AUSENCIA.some(n => k===n || k.split(/[\s._-]+/)[0]===n));
+}
 function ausenciaPendientePermiso(a){ return a.tipo==='ausencia' && a.estadoPermiso==='pendiente'; }
 function yaVistoPorMi(a){
   const v = a.vistoPor||[];
