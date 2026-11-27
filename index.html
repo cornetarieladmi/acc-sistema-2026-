@@ -74,6 +74,7 @@ body{font-family:var(--sans);background:#001a47;color:var(--text);font-size:14px
   .card.estado-presupuesto{border-left-color:var(--accent)}
   .card.estado-solicitado{border-left-color:#6d28d9}
   .card.estado-cerrado{border-left-color:var(--red)}
+  .card.estado-rechazado{border-left-color:#6b7280}
   .card.estado-facturado{border-left-color:#1e3a5f}
   .card.estado-cobrado{border-left-color:var(--green)}
 }
@@ -151,6 +152,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .badge.solicitado{background:#ede4fb;color:#6d28d9}
 .badge.abierto{background:var(--greenlt);color:var(--green)}
 .badge.cerrado{background:var(--redlt);color:var(--red)}
+.badge.rechazado{background:#e5e7eb;color:#4b5563}
 .badge.facturado{background:#1e3a5f;color:#fff;font-weight:800}
 .badge.cobrado{background:var(--greenlt);color:var(--green)}
 .card-meta{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--text2);flex-wrap:wrap}
@@ -343,6 +345,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .ad-row-abierto td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
 .ad-row-presupuesto td:first-child{box-shadow:inset 3px 0 0 var(--amber)}
 .ad-row-cerrado td:first-child{box-shadow:inset 3px 0 0 var(--text3)}
+.ad-row-rechazado td:first-child{box-shadow:inset 3px 0 0 #6b7280}
 .ad-row-facturado td:first-child{box-shadow:inset 3px 0 0 var(--green)}
 .ad-row-solicitado td:first-child{box-shadow:inset 3px 0 0 #c9903c}
 .ad-table-empty{text-align:center;color:var(--text3);padding:34px 14px!important;font-size:14px;white-space:normal!important}
@@ -736,7 +739,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 #scr-planificacion .notif-texto{font-size:13px;line-height:1.4;margin-bottom:10px}
 #scr-planificacion .notif-acciones{display:flex;gap:8px;flex-wrap:wrap}
 #scr-planificacion .notif-acciones .btn{padding:9px 8px;font-size:12px}
-#scr-planificacion #btn-notificaciones.con-alerta{background:var(--red);animation:pulso 1.4s infinite}
+#scr-planificacion #btn-notificaciones.con-alerta,.campana-glob.con-alerta{background:var(--red);animation:pulso 1.4s infinite}
 @keyframes pulso{0%,100%{opacity:1}50%{opacity:.6}}
 #scr-planificacion .est-fila .nom{font-weight:700}
 #scr-planificacion .est-fila .datos{display:flex;gap:10px;color:var(--text2);font-size:11.5px}
@@ -763,6 +766,8 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .pf-grid .field label{font-size:10px;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
 .pf-grid .field input,.pf-grid .field select,.pf-grid .field textarea{padding:6px 9px;font-size:13px;border-width:1px;border-radius:7px;min-height:32px}
 .pf-grid .field textarea{min-height:48px;line-height:1.45}
+.pf-dropzone{margin-top:8px;border:2px dashed var(--border);border-radius:10px;padding:12px;text-align:center;font-size:12.5px;color:var(--text2);transition:.15s}
+.pf-dropzone.sobre{border-color:var(--accent);background:var(--accentlt);color:var(--accent);font-weight:700}
 .pf-pres-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center}
 .pf-pres-row .btn-tool{white-space:nowrap}
 @media(max-width:900px){.pf-grid .c2{grid-column:span 4}}
@@ -812,6 +817,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
       </div>
     </div>
     <button class="icon-btn" id="btn-refrescar-datos" onclick="refrescarDatos()" title="Actualizar datos"><svg viewBox="0 0 24 24"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg></button>
+    <button class="icon-btn campana-glob" onclick="abrirNotificaciones()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
     <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión"><span class="rol-emoji">👷</span> <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
@@ -827,6 +833,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
       <option value="abierto">Abierto</option>
       <option value="presupuesto">Presupuesto</option>
       <option value="cerrado">Cerrado</option>
+      <option value="rechazado">Rechazado</option>
       <option value="facturado">Facturado</option>
     </select>
     <div class="ad-toolbar">
@@ -884,6 +891,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
             <option value="abierto">Abierto</option>
             <option value="presupuesto">Presupuesto</option>
             <option value="cerrado">Cerrado</option>
+            <option value="rechazado">Rechazado (el cliente no lo hace)</option>
           </select>
         </div>
         <div class="field c2"><label>Tipo</label>
@@ -898,11 +906,12 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         </div>
         <div class="field c2"><label>F. requerimiento</label><input type="text" id="pf-fecha-requerimiento" inputmode="numeric" maxlength="10" placeholder="" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
         <div class="field c2 pf-solo-resp"><label>¿Presupuestado?</label>
-          <select id="pf-es-presupuestado">
+          <select id="pf-es-presupuestado" onchange="onCambiaEsPresupuestado()">
             <option value="no">No</option>
             <option value="si">Sí</option>
           </select>
         </div>
+        <div class="field c2 pf-solo-resp"><label>F. presupuesto</label><input type="text" id="pf-fecha-presupuesto" inputmode="numeric" maxlength="10" placeholder="" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
         <div class="field c2 pf-solo-resp"><label>F. aprobación</label><input type="text" id="pf-fecha-aprobacion" inputmode="numeric" maxlength="10" placeholder="" oninput="this.value=soloFecha(this.value)" onblur="completarFechaTexto(this)"></div>
 
         <div class="field c12"><label>Nombre del proyecto *</label><input type="text" id="pf-nombre" placeholder="Ej: Mantenimiento correctivo — Compresor Norte"></div>
@@ -927,6 +936,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
             </select>
             <button type="button" class="btn-tool pf-edit-action" onclick="document.getElementById('pf-presupuesto-archivo-input').click()">📎 Adjuntar</button>
           </div>
+          <div class="pf-dropzone pf-edit-action" id="pf-presupuesto-drop">📎 Arrastrá el archivo del presupuesto hasta acá, o usá "Adjuntar"</div>
           <input type="file" id="pf-presupuesto-archivo-input" style="display:none" onchange="manejarArchivoPresupuesto(event)">
           <div id="pf-presupuesto-archivo-list"></div>
         </div>
@@ -1020,6 +1030,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="topbar-sub">Resumen de proyectos</div>
       </div>
     </div>
+    <button class="icon-btn campana-glob" onclick="abrirNotificaciones()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
     <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión"><span class="rol-emoji">👷</span> <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
@@ -1045,6 +1056,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="topbar-sub" id="ad-count">0 registros</div>
       </div>
     </div>
+    <button class="icon-btn campana-glob" onclick="abrirNotificaciones()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
     <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión"><span class="rol-emoji">👷</span> <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
@@ -1087,6 +1099,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="topbar-sub">Clientes, Usuarios, Equipos y Operarios</div>
       </div>
     </div>
+    <button class="icon-btn campana-glob" onclick="abrirNotificaciones()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
     <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión"><span class="rol-emoji">👷</span> <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
@@ -2267,6 +2280,7 @@ function toggleVerPassword(){
   const campo = document.getElementById('lg-pass');
   campo.type = campo.type === 'password' ? 'text' : 'password';
 }
+const MAX_INTENTOS_LOGIN = 3;
 async function hacerLogin(){
   const u = document.getElementById('lg-user').value.trim();
   const p = document.getElementById('lg-pass').value;
@@ -2292,7 +2306,33 @@ async function hacerLogin(){
       cuenta = buscarCuenta(u);
     }catch(e){ console.warn('No se pudo re-sincronizar usuarios', e); }
   }
-  if(!cuenta || cuenta.pass !== p){ err.textContent = 'Usuario o contraseña incorrectos.'; return; }
+  // Bloqueo por intentos fallidos (no aplica a las cuentas de Administración, que son quienes desbloquean)
+  const controlaBloqueo = !!cuenta && cuenta.rol!=='administracion' && !!window.db;
+  const kBloq = u.toLowerCase();
+  let bloqueo = null;
+  if(controlaBloqueo){
+    try{ bloqueo = (await window.db.getAll('bloqueos')).find(x=>x.id===kBloq) || null; }catch(e){ console.warn('No se pudo leer bloqueos', e); }
+    if(bloqueo && bloqueo.bloqueado){
+      err.textContent = '🔒 Usuario bloqueado por intentos fallidos. Pedile a Administración que lo desbloquee.';
+      return;
+    }
+  }
+  if(!cuenta || cuenta.pass !== p){
+    if(controlaBloqueo){
+      const b = bloqueo || { id:kBloq, usuario:u, nombre:cuenta.nombre||u, intentos:0, bloqueado:false };
+      b.intentos = (b.intentos||0) + 1;
+      b.ultimoIntento = Date.now();
+      if(b.intentos >= MAX_INTENTOS_LOGIN){ b.bloqueado = true; b.fechaBloqueo = Date.now(); }
+      try{ await window.db.set('bloqueos', b.id, b); }catch(e){ console.warn('No se pudo guardar el intento', e); }
+      err.textContent = b.bloqueado
+        ? '🔒 Usuario bloqueado por intentos fallidos. Pedile a Administración que lo desbloquee.'
+        : 'Usuario o contraseña incorrectos. Te quedan ' + (MAX_INTENTOS_LOGIN - b.intentos) + ' intento' + ((MAX_INTENTOS_LOGIN - b.intentos)===1?'':'s') + '.';
+      return;
+    }
+    err.textContent = 'Usuario o contraseña incorrectos.'; return;
+  }
+  // Ingreso correcto: se reinicia el contador de intentos
+  if(bloqueo && bloqueo.intentos>0){ bloqueo.intentos = 0; try{ await window.db.set('bloqueos', bloqueo.id, bloqueo); }catch(e){ console.warn(e); } }
   err.textContent = '';
   recordarUsuarioLogin(cuenta.usuario || u);
   currentUser = u;
@@ -2471,6 +2511,7 @@ async function cargarDatos(){
       USUARIOS_DB = us.filter(x=>!x.eliminado);
       STATE.operarios = op.filter(x=>!x.eliminado);
       po.forEach(o=> PASSWORD_OVERRIDES[o.id] = o.pass);
+      try{ STATE.bloqueos = currentUserRol==='administracion' ? (await window.db.getAll('bloqueos')).filter(x=>x.bloqueado) : []; }catch(e){ STATE.bloqueos = []; }
       window._trashPr = pr.filter(x=>x.eliminado);
       try{ const cfg = await window.db.getAll('configuracion'); cargarNombresRoles(cfg); const e = cfg.find(x=>x.id==='empresa'); LOGO_EMPRESA = (e && e.logo) || ''; LOGO_FONDO = (e && e.logoFondo) || 'claro'; aplicarLogoLogin(); }catch(_){}
     }
@@ -2511,6 +2552,7 @@ async function refrescarDatos(){
       USUARIOS_DB = us.filter(x=>!x.eliminado);
       STATE.operarios = op.filter(x=>!x.eliminado);
       po.forEach(o=> PASSWORD_OVERRIDES[o.id] = o.pass);
+      try{ STATE.bloqueos = currentUserRol==='administracion' ? (await window.db.getAll('bloqueos')).filter(x=>x.bloqueado) : []; }catch(e){ STATE.bloqueos = []; }
       window._trashPr = pr.filter(x=>x.eliminado);
     }
     actualizarBadgeGestion();
@@ -2649,7 +2691,7 @@ function tarjetaProyecto(p, opts){
         <span class="badge ${estadoClase}">${estadoTexto}</span>
       </div>
       ${requerimiento ? `<div class="card-req">📝 ${requerimiento}</div>` : ''}
-      ${p.esPresupuestado==='si' && !esProyectoRestringidoParaMi(p) ? `<div class="card-req">💰 Presupuestado${p.fechaAprobacion ? ' · Aprobado el '+p.fechaAprobacion : ' · Pendiente de aprobación'}</div>` : ''}
+      ${p.estado==='rechazado' ? `<div class="card-req">🚫 Rechazado${p.fechaRechazo ? ' el '+p.fechaRechazo : ''} · el cliente no lo realiza${p.fechaPresupuesto ? ' · Presupuestado el '+p.fechaPresupuesto : ''}</div>` : (p.esPresupuestado==='si' && !esProyectoRestringidoParaMi(p) ? `<div class="card-req">💰 Presupuestado${p.fechaPresupuesto ? ' el '+p.fechaPresupuesto : ''}${p.fechaAprobacion ? ' · Aprobado el '+p.fechaAprobacion : ' · Pendiente de aprobación'}</div>` : '')}
       <div class="card-meta">
         <span>📋 <b>${nOt}</b> OT</span>
         <span>📄 <b>${nInf}</b> Informe${nInf===1?'':'s'}</span>
@@ -2681,6 +2723,7 @@ function renderProyectos(filtroTexto){
       if(p.estado==='presupuesto') return 0;
       if(p.estado==='abierto') return 1;
       if(p.estado==='cerrado') return 2;
+      if(p.estado==='rechazado') return 2;
       return 0;
     };
     const fechaOrden = p => {
@@ -2863,6 +2906,32 @@ function pyCeldaHTML(p, key){
 /* ==================== PROYECTO: FORM ==================== */
 let editProyectoId = null;
 let pf_presupuestoArchivo = null;
+/* Al marcar ¿Presupuestado? = Sí, se completa sola la fecha del presupuesto (hoy) si estaba vacía */
+function onCambiaEsPresupuestado(){
+  const f = document.getElementById('pf-fecha-presupuesto');
+  if(document.getElementById('pf-es-presupuestado').value==='si' && !f.value) f.value = hoyDMY();
+  onCambiaEstadoProyecto();
+}
+/* Arrastrar y soltar el archivo del presupuesto (en la caja del presupuesto, además del botón Adjuntar) */
+(function(){
+  const box = document.getElementById('pf-presupuesto-box');
+  const zona = document.getElementById('pf-presupuesto-drop');
+  if(!box || !zona) return;
+  const hayArchivos = e => e.dataTransfer && [...(e.dataTransfer.types||[])].includes('Files');
+  ['dragenter','dragover'].forEach(ev=> box.addEventListener(ev, e=>{ if(!hayArchivos(e)) return; e.preventDefault(); zona.classList.add('sobre'); }));
+  box.addEventListener('dragleave', e=>{ if(!box.contains(e.relatedTarget)) zona.classList.remove('sobre'); });
+  box.addEventListener('drop', e=>{
+    if(!hayArchivos(e)) return;
+    e.preventDefault(); zona.classList.remove('sobre');
+    if(document.getElementById('pf-content').classList.contains('pf-readonly')) return;
+    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+    if(!f) return;
+    if(e.dataTransfer.files.length>1) toast('Solo se adjunta un archivo — se tomó "'+f.name+'"');
+    leerArchivoComoAdjunto(f, adj => { pf_presupuestoArchivo = adj; renderArchivoPresupuesto(); });
+  });
+  // si se suelta un archivo fuera de la zona, que el navegador no abra el archivo y saque de la app
+  ['dragover','drop'].forEach(ev=> window.addEventListener(ev, e=>{ if(hayArchivos(e)) e.preventDefault(); }));
+})();
 function manejarArchivoPresupuesto(event){
   const file = event.target.files[0];
   if(!file) return;
@@ -2933,6 +3002,7 @@ function abrirNuevoProyecto(){
   document.getElementById('pf-fecha-requerimiento').value = hoyDMY();
   document.getElementById('pf-requerimiento').value = '';
   document.getElementById('pf-es-presupuestado').value = 'no';
+  document.getElementById('pf-fecha-presupuesto').value = '';
   document.getElementById('pf-fecha-aprobacion').value = hoyDMY();
   document.getElementById('pf-presupuesto-monto').value = '';
   document.getElementById('pf-nombre').value = '';
@@ -3003,6 +3073,7 @@ function chequearBorradoresPendientes(){
         document.getElementById('pf-fecha-requerimiento').value = datos.fechaReq||'';
         document.getElementById('pf-requerimiento').value = datos.requerimiento||''; rtCargar('pf-requerimiento', datos.requerimientoHtml);
         document.getElementById('pf-es-presupuestado').value = datos.esPresupuestado||'no';
+        document.getElementById('pf-fecha-presupuesto').value = datos.fechaPresupuesto||'';
         document.getElementById('pf-fecha-aprobacion').value = datos.fechaAprobacion||'';
         document.getElementById('pf-presupuesto-monto').value = datos.presupuesto||'';
         document.getElementById('pf-obs').value = datos.obs||''; rtCargar('pf-obs', datos.obsHtml);
@@ -3033,6 +3104,7 @@ function abrirProyecto(id){
   document.getElementById('pf-fecha-requerimiento').value = p.fechaRequerimiento || '';
   document.getElementById('pf-requerimiento').value = p.requerimiento || ''; rtCargar('pf-requerimiento', p.requerimientoHtml);
   document.getElementById('pf-es-presupuestado').value = p.esPresupuestado || 'no';
+  document.getElementById('pf-fecha-presupuesto').value = p.fechaPresupuesto || '';
   document.getElementById('pf-fecha-aprobacion').value = p.fechaAprobacion || '';
   document.getElementById('pf-presupuesto-monto').value = p.presupuestoMonto ? formatDinero(p.presupuestoMonto) : '';
   document.getElementById('pf-nombre').value = p.nombre||'';
@@ -3063,7 +3135,7 @@ function abrirProyecto(id){
   document.getElementById('pf-save-btn-top').style.display = facturadoBloqueado ? 'none' : 'inline-block';
   document.getElementById('pf-save-btn-bottom').style.display = facturadoBloqueado ? 'none' : 'block';
   document.getElementById('pf-del-btn').style.display = (currentUserRol!=='gerente' && !facturadoBloqueado && (currentUserRol==='administracion' || p.usuario===currentUser)) ? 'block' : 'none';
-  document.getElementById('pf-finalizar-btn').style.display = (currentUserRol!=='gerente' && !facturadoBloqueado && p.estado!=='cerrado') ? 'block' : 'none';
+  document.getElementById('pf-finalizar-btn').style.display = (currentUserRol!=='gerente' && !facturadoBloqueado && p.estado!=='cerrado' && p.estado!=='rechazado') ? 'block' : 'none';
   const restringido = esProyectoRestringidoParaMi(p);
   document.getElementById('pf-content').classList.toggle('pf-restringido', restringido);
   if(restringido){
@@ -3282,6 +3354,7 @@ function snapshotProyectoForm(){
     requerimiento: document.getElementById('pf-requerimiento')?.value,
     requerimientoHtml: rtHtml('pf-requerimiento'),
     esPresupuestado: document.getElementById('pf-es-presupuestado')?.value,
+    fechaPresupuesto: document.getElementById('pf-fecha-presupuesto')?.value,
     fechaAprobacion: document.getElementById('pf-fecha-aprobacion')?.value,
     presupuesto: document.getElementById('pf-presupuesto-monto')?.value,
     presupuestoMoneda: document.getElementById('pf-presupuesto-moneda')?.value,
@@ -4098,10 +4171,10 @@ async function guardarProyecto(){
   if(contacto==='__nuevo__') contacto = '';
   const nuevoEstado = document.getElementById('pf-estado').value;
   const proyectoActual0 = editProyectoId ? STATE.proyectos.find(x=>x.id===editProyectoId) : null;
-  if(nuevoEstado==='cerrado' && currentUserRol!=='administracion' && !(proyectoActual0 && proyectoActual0.estado==='cerrado')){
+  if((nuevoEstado==='cerrado' || nuevoEstado==='rechazado') && currentUserRol!=='administracion' && !(proyectoActual0 && proyectoActual0.estado===nuevoEstado)){
     const proyectoActual = proyectoActual0;
     if(!proyectoActual || proyectoActual.usuario!==currentUser){
-      toast('Solo podés cerrar tus propios proyectos');
+      toast('Solo podés ' + (nuevoEstado==='rechazado' ? 'rechazar' : 'cerrar') + ' tus propios proyectos');
       return;
     }
   }
@@ -4110,12 +4183,14 @@ async function guardarProyecto(){
   const obj = editProyectoId ? STATE.proyectos.find(x=>x.id===editProyectoId) : { id: uid('pry'), fechaCreacion: Date.now(), usuario: (nuevoEstado==='solicitado' || currentUserRol==='administracion') ? null : currentUser };
   obj.nro = document.getElementById('pf-nro').value;
   obj.estado = nuevoEstado;
+  if(nuevoEstado==='rechazado'){ if(!obj.fechaRechazo) obj.fechaRechazo = hoyDMY(); } else { delete obj.fechaRechazo; }
   if(nuevoEstado==='solicitado') obj.usuario = null;
   obj.fechaRequerimiento = document.getElementById('pf-fecha-requerimiento').value;
   obj.requerimiento = document.getElementById('pf-requerimiento').value;
   obj.requerimientoHtml = rtHtml('pf-requerimiento');
   obj.esPresupuestado = document.getElementById('pf-es-presupuestado').value;
   obj.fechaAprobacion = document.getElementById('pf-fecha-aprobacion').value;
+  obj.fechaPresupuesto = document.getElementById('pf-fecha-presupuesto').value;
   obj.presupuestoMonto = parseDineroInput(document.getElementById('pf-presupuesto-monto'));
   obj.presupuestoMoneda = document.getElementById('pf-presupuesto-moneda').value;
   obj.presupuestoArchivo = pf_presupuestoArchivo;
@@ -4707,7 +4782,7 @@ function renderStats(filtroTexto){
     </select>`;
 
   const total = lista.length;
-  const porEstado = {solicitado:0, presupuesto:0, abierto:0, cerrado:0, facturado:0, cobrado:0};
+  const porEstado = {solicitado:0, presupuesto:0, abierto:0, cerrado:0, rechazado:0, facturado:0, cobrado:0};
   const porTipo = {ot:0, informe:0};
   lista.forEach(p=>{ const est=estadoEfectivoProyecto(p); if(porEstado[est]!==undefined) porEstado[est]++; porTipo.ot += (p.ots||[]).length; porTipo.informe += (p.informes||[]).length; });
 
@@ -4900,7 +4975,7 @@ function stCeldaHTML(p, stats, key){
 
 /* ==================== ADMINISTRACIÓN ==================== */
 function actualizarBadgeGestion(){
-  const hay = STATE.clientes.some(c=>c.estado==='pendiente') || STATE.equipos.some(e=>e.estado==='pendiente') || STATE.operarios.some(o=>o.estado==='pendiente');
+  const hay = STATE.clientes.some(c=>c.estado==='pendiente') || STATE.equipos.some(e=>e.estado==='pendiente') || STATE.operarios.some(o=>o.estado==='pendiente') || (STATE.bloqueos||[]).length>0;
   const badge = document.getElementById('nav-gestion-badge');
   if(badge) badge.style.display = hay ? 'block' : 'none';
 }
@@ -4910,7 +4985,8 @@ function renderPendientes(){
   const clientesPend = STATE.clientes.filter(c=>c.estado==='pendiente');
   const equiposPend = STATE.equipos.filter(e=>e.estado==='pendiente');
   const operariosPend = STATE.operarios.filter(o=>o.estado==='pendiente');
-  if(!clientesPend.length && !equiposPend.length && !operariosPend.length){ cont.innerHTML=''; return; }
+  const bloqueados = currentUserRol==='administracion' ? (STATE.bloqueos||[]) : [];
+  if(!clientesPend.length && !equiposPend.length && !operariosPend.length && !bloqueados.length){ cont.innerHTML=''; return; }
   cont.innerHTML = `
     <div class="box alerta">
       <div class="section-head rojo" style="margin-bottom:8px">Pendientes de aprobar</div>
@@ -4923,7 +4999,20 @@ function renderPendientes(){
       ${operariosPend.map(o=>`
         <div class="link-row"><span><b>Operario</b> · ${o.nombre}</span><button class="btn secondary sm" onclick="aprobarOperario('${o.id}')">Revisar</button></div>
       `).join('')}
+      ${bloqueados.map((b,i)=>`
+        <div class="link-row"><span><b>🔒 Usuario bloqueado</b> · ${(b.nombre||b.usuario||'').replace(/</g,'&lt;')} <span style="color:var(--text3)">(${(b.usuario||'').replace(/</g,'&lt;')}${b.fechaBloqueo?' · '+new Date(b.fechaBloqueo).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'}):''})</span></span><button class="btn secondary sm" onclick="desbloquearUsuario(${i})">Desbloquear</button></div>
+      `).join('')}
     </div>`;
+}
+/* Solo Administración puede desbloquear a un usuario que se pasó de intentos */
+async function desbloquearUsuario(i){
+  if(currentUserRol!=='administracion'){ toast('Solo Administración puede desbloquear usuarios'); return; }
+  const b = (STATE.bloqueos||[])[i]; if(!b) return;
+  b.bloqueado = false; b.intentos = 0; b.desbloqueadoPor = currentUser; b.fechaDesbloqueo = Date.now();
+  try{ if(window.db) await window.db.set('bloqueos', b.id, b); }catch(e){ console.warn(e); b.bloqueado = true; toast('No se pudo desbloquear — revisá la conexión'); return; }
+  STATE.bloqueos = STATE.bloqueos.filter(x=>x!==b);
+  renderPendientes();
+  toast('✅ ' + (b.nombre||b.usuario) + ' desbloqueado');
 }
 async function aprobarOperario(id){
   if(bloqueadoPorSoloLectura()) return;
@@ -6667,6 +6756,7 @@ function esOperarioPuro(){ return !!operarioActual && !usuarioActual; }
 const APROBADORES_AUSENCIA = ['diego','ariel','guillermo'];
 function esAprobadorActual(){
   if(!usuarioActual) return false;
+  if(currentUserRol==='administracion' || currentUserRol==='gerente') return true;
   const r = rolActualPlan();
   if(r==='administracion' || r==='gerente') return true;
   const norm = t => String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
@@ -6756,7 +6846,9 @@ function actualizarBadgeNotificaciones(){
   const btn = document.getElementById('btn-notificaciones');
   const num = document.getElementById('btn-notif-num');
   if(num){ num.textContent = n; num.style.display = n>0 ? 'flex' : 'none'; }
-  btn.classList.toggle('con-alerta', n>0);
+  if(btn) btn.classList.toggle('con-alerta', n>0);
+  document.querySelectorAll('.campana-glob').forEach(b=>b.classList.toggle('con-alerta', n>0));
+  document.querySelectorAll('.campana-num').forEach(e=>{ e.textContent = n; e.style.display = n>0 ? 'flex' : 'none'; });
 }
 function avisosDescartadosLocal(){
   try{ return JSON.parse(localStorage.getItem('planif_avisos_descartados')||'[]'); }catch(e){ return []; }
