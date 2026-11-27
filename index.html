@@ -75,6 +75,7 @@ body{font-family:var(--sans);background:#001a47;color:var(--text);font-size:14px
   .card.estado-solicitado{border-left-color:#6d28d9}
   .card.estado-cerrado{border-left-color:var(--red)}
   .card.estado-rechazado{border-left-color:#6b7280}
+  .card.estado-vencido{border-left-color:#d97706}
   .card.estado-facturado{border-left-color:#1e3a5f}
   .card.estado-cobrado{border-left-color:var(--green)}
 }
@@ -153,6 +154,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .badge.abierto{background:var(--greenlt);color:var(--green)}
 .badge.cerrado{background:var(--redlt);color:var(--red)}
 .badge.rechazado{background:#e5e7eb;color:#4b5563}
+.badge.vencido{background:#fef3c7;color:#92400e}
 .badge.facturado{background:#1e3a5f;color:#fff;font-weight:800}
 .badge.cobrado{background:var(--greenlt);color:var(--green)}
 .card-meta{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--text2);flex-wrap:wrap}
@@ -346,6 +348,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .ad-row-presupuesto td:first-child{box-shadow:inset 3px 0 0 var(--amber)}
 .ad-row-cerrado td:first-child{box-shadow:inset 3px 0 0 var(--text3)}
 .ad-row-rechazado td:first-child{box-shadow:inset 3px 0 0 #6b7280}
+.ad-row-vencido td:first-child{box-shadow:inset 3px 0 0 #d97706}
 .ad-row-facturado td:first-child{box-shadow:inset 3px 0 0 var(--green)}
 .ad-row-solicitado td:first-child{box-shadow:inset 3px 0 0 #c9903c}
 .ad-table-empty{text-align:center;color:var(--text3);padding:34px 14px!important;font-size:14px;white-space:normal!important}
@@ -834,6 +837,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
       <option value="presupuesto">Presupuesto</option>
       <option value="cerrado">Cerrado</option>
       <option value="rechazado">Rechazado</option>
+      <option value="vencido">Presupuesto vencido</option>
       <option value="facturado">Facturado</option>
     </select>
     <div class="ad-toolbar">
@@ -891,7 +895,8 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
             <option value="abierto">Abierto</option>
             <option value="presupuesto">Presupuesto</option>
             <option value="cerrado">Cerrado</option>
-            <option value="rechazado">Rechazado (el cliente no lo hace)</option>
+            <option value="rechazado">Rechazado</option>
+            <option value="vencido">Presupuesto vencido</option>
           </select>
         </div>
         <div class="field c2"><label>Tipo</label>
@@ -2075,6 +2080,22 @@ function soloFecha(v){
 /* Convierte "DD/MM/AAAA" o "DD-MM-AAAA" a timestamp, para poder ordenar por fecha */
 /* Porcentaje con 2 decimales (formato es-AR: 33,33%) */
 function fmtPct(n){ return (Number(n)||0).toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2}) + '%'; }
+const ETIQUETA_ESTADO = { vencido:'Presupuesto vencido' };
+function etiquetaEstado(e){ return ETIQUETA_ESTADO[e] || e; }
+/* Presupuestos con más de 30 días desde su fecha (y sin aprobar) pasan solos a "Presupuesto vencido": proyecto cerrado, no facturable */
+const DIAS_VENCIMIENTO_PRESUPUESTO = 30;
+function vencerPresupuestos(){
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  (STATE.proyectos||[]).forEach(p=>{
+    if(p.estado!=='presupuesto' || !p.fechaPresupuesto) return;
+    const t = parseFechaDMY(p.fechaPresupuesto); if(!t) return;
+    const dias = Math.floor((hoy.getTime() - t) / 86400000);
+    if(dias > DIAS_VENCIMIENTO_PRESUPUESTO){
+      p.estado = 'vencido'; p.fechaVencimiento = hoyDMY();
+      if(currentUserRol!=='gerente') guardarEnDB('proyectos', p);
+    }
+  });
+}
 function parseFechaDMY(str){
   if(!str) return 0;
   const partes = str.split(/[\/\-]/).map(p=>parseInt(p,10));
@@ -2513,6 +2534,7 @@ async function cargarDatos(){
       po.forEach(o=> PASSWORD_OVERRIDES[o.id] = o.pass);
       try{ STATE.bloqueos = currentUserRol==='administracion' ? (await window.db.getAll('bloqueos')).filter(x=>x.bloqueado) : []; }catch(e){ STATE.bloqueos = []; }
       window._trashPr = pr.filter(x=>x.eliminado);
+      vencerPresupuestos();
       try{ const cfg = await window.db.getAll('configuracion'); cargarNombresRoles(cfg); const e = cfg.find(x=>x.id==='empresa'); LOGO_EMPRESA = (e && e.logo) || ''; LOGO_FONDO = (e && e.logoFondo) || 'claro'; aplicarLogoLogin(); }catch(_){}
     }
   }catch(e){
@@ -2554,6 +2576,7 @@ async function refrescarDatos(){
       po.forEach(o=> PASSWORD_OVERRIDES[o.id] = o.pass);
       try{ STATE.bloqueos = currentUserRol==='administracion' ? (await window.db.getAll('bloqueos')).filter(x=>x.bloqueado) : []; }catch(e){ STATE.bloqueos = []; }
       window._trashPr = pr.filter(x=>x.eliminado);
+      vencerPresupuestos();
     }
     actualizarBadgeGestion();
     actualizarBadgeFacturacion();
@@ -2678,7 +2701,7 @@ function tarjetaProyecto(p, opts){
   const nInf = (p.informes||[]).length;
   const facturado = tieneAdmin(p.id);
   const estadoClase = facturado ? 'facturado' : p.estado;
-  const estadoTexto = facturado ? 'Facturado' : p.estado;
+  const estadoTexto = facturado ? 'Facturado' : etiquetaEstado(p.estado);
   const requerimiento = (p.requerimiento||'').trim();
   return `
     <div class="card estado-${estadoClase}" onclick="abrirProyecto('${p.id}')">
@@ -2691,7 +2714,7 @@ function tarjetaProyecto(p, opts){
         <span class="badge ${estadoClase}">${estadoTexto}</span>
       </div>
       ${requerimiento ? `<div class="card-req">📝 ${requerimiento}</div>` : ''}
-      ${p.estado==='rechazado' ? `<div class="card-req">🚫 Rechazado${p.fechaRechazo ? ' el '+p.fechaRechazo : ''} · el cliente no lo realiza${p.fechaPresupuesto ? ' · Presupuestado el '+p.fechaPresupuesto : ''}</div>` : (p.esPresupuestado==='si' && !esProyectoRestringidoParaMi(p) ? `<div class="card-req">💰 Presupuestado${p.fechaPresupuesto ? ' el '+p.fechaPresupuesto : ''}${p.fechaAprobacion ? ' · Aprobado el '+p.fechaAprobacion : ' · Pendiente de aprobación'}</div>` : '')}
+      ${p.estado==='vencido' ? `<div class="card-req">⌛ Presupuesto vencido${p.fechaVencimiento ? ' el '+p.fechaVencimiento : ''}${p.fechaPresupuesto ? ' · Presupuestado el '+p.fechaPresupuesto : ''}</div>` : p.estado==='rechazado' ? `<div class="card-req">🚫 Rechazado${p.fechaRechazo ? ' el '+p.fechaRechazo : ''}${p.fechaPresupuesto ? ' · Presupuestado el '+p.fechaPresupuesto : ''}</div>` : (p.esPresupuestado==='si' && !esProyectoRestringidoParaMi(p) ? `<div class="card-req">💰 Presupuestado${p.fechaPresupuesto ? ' el '+p.fechaPresupuesto : ''}${p.fechaAprobacion ? ' · Aprobado el '+p.fechaAprobacion : ' · Pendiente de aprobación'}</div>` : '')}
       <div class="card-meta">
         <span>📋 <b>${nOt}</b> OT</span>
         <span>📄 <b>${nInf}</b> Informe${nInf===1?'':'s'}</span>
@@ -2723,7 +2746,7 @@ function renderProyectos(filtroTexto){
       if(p.estado==='presupuesto') return 0;
       if(p.estado==='abierto') return 1;
       if(p.estado==='cerrado') return 2;
-      if(p.estado==='rechazado') return 2;
+      if(p.estado==='rechazado' || p.estado==='vencido') return 2;
       return 0;
     };
     const fechaOrden = p => {
@@ -2889,7 +2912,7 @@ function pyCeldaHTML(p, key){
   if(key==='nro') return (p.nro || '—') + (nroRepetido(p) ? ' <span class="pf-mas" style="background:var(--redlt);color:var(--red)" title="N° repetido">⚠ repetido</span>' : '');
   if(key==='estado'){
     const estadoClase = facturado ? 'facturado' : p.estado;
-    const estadoTexto = facturado ? 'Facturado' : p.estado;
+    const estadoTexto = facturado ? 'Facturado' : etiquetaEstado(p.estado);
     return `<span class="badge ${estadoClase}">${estadoTexto}</span>`;
   }
   if(key==='responsable') return p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable';
@@ -3135,7 +3158,7 @@ function abrirProyecto(id){
   document.getElementById('pf-save-btn-top').style.display = facturadoBloqueado ? 'none' : 'inline-block';
   document.getElementById('pf-save-btn-bottom').style.display = facturadoBloqueado ? 'none' : 'block';
   document.getElementById('pf-del-btn').style.display = (currentUserRol!=='gerente' && !facturadoBloqueado && (currentUserRol==='administracion' || p.usuario===currentUser)) ? 'block' : 'none';
-  document.getElementById('pf-finalizar-btn').style.display = (currentUserRol!=='gerente' && !facturadoBloqueado && p.estado!=='cerrado' && p.estado!=='rechazado') ? 'block' : 'none';
+  document.getElementById('pf-finalizar-btn').style.display = (currentUserRol!=='gerente' && !facturadoBloqueado && p.estado!=='cerrado' && p.estado!=='rechazado' && p.estado!=='vencido') ? 'block' : 'none';
   const restringido = esProyectoRestringidoParaMi(p);
   document.getElementById('pf-content').classList.toggle('pf-restringido', restringido);
   if(restringido){
@@ -4171,10 +4194,10 @@ async function guardarProyecto(){
   if(contacto==='__nuevo__') contacto = '';
   const nuevoEstado = document.getElementById('pf-estado').value;
   const proyectoActual0 = editProyectoId ? STATE.proyectos.find(x=>x.id===editProyectoId) : null;
-  if((nuevoEstado==='cerrado' || nuevoEstado==='rechazado') && currentUserRol!=='administracion' && !(proyectoActual0 && proyectoActual0.estado===nuevoEstado)){
+  if((nuevoEstado==='cerrado' || nuevoEstado==='rechazado' || nuevoEstado==='vencido') && currentUserRol!=='administracion' && !(proyectoActual0 && proyectoActual0.estado===nuevoEstado)){
     const proyectoActual = proyectoActual0;
     if(!proyectoActual || proyectoActual.usuario!==currentUser){
-      toast('Solo podés ' + (nuevoEstado==='rechazado' ? 'rechazar' : 'cerrar') + ' tus propios proyectos');
+      toast('Solo podés ' + (nuevoEstado==='cerrado' ? 'cerrar' : 'cambiar el estado de') + ' tus propios proyectos');
       return;
     }
   }
@@ -4184,6 +4207,7 @@ async function guardarProyecto(){
   obj.nro = document.getElementById('pf-nro').value;
   obj.estado = nuevoEstado;
   if(nuevoEstado==='rechazado'){ if(!obj.fechaRechazo) obj.fechaRechazo = hoyDMY(); } else { delete obj.fechaRechazo; }
+  if(nuevoEstado==='vencido'){ if(!obj.fechaVencimiento) obj.fechaVencimiento = hoyDMY(); } else { delete obj.fechaVencimiento; }
   if(nuevoEstado==='solicitado') obj.usuario = null;
   obj.fechaRequerimiento = document.getElementById('pf-fecha-requerimiento').value;
   obj.requerimiento = document.getElementById('pf-requerimiento').value;
@@ -4782,7 +4806,7 @@ function renderStats(filtroTexto){
     </select>`;
 
   const total = lista.length;
-  const porEstado = {solicitado:0, presupuesto:0, abierto:0, cerrado:0, rechazado:0, facturado:0, cobrado:0};
+  const porEstado = {solicitado:0, presupuesto:0, abierto:0, cerrado:0, rechazado:0, vencido:0, facturado:0, cobrado:0};
   const porTipo = {ot:0, informe:0};
   lista.forEach(p=>{ const est=estadoEfectivoProyecto(p); if(porEstado[est]!==undefined) porEstado[est]++; porTipo.ot += (p.ots||[]).length; porTipo.informe += (p.informes||[]).length; });
 
@@ -4793,7 +4817,7 @@ function renderStats(filtroTexto){
   const maxEstado = Math.max(1, ...Object.values(porEstado));
   const barsEstado = Object.entries(porEstado).map(([k,v])=>`
     <div class="stat-bar-row">
-      <div class="stat-bar-top"><span>${k}</span><b>${v}</b></div>
+      <div class="stat-bar-top"><span>${etiquetaEstado(k)}</span><b>${v}</b></div>
       <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${(v/maxEstado*100)}%"></div></div>
     </div>`).join('');
 
@@ -4975,13 +4999,15 @@ function stCeldaHTML(p, stats, key){
 
 /* ==================== ADMINISTRACIÓN ==================== */
 function actualizarBadgeGestion(){
-  const hay = STATE.clientes.some(c=>c.estado==='pendiente') || STATE.equipos.some(e=>e.estado==='pendiente') || STATE.operarios.some(o=>o.estado==='pendiente') || (STATE.bloqueos||[]).length>0;
+  const hay = esAdminOGerente() && (STATE.clientes.some(c=>c.estado==='pendiente') || STATE.equipos.some(e=>e.estado==='pendiente') || STATE.operarios.some(o=>o.estado==='pendiente') || (STATE.bloqueos||[]).length>0);
   const badge = document.getElementById('nav-gestion-badge');
   if(badge) badge.style.display = hay ? 'block' : 'none';
+  if(typeof actualizarBadgeNotificaciones==='function') try{ actualizarBadgeNotificaciones(); }catch(_){}
 }
 function renderPendientes(){
   actualizarBadgeGestion();
   const cont = document.getElementById('ad-pendientes');
+  if(!esAdminOGerente()){ cont.innerHTML=''; return; }
   const clientesPend = STATE.clientes.filter(c=>c.estado==='pendiente');
   const equiposPend = STATE.equipos.filter(e=>e.estado==='pendiente');
   const operariosPend = STATE.operarios.filter(o=>o.estado==='pendiente');
@@ -5012,6 +5038,7 @@ async function desbloquearUsuario(i){
   try{ if(window.db) await window.db.set('bloqueos', b.id, b); }catch(e){ console.warn(e); b.bloqueado = true; toast('No se pudo desbloquear — revisá la conexión'); return; }
   STATE.bloqueos = STATE.bloqueos.filter(x=>x!==b);
   renderPendientes();
+  if(document.getElementById('modal-notificaciones').classList.contains('open')) abrirNotificaciones();
   toast('✅ ' + (b.nombre||b.usuario) + ' desbloqueado');
 }
 async function aprobarOperario(id){
@@ -5476,13 +5503,15 @@ function cambiarTabGestion(tab){
 
 /* Proyectos que todavía no tienen registro de Administración */
 function actualizarBadgeFacturacion(){
-  const hay = STATE.proyectos.some(p=>p.estado==='cerrado' && !STATE.administracion.some(a=>a.proyectoId===p.id));
+  const hay = esAdminOGerente() && STATE.proyectos.some(p=>p.estado==='cerrado' && !STATE.administracion.some(a=>a.proyectoId===p.id));
   const badge = document.getElementById('nav-facturacion-badge');
   if(badge) badge.style.display = hay ? 'block' : 'none';
+  if(typeof actualizarBadgeNotificaciones==='function') try{ actualizarBadgeNotificaciones(); }catch(_){}
 }
 function renderFacturarBox(){
   actualizarBadgeFacturacion();
   const cont = document.getElementById('ad-facturar-box');
+  if(!esAdminOGerente()){ cont.innerHTML=''; return; }
   const sinFacturar = STATE.proyectos.filter(p=>p.estado==='cerrado' && !STATE.administracion.some(a=>a.proyectoId===p.id));
   if(!sinFacturar.length){ cont.innerHTML=''; return; }
   cont.innerHTML = `
@@ -6484,7 +6513,7 @@ function exportarExcelFacturacion(){
       'Nº Proyecto': p.nro || '',
       'Cliente': p.cliente || '',
       'Proyecto': p.nombre || '',
-      'Estado': estadoEfectivoProyecto(p) || '',
+      'Estado': etiquetaEstado(estadoEfectivoProyecto(p)) || '',
       'Responsable': p.usuario ? nombreUsuario(p.usuario) : 'Sin responsable',
       'Fecha requerimiento': p.fechaRequerimiento || '',
       'Requerimiento': p.requerimiento || '',
@@ -6709,7 +6738,7 @@ function rolActualPlan(){
 }
 function puedeEliminarAsignacion(a){
   if(a.tipo==='ausencia') return {ok:true};
-  if(rolActualPlan()==='administracion') return {ok:true};
+  if(currentUserRol==='administracion' || rolActualPlan()==='administracion') return {ok:true};
   const loginResp = loginResponsableDe(a);
   if(operarioActual && !usuarioActual){
     return {ok:false, msg:'Los operarios no pueden eliminar obras ni servicios — eso lo hace el responsable'};
@@ -6784,7 +6813,7 @@ function esAvisoAusenciaParaMi(a){
   if(!(a.fechas||[]).some(f=>f>=hoy)) return false;
   if(esCreadorAusencia(a)) return false;
   if(asignacionInvolucraAUsuarioActual(a)) return false;
-  if(ausenciaPendientePermiso(a) && esAprobadorActual()) return false;
+  if(ausenciaPendientePermiso(a)) return false;   // sin aprobar: solo lo ven quienes aprueban (como solicitud). Al aprobarse, avisa a todos
   return !yaVistoPorMi(a);
 }
 function esSolicitudParaAprobar(a){ return ausenciaPendientePermiso(a) && esAprobadorActual(); }
@@ -6796,7 +6825,7 @@ async function aprobarAusencia(id){
   const a = ASIGNACIONES.find(x=>x.id===id); if(!a) return;
   const quien = nombreResponsable(usuarioActual) || usuarioActual;
   a.estadoPermiso = 'aprobada'; a.resueltoPor = usuarioActual;
-  a.vistoPor = a.vistoPor||[]; if(!a.vistoPor.includes(usuarioActual)) a.vistoPor.push(usuarioActual);
+  a.vistoPor = [usuarioActual];   // el resto del equipo recibe el aviso ahora que está aprobada
   a.respuestas = a.respuestas||[];
   a.respuestas.push({ id: uid('resp'), accion:'aprobada', mensaje:`✅ ${quien} aprobó tu ausencia del ${fechaLegible((a.fechas||[]).slice().sort()[0])}.`, creado: Date.now() });
   try{ if(window.db) await window.db.set('planificacion_bloques', a.id, a); }catch(e){ console.warn(e); }
@@ -6825,6 +6854,20 @@ async function marcarRechazoVisto(id){
   try{ if(window.db) await window.db.set('planificacion_bloques', a.id, a); }catch(e){ console.warn(e); }
   actualizarBadgeNotificaciones(); abrirNotificaciones();
 }
+/* Alertas exclusivas de Administración (y Gerencia, que tiene el mismo acceso): pendientes de aprobar, usuarios bloqueados, proyectos para facturar */
+function esAdminOGerente(){ return currentUserRol==='administracion' || currentUserRol==='gerente'; }
+function alertasAdministracion(){
+  const vacio = { pend:[], bloqueados:[], facturar:[], total:0 };
+  if(!esAdminOGerente()) return vacio;
+  const pend = [
+    ...STATE.clientes.filter(c=>c.estado==='pendiente').map(c=>({tipo:'Cliente', id:c.id, nombre:c.nombre, fn:'aprobarCliente'})),
+    ...STATE.equipos.filter(e=>e.estado==='pendiente').map(e=>({tipo:'Equipo', id:e.id, nombre:e.nombre, fn:'aprobarEquipo'})),
+    ...STATE.operarios.filter(o=>o.estado==='pendiente').map(o=>({tipo:'Operario', id:o.id, nombre:o.nombre, fn:'aprobarOperario'}))
+  ];
+  const bloqueados = currentUserRol==='administracion' ? (STATE.bloqueos||[]) : [];
+  const facturar = STATE.proyectos.filter(p=>p.estado==='cerrado' && !STATE.administracion.some(a=>a.proyectoId===p.id));
+  return { pend, bloqueados, facturar, total: pend.length + bloqueados.length + facturar.length };
+}
 function contarPendientesPropios(){
   if(!usuarioActual && !operarioActual) return 0;
   let n = 0;
@@ -6839,6 +6882,7 @@ function contarPendientesPropios(){
     if(esNuevoParaMi(a)) n += 1;
   });
   n += rechazosPropiosSinVer().length;
+  n += alertasAdministracion().total;
   return n;
 }
 function actualizarBadgeNotificaciones(){
@@ -6920,6 +6964,22 @@ function abrirNotificaciones(){
       <div class="notif-acciones"><button class="btn secondary" onclick="marcarRechazoVisto('${a.id}')">Entendido</button></div>
     </div>`).join('');
   }
+  const alAdm = alertasAdministracion();
+  if(alAdm.total){
+    html += `<h4 class="est-titulo" style="margin-top:0">🏢 Alertas de Administración</h4>`;
+    html += alAdm.pend.map(x=>`<div class="notif-item">
+      <div class="notif-texto">⏳ <b>${x.tipo}</b> pendiente de aprobar: ${(x.nombre||'').replace(/</g,'&lt;')}</div>
+      <div class="notif-acciones"><button class="btn secondary" onclick="cerrarModales();irA('gestion');${x.fn}('${x.id}')">Revisar</button></div>
+    </div>`).join('');
+    html += alAdm.bloqueados.map((b,i)=>`<div class="notif-item">
+      <div class="notif-texto">🔒 <b>${(b.nombre||b.usuario||'').replace(/</g,'&lt;')}</b> quedó bloqueado por intentos fallidos de ingreso.</div>
+      <div class="notif-acciones"><button class="btn secondary" onclick="desbloquearUsuario(${i})">Desbloquear</button></div>
+    </div>`).join('');
+    html += alAdm.facturar.map(p=>`<div class="notif-item">
+      <div class="notif-texto">💰 Para facturar: <b>${(p.nombre||'').replace(/</g,'&lt;')}</b> — ${(p.cliente||'').replace(/</g,'&lt;')} ${p.nro||''}</div>
+      <div class="notif-acciones"><button class="btn secondary" onclick="cerrarModales();irA('facturacion');abrirNuevoAdmin('${p.id}')">Facturar</button></div>
+    </div>`).join('');
+  }
   if(solicitudes.length){
     html += `<h4 class="est-titulo" style="margin-top:0">🙋 Permisos de ausencia por aprobar</h4>`;
     html += solicitudes.map(a=>`<div class="notif-item">
@@ -6982,7 +7042,7 @@ function abrirNotificaciones(){
     }).join('');
   }
 
-  const ausenciasEquipo = ASIGNACIONES.filter(a=>a.tipo==='ausencia' && (a.fechas||[]).some(f=>f>=hoy) && !descartadosLocal.includes('equipo:'+a.id))
+  const ausenciasEquipo = ASIGNACIONES.filter(a=>a.tipo==='ausencia' && (a.fechas||[]).some(f=>f>=hoy) && !descartadosLocal.includes('equipo:'+a.id) && (!ausenciaPendientePermiso(a) || esAprobadorActual() || esCreadorAusencia(a)))
     .sort((x,y)=> (x.fechas.slice().sort()[0]||'').localeCompare(y.fechas.slice().sort()[0]||''));
   html += `<h4 class="est-titulo">📋 Ausencias del equipo (hoy en adelante)</h4>`;
   html += ausenciasEquipo.length ? ausenciasEquipo.map(a=>{
@@ -7000,6 +7060,8 @@ function abrirNotificaciones(){
 
   cont.innerHTML = html;
   document.getElementById('modal-notificaciones').classList.add('open');
+  // Los avisos de ausencia aprobada se muestran una sola vez: ya vistos, no vuelven a aparecer
+  if(avisosAus.length){ Promise.all(avisosAus.map(a=>marcarVistoParaMi(a))).then(()=>{ actualizarBadgeNotificaciones(); try{ renderCalendario(); }catch(_){} }); }
 }
 async function marcarRespuestaVista(ausenciaId, respuestaId){
   const a = ASIGNACIONES.find(x=>x.id===ausenciaId);
@@ -8426,7 +8488,7 @@ function abrirPapeleraPlan(){
         <button class="btn secondary sm" onclick="restaurarAsignacionPlan('${a.id}')">Restaurar</button>
       </div>`;
     }).join('');
-  document.getElementById('btn-vaciar-papelera-plan').style.display = (rolActualPlan()==='administracion' && PAPELERA_PLAN.length) ? 'block' : 'none';
+  document.getElementById('btn-vaciar-papelera-plan').style.display = ((currentUserRol==='administracion' || rolActualPlan()==='administracion') && PAPELERA_PLAN.length) ? 'block' : 'none';
   document.getElementById('modal-papelera-plan').classList.add('open');
 }
 function cerrarPapeleraPlan(){ document.getElementById('modal-papelera-plan').classList.remove('open'); }
@@ -8448,6 +8510,7 @@ function vaciarPapeleraPlan(){
   confirmarEnApp('¿Vaciar la papelera de planificación? Se van a borrar para siempre todos los trabajos, servicios y ausencias eliminados. No se van a poder recuperar.', ejecutarVaciarPapeleraPlan, 'Vaciar papelera');
 }
 async function ejecutarVaciarPapeleraPlan(){
+  if(bloqueadoPorSoloLectura()) return;
   for(const a of PAPELERA_PLAN){
     try{ if(window.db) await window.db.del('planificacion_bloques', a.id); }catch(e){ console.warn('Error borrando', e); }
   }
