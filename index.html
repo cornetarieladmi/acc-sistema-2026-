@@ -774,6 +774,8 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 .pf-grid .field input,.pf-grid .field select,.pf-grid .field textarea{padding:6px 9px;font-size:13px;border-width:1px;border-radius:7px;min-height:32px}
 .pf-grid .field textarea{min-height:48px;line-height:1.45}
 .pf-dropzone{margin-top:8px;border:2px dashed var(--border);border-radius:10px;padding:12px;text-align:center;font-size:12.5px;color:var(--text2);transition:.15s}
+.foto-drop.sobre{border-color:var(--accent)!important;background:var(--accentlt)!important;color:var(--accent)}
+.arrastrando{outline:2px dashed var(--accent);outline-offset:2px;border-radius:10px}
 .pf-dropzone.sobre{border-color:var(--accent);background:var(--accentlt);color:var(--accent);font-weight:700}
 .pf-pres-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center}
 .pf-pres-row .btn-tool{white-space:nowrap}
@@ -824,7 +826,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
       </div>
     </div>
     <button class="icon-btn" id="btn-refrescar-datos" onclick="refrescarDatos()" title="Actualizar datos"><svg viewBox="0 0 24 24"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg></button>
-    <button class="icon-btn campana-glob" onclick="abrirNotificaciones()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
+    <button class="icon-btn campana-glob" onclick="abrirCampana()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
     <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión"><span class="rol-emoji">👷</span> <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
@@ -1039,7 +1041,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="topbar-sub">Resumen de proyectos</div>
       </div>
     </div>
-    <button class="icon-btn campana-glob" onclick="abrirNotificaciones()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
+    <button class="icon-btn campana-glob" onclick="abrirCampana()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
     <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión"><span class="rol-emoji">👷</span> <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
@@ -1065,7 +1067,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="topbar-sub" id="ad-count">0 registros</div>
       </div>
     </div>
-    <button class="icon-btn campana-glob" onclick="abrirNotificaciones()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
+    <button class="icon-btn campana-glob" onclick="abrirCampana()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
     <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión"><span class="rol-emoji">👷</span> <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
@@ -1108,7 +1110,7 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <div class="topbar-sub">Clientes, Usuarios, Equipos y Operarios</div>
       </div>
     </div>
-    <button class="icon-btn campana-glob" onclick="abrirNotificaciones()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
+    <button class="icon-btn campana-glob" onclick="abrirCampana()" title="Avisos" style="margin-right:6px;padding:0 9px"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="icon-badge-num campana-num" style="display:none"></span></button>
     <button class="icon-btn icon-btn-user" onclick="toggleUserMenu(event)" title="Cambiar de usuario / Cerrar sesión"><span class="rol-emoji">👷</span> <span class="user-btn-nombre">Usuario</span> ▾</button>
   </div>
   <div class="content">
@@ -1649,7 +1651,12 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <label>Detalle (opcional)</label>
         <input type="text" id="mev-detalle" placeholder="Ej: Sala de reuniones, traer casco...">
       </div>
-      <div class="field"><label class="hint" style="display:block">Se le avisa a todo el equipo una sola vez, y queda marcado en el calendario.</label></div>
+      <div class="field">
+        <label>¿A quién se le avisa?</label>
+        <label style="display:flex;align-items:center;gap:8px;text-transform:none;font-size:13px;font-weight:700;margin:2px 0 6px"><input type="checkbox" id="mev-todos" checked onchange="mevToggleTodos()" style="width:auto"> Todo el equipo</label>
+        <div id="mev-personas" style="display:none;max-height:190px;overflow:auto;border:1.5px solid var(--border);border-radius:10px;padding:8px 10px"></div>
+        <label class="hint" style="display:block;margin-top:6px">El aviso le llega una sola vez a cada invitado. El evento queda marcado en el calendario.</label>
+      </div>
     </div>
     <div class="modal-foot">
       <button class="btn danger" id="mev-btn-quitar-dia" style="display:none" onclick="quitarSoloEsteDia()">Quitar este día</button>
@@ -2989,6 +2996,13 @@ function pyCeldaHTML(p, key){
 }
 
 /* ==================== PROYECTO: FORM ==================== */
+window.addEventListener('DOMContentLoaded', ()=>{
+  habilitarArrastre('pf-foto-input', true,  e=>manejarFotosProyecto(e));
+  habilitarArrastre('pf-archivo-input', false, e=>manejarArchivosProyecto(e));
+  habilitarArrastre('item-foto-inicio-input', true,  e=>manejarFotos(e,'inicio'));
+  habilitarArrastre('item-foto-fin-input', true,  e=>manejarFotos(e,'fin'));
+  habilitarArrastre('item-archivo-input', false, e=>manejarArchivosItem(e));
+});
 let editProyectoId = null;
 let pf_presupuestoArchivo = null;
 /* Al marcar ¿Presupuestado? = Sí, se completa sola la fecha del presupuesto (hoy) si estaba vacía */
@@ -3014,9 +3028,35 @@ function onCambiaEsPresupuestado(){
     if(e.dataTransfer.files.length>1) toast('Solo se adjunta un archivo — se tomó "'+f.name+'"');
     leerArchivoComoAdjunto(f, adj => { pf_presupuestoArchivo = adj; renderArchivoPresupuesto(); });
   });
+  // (más abajo: arrastrar fotos y archivos en el resto de los formularios)
   // si se suelta un archivo fuera de la zona, que el navegador no abra el archivo y saque de la app
   ['dragover','drop'].forEach(ev=> window.addEventListener(ev, e=>{ if(hayArchivos(e)) e.preventDefault(); }));
 })();
+/* Arrastrar y soltar desde la PC: fotos y archivos de proyectos, OT e informes (además del botón de siempre) */
+function habilitarArrastre(inputId, soloImagenes, manejador){
+  const input = document.getElementById(inputId);
+  if(!input) return;
+  const zona = input.parentElement;
+  const drop = input.previousElementSibling;   // el recuadro "📷 Agregar fotos" / "📎 Agregar archivo"
+  const hayArchivos = e => e.dataTransfer && [...(e.dataTransfer.types||[])].includes('Files');
+  const marcar = on => { zona.classList.toggle('arrastrando', on); if(drop && drop.classList.contains('foto-drop')) drop.classList.toggle('sobre', on); };
+  ['dragenter','dragover'].forEach(ev=> zona.addEventListener(ev, e=>{ if(!hayArchivos(e)) return; e.preventDefault(); marcar(true); }));
+  zona.addEventListener('dragleave', e=>{ if(!zona.contains(e.relatedTarget)) marcar(false); });
+  zona.addEventListener('drop', e=>{
+    if(!hayArchivos(e)) return;
+    e.preventDefault(); e.stopPropagation(); marcar(false);
+    if(zona.closest('.pf-readonly')) return;
+    let files = Array.from(e.dataTransfer.files||[]);
+    if(soloImagenes){
+      const imgs = files.filter(f=>(f.type||'').startsWith('image/'));
+      if(imgs.length<files.length) toast(imgs.length ? 'Se ignoraron los archivos que no son imágenes' : 'Solo se pueden arrastrar imágenes acá');
+      files = imgs;
+    }
+    if(!files.length) return;
+    manejador({ target:{ files, value:'' } });
+  });
+  if(drop && drop.classList.contains('foto-drop')) drop.innerHTML += ' <span style="font-weight:500;opacity:.8">· o arrastralas acá</span>'.replace('arrastralas', soloImagenes?'arrastralas':'arrastralos');
+}
 function manejarArchivoPresupuesto(event){
   const file = event.target.files[0];
   if(!file) return;
@@ -7004,6 +7044,20 @@ async function descartarPendiente(assignmentId, pendienteId){
   actualizarBadgeNotificaciones();
   abrirNotificaciones();
 }
+/* El panel de avisos vive dentro de Planificación: desde cualquier otra página, la campanita te lleva ahí y lo abre */
+function abrirCampana(){
+  if(document.getElementById('scr-planificacion').classList.contains('active')){ abrirNotificaciones(); return; }
+  irA('planificacion');
+  setTimeout(abrirNotificaciones, 200);
+}
+async function verEvento(id, f){
+  const a = ASIGNACIONES.find(x=>x.id===id);
+  if(a) await marcarVistoParaMi(a);
+  cerrarModales();
+  irAFechaEnCalendario(f);
+  abrirResumen(id, f);
+  actualizarBadgeNotificaciones();
+}
 function abrirNotificaciones(){
   const cont = document.getElementById('notif-lista');
   const items = [];
@@ -7083,7 +7137,7 @@ function abrirNotificaciones(){
       return `<div class="notif-item nuevo">
       <div class="notif-texto">📌 <b>${(a.titulo||'Evento').replace(/</g,'&lt;')}</b> — ${cuando}${hor}${a.detalle?` · ${a.detalle.replace(/</g,'&lt;')}`:''}</div>
       <div class="notif-acciones">
-        <button class="btn secondary" onclick="cerrarModales();irAFechaEnCalendario('${fo[0]}')">Ver</button>
+        <button class="btn secondary" onclick="verEvento('${a.id}','${fo[0]}')">Ver evento</button>
         <button class="btn secondary" style="width:auto;flex:0 0 auto;padding:8px 16px" onclick="descartarAvisoNuevo('${a.id}')" title="Entendido">✕</button>
       </div>
     </div>`; }).join('');
@@ -7140,6 +7194,20 @@ function abrirNotificaciones(){
     }).join('');
   }
 
+  const eventosProx = ASIGNACIONES.filter(a=>a.tipo==='evento' && (a.fechas||[]).some(f=>f>=hoy) && (esInvitadoEvento(a) || esCreadorEvento(a) || esAdminOGerente()))
+    .sort((x,y)=> (x.fechas.slice().sort()[0]||'').localeCompare(y.fechas.slice().sort()[0]||''));
+  html += `<h4 class="est-titulo">📌 Próximos eventos</h4>`;
+  html += eventosProx.length ? eventosProx.map(a=>{
+    const fo = a.fechas.slice().sort();
+    const prox = fo.find(f=>f>=hoy) || fo[0];
+    const cuando = fo.length>1 ? `${fechaLegible(fo[0])} a ${fechaLegible(fo[fo.length-1])}` : fechaLegible(fo[0]);
+    const hor = (a.horaDesde||a.horaHasta) ? ` · ${mostrarHora(a.horaDesde)} a ${mostrarHora(a.horaHasta)}` : '';
+    return `<div class="notif-item equipo">
+      <div class="notif-texto">📌 <b>${(a.titulo||'Evento').replace(/</g,'&lt;')}</b> — ${cuando}${hor}${a.detalle?` · ${a.detalle.replace(/</g,'&lt;')}`:''}</div>
+      <div class="notif-acciones"><button class="btn secondary" onclick="verEvento('${a.id}','${prox}')">Ver evento</button></div>
+    </div>`;
+  }).join('') : `<div class="empty-mini">No hay eventos próximos.</div>`;
+
   const ausenciasEquipo = ASIGNACIONES.filter(a=>a.tipo==='ausencia' && (a.fechas||[]).some(f=>f>=hoy) && !descartadosLocal.includes('equipo:'+a.id) && (!ausenciaPendientePermiso(a) || esAprobadorActual() || esCreadorAusencia(a)))
     .sort((x,y)=> (x.fechas.slice().sort()[0]||'').localeCompare(y.fechas.slice().sort()[0]||''));
   html += `<h4 class="est-titulo">📋 Ausencias del equipo (hoy en adelante)</h4>`;
@@ -7159,8 +7227,7 @@ function abrirNotificaciones(){
   cont.innerHTML = html;
   document.getElementById('modal-notificaciones').classList.add('open');
   // Los avisos de ausencia aprobada se muestran una sola vez: ya vistos, no vuelven a aparecer
-  const _vistosAhora = [...avisosAus, ...avisosEv];
-  if(_vistosAhora.length){ Promise.all(_vistosAhora.map(a=>marcarVistoParaMi(a))).then(()=>{ actualizarBadgeNotificaciones(); try{ renderCalendario(); }catch(_){} }); }
+  window._avisosEnPanel = [...avisosAus, ...avisosEv];   // se marcan como vistos recién al cerrar el panel
 }
 async function marcarRespuestaVista(ausenciaId, respuestaId){
   const a = ASIGNACIONES.find(x=>x.id===ausenciaId);
@@ -7547,6 +7614,7 @@ function abrirResumen(id, f){
       <div class="resumen-fila"><span>Horario</span><b>${horarioEv}</b></div>
       ${a.detalle ? `<div class="resumen-fila"><span>Detalle</span><b>${a.detalle.replace(/</g,'&lt;')}</b></div>` : ''}
       ${(a.fechas||[]).length>1 ? `<div class="resumen-fila"><span>Duración</span><b>${a.fechas.length} días</b></div>` : ''}
+      <div class="resumen-fila"><span>Invitados</span><b>${nombresInvitadosEvento(a)}</b></div>
       ${quienCargo ? `<div class="resumen-fila"><span>Cargado por</span><b>${quienCargo}</b></div>` : ''}
     `;
   } else if(a.tipo==='ausencia'){
@@ -7685,7 +7753,7 @@ function tarjetaAsignacionHTML(a, f){
     return `
       <div class="asig-card tipo-evento" onclick="event.stopPropagation();abrirResumen('${a.id}','${f}')">
         <div class="asig-cliente">${titulo.replace(/</g,'&lt;')}</div>
-        <div class="asig-nro">Evento${diaTagHTML(a,f)}</div>
+        <div class="asig-nro">Evento${diaTagHTML(a,f)}${Array.isArray(a.invitados)?` · 🧑‍🤝‍🧑 ${a.invitados.length}`:''}</div>
         ${horarioEv}
         ${a.detalle ? `<div class="asig-motivo">${a.detalle.replace(/</g,'&lt;')}</div>` : ''}
       </div>`;
@@ -8064,6 +8132,11 @@ function renderEstadisticas(desde, hasta){
 }
 
 function cerrarModales(){
+  const _pn = document.getElementById('modal-notificaciones');
+  if(_pn && _pn.classList.contains('open') && window._avisosEnPanel && window._avisosEnPanel.length){
+    const _lst = window._avisosEnPanel; window._avisosEnPanel = [];
+    Promise.all(_lst.map(a=>marcarVistoParaMi(a))).then(()=>{ actualizarBadgeNotificaciones(); try{ renderCalendario(); }catch(_){} });
+  }
   ['modal-tipo','modal-asignar','modal-ausencia','modal-evento','modal-resumen','modal-dia','modal-estadisticas','modal-usuario-plan','modal-notificaciones','modal-papelera-plan','modal-info'].forEach(id=>document.getElementById(id).classList.remove('open'));
   fechaModalYMD = null; fechaInicioCalculo = null; proyectoModalId = null; editandoAsignacionId = null;
 }
@@ -8420,7 +8493,39 @@ function esAvisoEventoParaMi(a){
   const hoy = ymd(new Date());
   if(!(a.fechas||[]).some(f=>f>=hoy)) return false;
   if(esCreadorEvento(a)) return false;
+  if(!esInvitadoEvento(a)) return false;   // el aviso solo le llega a los invitados
   return !yaVistoPorMi(a);
+}
+/* Personas que se pueden invitar: usuarios + operarios (sin repetir a quien es las dos cosas) */
+function personasInvitables(){
+  const out = [];
+  USUARIOS_PLAN.forEach(u=> out.push({ clave:'usuario|'+u.usuario, nombre:u.nombre||u.usuario }));
+  OPERARIOS.forEach(o=>{
+    if(USUARIOS_PLAN.some(u=>usuarioEsMismaPersonaQueOperario(u.usuario, o.id))) return;
+    out.push({ clave:'operario|'+o.id, nombre:o.nombre });
+  });
+  return out.sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||''));
+}
+function mevToggleTodos(){
+  document.getElementById('mev-personas').style.display = document.getElementById('mev-todos').checked ? 'none' : 'block';
+}
+function esInvitadoEvento(a){
+  if(!Array.isArray(a.invitados)) return true;   // sin lista = todo el equipo
+  if(usuarioActual){
+    if(a.invitados.includes('usuario|'+usuarioActual)) return true;
+    const eq = operarioEquivalenteDeUsuario(usuarioActual);
+    return !!(eq && a.invitados.includes('operario|'+eq.id));
+  }
+  if(operarioActual){
+    if(a.invitados.includes('operario|'+operarioActual)) return true;
+    return USUARIOS_PLAN.some(u=>a.invitados.includes('usuario|'+u.usuario) && usuarioEsMismaPersonaQueOperario(u.usuario, operarioActual));
+  }
+  return false;
+}
+function nombresInvitadosEvento(a){
+  if(!Array.isArray(a.invitados)) return 'Todo el equipo';
+  const todas = personasInvitables();
+  return a.invitados.map(k=>(todas.find(p=>p.clave===k)||{}).nombre).filter(Boolean).join(', ') || '—';
 }
 function abrirModalEvento(fecha, asignacionId){
   if(esOperarioPuro()){ toast('Los operarios no pueden cargar eventos'); return; }
@@ -8436,6 +8541,12 @@ function abrirModalEvento(fecha, asignacionId){
   document.getElementById('mev-hora-desde').value = e?.horaDesde || '';
   document.getElementById('mev-hora-hasta').value = e?.horaHasta || '';
   document.getElementById('mev-detalle').value = e?.detalle || '';
+  const todosChk = document.getElementById('mev-todos');
+  todosChk.checked = !Array.isArray(e?.invitados);
+  const marcados = Array.isArray(e?.invitados) ? e.invitados : [];
+  document.getElementById('mev-personas').innerHTML = personasInvitables().map(p=>
+    `<label style="display:flex;align-items:center;gap:8px;text-transform:none;font-size:13px;font-weight:600;padding:3px 0"><input type="checkbox" class="mev-inv" value="${p.clave}" ${marcados.includes(p.clave)?'checked':''} style="width:auto"> ${(p.nombre||'').replace(/</g,'&lt;')}</label>`).join('') || '<div class="hint">No hay personas cargadas.</div>';
+  mevToggleTodos();
   const cant = e?.fechas?.length || 1;
   document.getElementById('mev-btn-quitar-dia').style.display = (asignacionId && cant>1) ? 'block' : 'none';
   document.getElementById('mev-btn-eliminar-todo').style.display = asignacionId ? 'block' : 'none';
@@ -8450,15 +8561,18 @@ async function guardarEvento(){
   const horaHasta = formatearHora(document.getElementById('mev-hora-hasta').value);
   const detalle = document.getElementById('mev-detalle').value.trim();
   const fechas = calcularFechasConsecutivas(fechaInicioCalculo, dias);
+  const paraTodos = document.getElementById('mev-todos').checked;
+  const invitados = paraTodos ? null : [...document.querySelectorAll('#mev-personas .mev-inv:checked')].map(x=>x.value);
+  if(!paraTodos && !invitados.length){ toast('Elegí al menos una persona, o marcá "Todo el equipo"'); return; }
   let a;
   if(editandoAsignacionId){
     a = ASIGNACIONES.find(x=>x.id===editandoAsignacionId);
     if(!a) return;
     if(!puedeGestionarEvento(a)){ toast('Solo puede editarlo quien lo cargó o Administración'); return; }
-    Object.assign(a, { titulo, detalle, fechas, horaDesde, horaHasta, tipo:'evento', avisarTodos:true });
+    Object.assign(a, { titulo, detalle, fechas, horaDesde, horaHasta, invitados, tipo:'evento', avisarTodos:true });
     a.vistoPor = [usuarioActual, operarioActual].filter(Boolean);   // al modificarlo se vuelve a avisar
   } else {
-    a = { id: uid('pl'), tipo:'evento', titulo, detalle, fechas, horaDesde, horaHasta, creadoPor: usuarioActual, creadoPorOperario: operarioActual,
+    a = { id: uid('pl'), tipo:'evento', titulo, detalle, fechas, horaDesde, horaHasta, invitados, creadoPor: usuarioActual, creadoPorOperario: operarioActual,
       fechaCreacion: Date.now(), avisarTodos:true, vistoPor: [usuarioActual, operarioActual].filter(Boolean) };
     ASIGNACIONES.push(a);
   }
@@ -8467,7 +8581,7 @@ async function guardarEvento(){
   cerrarModales();
   renderCalendario();
   actualizarBadgeNotificaciones();
-  toast('📌 Evento guardado — se avisó a todo el equipo');
+  toast(invitados ? ('📌 Evento guardado — se avisó a ' + invitados.length + ' persona' + (invitados.length===1?'':'s')) : '📌 Evento guardado — se avisó a todo el equipo');
 }
 function abrirModalAusencia(fecha, asignacionId){
   fechaModalYMD = fecha;
