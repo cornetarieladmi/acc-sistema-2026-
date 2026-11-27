@@ -553,6 +553,10 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 #scr-planificacion .asig-card:hover{border-color:var(--border2)}
 #scr-planificacion .asig-card.tipo-servicio{border-left-color:var(--teal)}
 #scr-planificacion .asig-card.tipo-ausencia{border-left-color:var(--violet)}
+#scr-planificacion .asig-card.tipo-evento{border-left-color:#d97706;background:#fffbeb}
+#scr-planificacion .lista-item.tipo-evento{border-left-color:#d97706}
+#scr-planificacion .asig-compacta.tipo-evento{border-left:3px solid #d97706}
+#scr-planificacion .chooser-btn.evento{border-color:#f5d98b}
 #scr-planificacion .asig-cliente{font-size:16.5px;font-weight:800;line-height:1.28;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 #scr-planificacion .asig-nro{font-family:var(--mono);font-size:10.5px;color:var(--text2);margin-top:2px}
 #scr-planificacion .asig-motivo{font-size:11px;color:var(--text2);margin-top:5px;font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1398,6 +1402,10 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
         <span class="ic">🔧</span>
         <div><div class="tt">Servicio</div><div class="dd">Un trabajo puntual, no ligado a una obra abierta</div></div>
       </button>
+      <button class="chooser-btn evento" id="chooser-evento" onclick="elegirTipo('evento')">
+        <span class="ic">📌</span>
+        <div><div class="tt">Evento</div><div class="dd">Un aviso para todo el equipo: reunión, capacitación, feriado, visita...</div></div>
+      </button>
       <button class="chooser-btn ausencia" onclick="elegirTipo('ausencia')">
         <span class="ic">🚫</span>
         <div><div class="tt">Ausencia</div><div class="dd">Marcar a alguien como no disponible (todo el día o un horario)</div></div>
@@ -1603,6 +1611,55 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
 </div>
 
 <!-- MODAL: ausencia -->
+<div class="modal-overlay" id="modal-evento">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-txt">
+        <h3>📌 Evento</h3>
+      <div class="sub" id="mev-fecha-lbl"></div>
+      </div>
+      <button class="btn-cerrar-x" onclick="cerrarModales()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Título *</label>
+        <input type="text" id="mev-titulo" placeholder="Ej: Reunión general, Capacitación, Feriado...">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Cantidad de días</label>
+          <input type="number" id="mev-dias" min="1" value="1">
+        </div>
+        <div class="field">
+          <label>Fecha de inicio</label>
+          <input type="text" id="mev-fecha-input" readonly>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Desde (opcional)</label>
+          <input type="text" id="mev-hora-desde" inputmode="numeric" placeholder="Ej: 9" onblur="this.value=formatearHora(this.value)">
+        </div>
+        <div class="field">
+          <label>Hasta (opcional)</label>
+          <input type="text" id="mev-hora-hasta" inputmode="numeric" placeholder="Ej: 10" onblur="this.value=formatearHora(this.value)">
+        </div>
+      </div>
+      <div class="field">
+        <label>Detalle (opcional)</label>
+        <input type="text" id="mev-detalle" placeholder="Ej: Sala de reuniones, traer casco...">
+      </div>
+      <div class="field"><label class="hint" style="display:block">Se le avisa a todo el equipo una sola vez, y queda marcado en el calendario.</label></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn danger" id="mev-btn-quitar-dia" style="display:none" onclick="quitarSoloEsteDia()">Quitar este día</button>
+      <button class="btn danger" id="mev-btn-eliminar-todo" style="display:none" onclick="eliminarBloqueCompleto()">Eliminar todo</button>
+      <button class="btn secondary" onclick="cerrarModales()">Cancelar</button>
+      <button class="btn violet" onclick="guardarEvento()">Guardar</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modal-ausencia">
   <div class="modal-box">
     <div class="modal-head">
@@ -1844,13 +1901,18 @@ input[readonly],input:disabled,textarea[readonly],textarea:disabled,select:disab
       <button class="icon-x" onclick="cerrarModalOperario()">✕</button>
     </div>
     <div class="modal-sub">Administración puede corregir el nombre y aprobarlo.</div>
-    <div class="field"><label>Nombre del operario *</label><input type="text" id="op-modal-nombre" placeholder="Ej: García, Juan"></div>
+    <div class="field"><label>Nombre del operario *</label><input type="text" id="op-modal-nombre" placeholder="Ej: García, Juan" oninput="if(!operario_editId) document.getElementById('op-modal-cargo').value=cargoBasePorNombre(this.value)"></div>
     <div class="field">
       <label>Estado</label>
       <select id="op-modal-estado">
         <option value="pendiente">Pendiente</option>
         <option value="aceptado">Aceptado</option>
       </select>
+    </div>
+    <div class="field">
+      <label>Cargo predeterminado en horarios</label>
+      <select id="op-modal-cargo"></select>
+      <div style="font-size:11.5px;color:var(--text3);margin-top:4px">Es el cargo que se completa solo al elegir a esta persona en una OT o informe. Se puede cambiar igual en cada fila. Si cambia de rol, cambialo acá.</div>
     </div>
     <div class="modal-sub" style="margin-top:6px">Acceso a la app (opcional) — para que pueda entrar desde su celular y ver sus trabajos asignados.</div>
     <div class="field"><label>Usuario (para iniciar sesión)</label><input type="text" id="op-modal-usuario" placeholder="jgarcia" style="font-family:var(--mono)"></div>
@@ -3672,6 +3734,19 @@ const CARGOS_OPERARIO = [
   { id:'ayudante', nombre:'Ayudante', indice:0.75 },
   { id:'capacitacion', nombre:'Capacitación', indice:0 }
 ];
+/* Cargo predeterminado de cada persona en los horarios (se puede cambiar en cada fila, y de forma permanente en la ficha del operario) */
+const CARGOS_BASE = { ariel:'oficial_especializado', diego:'oficial_especializado', guille:'oficial', guillermo:'oficial', horacio:'oficial', joel:'ayudante' };
+function _sinAcentos(t){ return String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim(); }
+function cargoBasePorNombre(nombre){
+  const toks = _sinAcentos(nombre).split(/[\s,._-]+/).filter(Boolean);
+  for(const t of toks){ if(CARGOS_BASE[t]) return CARGOS_BASE[t]; }
+  return 'oficial';
+}
+function cargoPredeterminado(nombre){
+  const k = _sinAcentos(nombre).replace(/\s+/g,' ');
+  const ficha = (STATE.operarios||[]).find(o=>_sinAcentos(o.nombre).replace(/\s+/g,' ')===k && o.cargo);
+  return ficha ? ficha.cargo : cargoBasePorNombre(nombre);
+}
 function indiceDeCargo(cargoId){
   const c = CARGOS_OPERARIO.find(x=>x.id===cargoId);
   return c ? c.indice : 1;
@@ -3713,7 +3788,7 @@ function abrirModalItem(tipo, id){
   document.getElementById('item-firmante').value = it?.firmante || '';
 
   item_equipos = (it?.equipos||[]).map(e=>({...e}));
-  item_operarios = it ? (it.operarios||[]).map(o=>({...o})) : (currentUserRol==='administracion' ? [] : [{ nombre: nombreUsuario(currentUser), cargo:'oficial', desde:'', hasta:'', horas:0 }]);
+  item_operarios = it ? (it.operarios||[]).map(o=>({...o})) : (currentUserRol==='administracion' ? [] : [{ nombre: nombreUsuario(currentUser), cargo:cargoPredeterminado(nombreUsuario(currentUser)), desde:'', hasta:'', horas:0 }]);
   item_gastos = (it?.gastos||[]).map(g=>({...g}));
   item_materiales = (it?.materiales||[]).map(m=>({...m}));
   item_fotosInicio = (it?.fotosInicio||[]).slice();
@@ -3854,6 +3929,7 @@ async function seleccionarOperarioItem(i, select){
   } else {
     item_operarios[i].nombre = select.value;
   }
+  if(item_operarios[i].nombre) item_operarios[i].cargo = cargoPredeterminado(item_operarios[i].nombre);
   validarOperarioDuplicado(i);
   renderItemOperarios();
 }
@@ -5583,6 +5659,9 @@ function abrirModalOperario(id){
   document.getElementById('op-modal-estado').value = o?.estado || (currentUserRol==='administracion' ? 'aceptado' : 'pendiente');
   document.getElementById('op-modal-usuario').value = o?.usuario || '';
   document.getElementById('op-modal-pass').value = o?.pass || '';
+  const selCargo = document.getElementById('op-modal-cargo');
+  selCargo.innerHTML = CARGOS_OPERARIO.map(c=>`<option value="${c.id}">${c.nombre} (índice ${c.indice})</option>`).join('');
+  selCargo.value = o ? (o.cargo || cargoBasePorNombre(o.nombre)) : 'oficial';
   document.getElementById('modal-operario').classList.add('open');
 }
 function cerrarModalOperario(){ document.getElementById('modal-operario').classList.remove('open'); }
@@ -5609,6 +5688,7 @@ async function guardarModalOperario(){
   }
   o.nombre = nombre;
   o.estado = document.getElementById('op-modal-estado').value;
+  o.cargo = document.getElementById('op-modal-cargo').value;
   o.usuario = usuarioLogin || null;
   o.pass = pass || null;
   await guardarEnDB('operarios', o);
@@ -6738,6 +6818,7 @@ function rolActualPlan(){
 }
 function puedeEliminarAsignacion(a){
   if(a.tipo==='ausencia') return {ok:true};
+  if(a.tipo==='evento') return puedeGestionarEvento(a) ? {ok:true} : {ok:false, msg:'Solo puede eliminarlo quien lo cargó o Administración'};
   if(currentUserRol==='administracion' || rolActualPlan()==='administracion') return {ok:true};
   const loginResp = loginResponsableDe(a);
   if(operarioActual && !usuarioActual){
@@ -6753,7 +6834,7 @@ function puedeEliminarAsignacion(a){
 }
 /* ==================== AVISO: TRABAJO NUEVO ASIGNADO ==================== */
 function esNuevoParaMi(a){
-  if(a.tipo==='ausencia') return false;
+  if(a.tipo==='ausencia' || a.tipo==='evento') return false;
   // El responsable no recibe aviso: es quien programa el trabajo. Solo avisa a los operarios asignados.
   const vistoPor = a.vistoPor||[];
   if(operarioActual && (a.operarios||[]).includes(operarioActual) && !vistoPor.includes(operarioActual)) return true;
@@ -6872,6 +6953,7 @@ function contarPendientesPropios(){
   if(!usuarioActual && !operarioActual) return 0;
   let n = 0;
   ASIGNACIONES.forEach(a=>{
+    if(a.tipo==='evento'){ if(esAvisoEventoParaMi(a)) n++; return; }
     if(a.tipo==='ausencia'){
       if((usuarioActual && a.solicitadoPor===usuarioActual) || (operarioActual && a.solicitadoPorOperario===operarioActual)) n += (a.respuestas||[]).length;
       if(esAvisoAusenciaParaMi(a)) n++;
@@ -6929,9 +7011,11 @@ function abrirNotificaciones(){
   const nuevos = [];
   const avisosAus = [];
   const solicitudes = [];
+  const avisosEv = [];
   const descartadosLocal = avisosDescartadosLocal();
   let totalPendientesEnSistema = 0;
   ASIGNACIONES.forEach(a=>{
+    if(a.tipo==='evento'){ if(esAvisoEventoParaMi(a)) avisosEv.push(a); return; }
     if(a.tipo==='ausencia'){
       if((usuarioActual && a.solicitadoPor===usuarioActual) || (operarioActual && a.solicitadoPorOperario===operarioActual)){
         (a.respuestas||[]).forEach(r=>respuestas.push({a,r}));
@@ -6989,6 +7073,20 @@ function abrirNotificaciones(){
         <button class="btn danger" onclick="rechazarAusencia('${a.id}')">❌ Rechazar</button>
       </div>
     </div>`).join('');
+  }
+  if(avisosEv.length){
+    html += `<h4 class="est-titulo" style="margin-top:0">📌 Eventos</h4>`;
+    html += avisosEv.map(a=>{
+      const fo=(a.fechas||[]).slice().sort();
+      const cuando = fo.length>1 ? `${fechaLegible(fo[0])} a ${fechaLegible(fo[fo.length-1])}` : fechaLegible(fo[0]);
+      const hor = (a.horaDesde||a.horaHasta) ? ` · ${mostrarHora(a.horaDesde)} a ${mostrarHora(a.horaHasta)}` : '';
+      return `<div class="notif-item nuevo">
+      <div class="notif-texto">📌 <b>${(a.titulo||'Evento').replace(/</g,'&lt;')}</b> — ${cuando}${hor}${a.detalle?` · ${a.detalle.replace(/</g,'&lt;')}`:''}</div>
+      <div class="notif-acciones">
+        <button class="btn secondary" onclick="cerrarModales();irAFechaEnCalendario('${fo[0]}')">Ver</button>
+        <button class="btn secondary" style="width:auto;flex:0 0 auto;padding:8px 16px" onclick="descartarAvisoNuevo('${a.id}')" title="Entendido">✕</button>
+      </div>
+    </div>`; }).join('');
   }
   if(avisosAus.length){
     html += `<h4 class="est-titulo" style="margin-top:0">🚫 Nuevas ausencias</h4>`;
@@ -7061,7 +7159,8 @@ function abrirNotificaciones(){
   cont.innerHTML = html;
   document.getElementById('modal-notificaciones').classList.add('open');
   // Los avisos de ausencia aprobada se muestran una sola vez: ya vistos, no vuelven a aparecer
-  if(avisosAus.length){ Promise.all(avisosAus.map(a=>marcarVistoParaMi(a))).then(()=>{ actualizarBadgeNotificaciones(); try{ renderCalendario(); }catch(_){} }); }
+  const _vistosAhora = [...avisosAus, ...avisosEv];
+  if(_vistosAhora.length){ Promise.all(_vistosAhora.map(a=>marcarVistoParaMi(a))).then(()=>{ actualizarBadgeNotificaciones(); try{ renderCalendario(); }catch(_){} }); }
 }
 async function marcarRespuestaVista(ausenciaId, respuestaId){
   const a = ASIGNACIONES.find(x=>x.id===ausenciaId);
@@ -7349,6 +7448,7 @@ function seSuperponen(aDesde,aHasta,bDesde,bHasta){
 let verSoloMios = false;
 function asignacionInvolucraAUsuarioActual(a){
   if(!usuarioActual && !operarioActual) return false;
+  if(a.tipo==='evento') return true;   // un evento es de todo el equipo
   if(a.tipo==='ausencia'){
     if(usuarioActual){
       return (a.personaTipo==='usuario' && a.personaId===usuarioActual) ||
@@ -7385,7 +7485,7 @@ function horarioParaFecha(a,f){
   return { horaDesde:a.horaDesde, horaHasta:a.horaHasta };
 }
 function esIncompleta(a){
-  if(a.tipo==='ausencia') return false;
+  if(a.tipo==='ausencia' || a.tipo==='evento') return false;
   return !(a.operarios && a.operarios.length) || !a.horaDesde || !a.horaHasta || (a.pendientes && a.pendientes.length>0);
 }
 function diaTagHTML(a,f){
@@ -7413,6 +7513,7 @@ function verOperariosAsignados(id){
   mostrarInfo(`Operarios asignados (${nombres.length})`, lista);
 }
 function tituloYSub(a){
+  if(a.tipo==='evento') return { titulo:'📌 '+(a.titulo||'Evento'), sub:'Evento'+(a.detalle?': '+a.detalle:'') };
   if(a.tipo==='ausencia'){
     const nombre = a.personaTipo==='usuario' ? nombreResponsable(a.personaId) : nombreOperario(a.personaId);
     return { titulo:'🚫 '+(nombre||'—'), sub:'Ausencia'+(a.motivo?': '+a.motivo:'') };
@@ -7424,7 +7525,8 @@ function tituloYSub(a){
   return { titulo: p.cliente, sub: nombreResponsable(p.usuario) || 'Sin responsable' };
 }
 function abrirEdicion(a,f){
-  if(a.tipo==='ausencia') abrirModalAusencia(f, a.id);
+  if(a.tipo==='evento') abrirModalEvento(f, a.id);
+  else if(a.tipo==='ausencia') abrirModalAusencia(f, a.id);
   else abrirModalAsignar(f, a.tipo==='obra'?a.proyectoId:null, a.id);
 }
 function abrirResumen(id, f){
@@ -7437,7 +7539,17 @@ function abrirResumen(id, f){
   resumenActualId = id;
   resumenActualFecha = f;
   let titulo, filas;
-  if(a.tipo==='ausencia'){
+  if(a.tipo==='evento'){
+    titulo = '📌 ' + (a.titulo || 'Evento');
+    const horarioEv = (a.horaDesde||a.horaHasta) ? `${mostrarHora(a.horaDesde)} a ${mostrarHora(a.horaHasta)}` : 'Todo el día';
+    const quienCargo = a.creadoPor ? (nombreResponsable(a.creadoPor)||a.creadoPor) : (a.creadoPorOperario ? nombreOperario(a.creadoPorOperario) : '');
+    filas = `
+      <div class="resumen-fila"><span>Horario</span><b>${horarioEv}</b></div>
+      ${a.detalle ? `<div class="resumen-fila"><span>Detalle</span><b>${a.detalle.replace(/</g,'&lt;')}</b></div>` : ''}
+      ${(a.fechas||[]).length>1 ? `<div class="resumen-fila"><span>Duración</span><b>${a.fechas.length} días</b></div>` : ''}
+      ${quienCargo ? `<div class="resumen-fila"><span>Cargado por</span><b>${quienCargo}</b></div>` : ''}
+    `;
+  } else if(a.tipo==='ausencia'){
     const nombre = a.personaTipo==='usuario' ? nombreResponsable(a.personaId) : nombreOperario(a.personaId);
     titulo = '🚫 Ausencia';
     const horario = (a.horaDesde||a.horaHasta) ? `${mostrarHora(a.horaDesde)} a ${mostrarHora(a.horaHasta)}` : 'Todo el día';
@@ -7488,7 +7600,8 @@ function abrirResumen(id, f){
 function editarDesdeResumen(){
   const a = ASIGNACIONES.find(x=>x.id===resumenActualId);
   const f = resumenActualFecha;
-  if(a && a.tipo!=='ausencia'){
+  if(a && a.tipo==='evento' && !puedeGestionarEvento(a)){ toast('Solo puede editarlo quien lo cargó o Administración'); return; }
+  if(a && a.tipo!=='ausencia' && a.tipo!=='evento'){
     const loginResp = loginResponsableDe(a);
     if(operarioActual && !usuarioActual){
       toast('Los operarios no pueden editar obras ni servicios — eso lo hace el responsable');
@@ -7566,6 +7679,17 @@ function tarjetaAsignacionHTML(a, f){
   const badgeEstado = _estadoHoy?.estado==='en_curso' ? '<span class="badge-estado en-curso">En curso</span>'
     : _estadoHoy?.estado==='finalizado' ? '<span class="badge-estado hecho">Hecho</span>' : '';
 
+  if(a.tipo==='evento'){
+    const {titulo} = tituloYSub(a);
+    const horarioEv = (a.horaDesde||a.horaHasta) ? `<span class="asig-horario">${mostrarHora(a.horaDesde)} a ${mostrarHora(a.horaHasta)}</span>` : `<span class="asig-horario">Todo el día</span>`;
+    return `
+      <div class="asig-card tipo-evento" onclick="event.stopPropagation();abrirResumen('${a.id}','${f}')">
+        <div class="asig-cliente">${titulo.replace(/</g,'&lt;')}</div>
+        <div class="asig-nro">Evento${diaTagHTML(a,f)}</div>
+        ${horarioEv}
+        ${a.detalle ? `<div class="asig-motivo">${a.detalle.replace(/</g,'&lt;')}</div>` : ''}
+      </div>`;
+  }
   if(a.tipo==='ausencia'){
     const {titulo} = tituloYSub(a);
     const horario = (a.horaDesde||a.horaHasta) ? `<span class="asig-horario">${mostrarHora(a.horaDesde)} a ${mostrarHora(a.horaHasta)}</span>` : `<span class="asig-horario">Todo el día</span>`;
@@ -7639,7 +7763,7 @@ function renderCalendario(){
 function nombreDiaSemana(d){ return DIAS_NOMBRE[(d.getDay()+6)%7]; }
 function filaListaHTML(a,f){
   const {titulo, sub} = tituloYSub(a);
-  const h = a.tipo==='ausencia' ? { horaDesde:a.horaDesde, horaHasta:a.horaHasta } : horarioParaFecha(a,f);
+  const h = (a.tipo==='ausencia' || a.tipo==='evento') ? { horaDesde:a.horaDesde, horaHasta:a.horaHasta } : horarioParaFecha(a,f);
   const horarioTxt = (h.horaDesde||h.horaHasta) ? `${mostrarHora(h.horaDesde)} a ${mostrarHora(h.horaHasta)}` : '';
   const nuevoTxt = esNuevoParaMi(a) ? ' 🆕' : '';
   return `<div class="lista-item tipo-${a.tipo}" onclick="event.stopPropagation();abrirResumen('${a.id}','${f}')">
@@ -7695,13 +7819,14 @@ function renderVistaLista(){
     const hoy = esHoy(d);
     const asigs = asignacionesQueCubren(f);
     const cantAusencia = asigs.filter(a=>a.tipo==='ausencia').length;
-    const cantTrabajo = asigs.length - cantAusencia;
+    const cantEvento = asigs.filter(a=>a.tipo==='evento').length;
+    const cantTrabajo = asigs.length - cantAusencia - cantEvento;
     html += `<div class="lista-dia${hoy?' hoy':''}" id="col-${f}">
       <div class="lista-dia-head" onclick="onClickDia('${f}')">
         <span class="lista-dia-nombre">${nombreDiaSemana(d)}${hoy?' · hoy':''}</span>
         <span class="lista-dia-fecha">${formatoCorto(d)}</span>
         ${cantTrabajo>0?`<span class="badge-cantidad">${cantTrabajo}</span>`:''}
-        ${cantAusencia>0?`<span class="badge-ausencia">${cantAusencia}</span>`:''}
+        ${cantAusencia>0?`<span class="badge-ausencia">${cantAusencia}</span>`:''}${cantEvento>0?`<span class="badge-ausencia" style="background:#d97706">📌${cantEvento}</span>`:''}
         <button class="btn-add-dia" style="margin-left:auto" onclick="event.stopPropagation();abrirModalTipo('${f}')">+</button>
       </div>
       <div class="lista-dia-items">
@@ -7733,7 +7858,8 @@ function renderVistaCalendario(){
       const asigs = asignacionesQueCubren(f);
       const hayIncompletas = asigs.some(esIncompleta);
       const cantAusencia = asigs.filter(a=>a.tipo==='ausencia').length;
-      const cantTrabajo = asigs.length - cantAusencia;
+      const cantEvento = asigs.filter(a=>a.tipo==='evento').length;
+      const cantTrabajo = asigs.length - cantAusencia - cantEvento;
       const idx = asigs.length ? (((paginaDia[f]||0) % asigs.length) + asigs.length) % asigs.length : 0;
       const cuerpo = asigs.length ? tarjetaAsignacionHTML(asigs[idx], f) : '';
       const controles = asigs.length>1
@@ -7750,7 +7876,7 @@ function renderVistaCalendario(){
              ondrop="onDropDia(event,'${f}')">
           <div class="day-head" onclick="onClickDia('${f}')">
             <span class="day-fecha"><span class="day-dow">${DIAS_NOMBRE[(d.getDay()+6)%7].slice(0,3)}</span> ${formatoCorto(d)}${hayIncompletas?'<span class="dot-incompleto" title="Hay entradas con datos incompletos"></span>':''}</span>
-            ${cantTrabajo>0 ? `<span class="badge-cantidad">${cantTrabajo}</span>` : ''}${cantAusencia>0 ? `<span class="badge-ausencia">${cantAusencia}</span>` : ''}
+            ${cantTrabajo>0 ? `<span class="badge-cantidad">${cantTrabajo}</span>` : ''}${cantAusencia>0 ? `<span class="badge-ausencia">${cantAusencia}</span>` : ''}${cantEvento>0 ? `<span class="badge-ausencia" style="background:#d97706">📌${cantEvento}</span>` : ''}
             <button class="btn-add-dia" title="Cargar servicio o ausencia" onclick="event.stopPropagation();abrirModalTipo('${f}')">+</button>
           </div>
           <div class="day-body" id="body-${f}">${cuerpo}</div>
@@ -7803,12 +7929,14 @@ function onClickDia(f){
 function abrirModalTipo(fecha){
   fechaNuevaEntrada = fecha;
   document.getElementById('mt-fecha-lbl').textContent = fechaLegible(fecha);
+  const bEv = document.getElementById('chooser-evento'); if(bEv) bEv.style.display = esOperarioPuro() ? 'none' : '';
   document.getElementById('modal-tipo').classList.add('open');
 }
 function elegirTipo(tipo){
   const f = fechaNuevaEntrada;
   document.getElementById('modal-tipo').classList.remove('open');
   if(tipo==='servicio') abrirModalAsignar(f, null, null, 'servicio');
+  else if(tipo==='evento') abrirModalEvento(f, null);
   else abrirModalAusencia(f, null);
 }
 /* ==================== ESTADÍSTICAS ==================== */
@@ -7828,6 +7956,7 @@ function calcularEstadisticas(fechaDesdeStr, fechaHastaStr){
       const fd = parseYMD(f);
       if(fd<inicio || fd>fin) return;
 
+      if(a.tipo==='evento') return;   // los eventos no cuentan como trabajo ni como horas
       if(a.tipo==='ausencia'){
         if(a.personaTipo==='operario'){
           const nombre = nombreOperario(a.personaId);
@@ -7935,7 +8064,7 @@ function renderEstadisticas(desde, hasta){
 }
 
 function cerrarModales(){
-  ['modal-tipo','modal-asignar','modal-ausencia','modal-resumen','modal-dia','modal-estadisticas','modal-usuario-plan','modal-notificaciones','modal-papelera-plan','modal-info'].forEach(id=>document.getElementById(id).classList.remove('open'));
+  ['modal-tipo','modal-asignar','modal-ausencia','modal-evento','modal-resumen','modal-dia','modal-estadisticas','modal-usuario-plan','modal-notificaciones','modal-papelera-plan','modal-info'].forEach(id=>document.getElementById(id).classList.remove('open'));
   fechaModalYMD = null; fechaInicioCalculo = null; proyectoModalId = null; editandoAsignacionId = null;
 }
 
@@ -8029,6 +8158,7 @@ function estadoOperarioEnFecha(operarioId, fecha, horaDesde, horaHasta){
   for(const a of ASIGNACIONES){
     if(a.id===editandoAsignacionId) continue;
     if(!(a.fechas||[]).includes(fecha)) continue;
+    if(a.tipo==='evento') continue;
     if(a.tipo==='ausencia'){
       const esElMismo = (a.personaTipo==='operario' && a.personaId===operarioId) ||
                          (a.personaTipo==='usuario' && usuarioEsMismaPersonaQueOperario(a.personaId, operarioId));
@@ -8277,6 +8407,68 @@ function poblarSelectPersonaAusencia(seleccionado){
   sel.innerHTML = (vosOpts ? `<optgroup label="Vos">${vosOpts}</optgroup>` : '') +
     (operariosOpts ? `<optgroup label="Operarios">${operariosOpts}</optgroup>` : '');
 }
+/* ==================== EVENTOS (aviso para todo el equipo) ==================== */
+function esCreadorEvento(a){
+  return (usuarioActual && a.creadoPor===usuarioActual) || (operarioActual && a.creadoPorOperario===operarioActual);
+}
+function puedeGestionarEvento(a){
+  return currentUserRol==='administracion' || rolActualPlan()==='administracion' || esCreadorEvento(a);
+}
+function esAvisoEventoParaMi(a){
+  if(a.tipo!=='evento' || !a.avisarTodos) return false;
+  if(!usuarioActual && !operarioActual) return false;
+  const hoy = ymd(new Date());
+  if(!(a.fechas||[]).some(f=>f>=hoy)) return false;
+  if(esCreadorEvento(a)) return false;
+  return !yaVistoPorMi(a);
+}
+function abrirModalEvento(fecha, asignacionId){
+  if(esOperarioPuro()){ toast('Los operarios no pueden cargar eventos'); return; }
+  if(bloqueadoPorSoloLectura()) return;
+  fechaModalYMD = fecha;
+  editandoAsignacionId = asignacionId;
+  const e = asignacionId ? ASIGNACIONES.find(a=>a.id===asignacionId) : null;
+  fechaInicioCalculo = e ? e.fechas.slice().sort()[0] : fecha;
+  document.getElementById('mev-fecha-lbl').textContent = fechaLegible(fechaInicioCalculo);
+  document.getElementById('mev-fecha-input').value = fechaLegible(fechaInicioCalculo);
+  document.getElementById('mev-titulo').value = e?.titulo || '';
+  document.getElementById('mev-dias').value = e?.fechas?.length || 1;
+  document.getElementById('mev-hora-desde').value = e?.horaDesde || '';
+  document.getElementById('mev-hora-hasta').value = e?.horaHasta || '';
+  document.getElementById('mev-detalle').value = e?.detalle || '';
+  const cant = e?.fechas?.length || 1;
+  document.getElementById('mev-btn-quitar-dia').style.display = (asignacionId && cant>1) ? 'block' : 'none';
+  document.getElementById('mev-btn-eliminar-todo').style.display = asignacionId ? 'block' : 'none';
+  document.getElementById('modal-evento').classList.add('open');
+}
+async function guardarEvento(){
+  if(bloqueadoPorSoloLectura()) return;
+  const titulo = document.getElementById('mev-titulo').value.trim();
+  if(!titulo){ toast('Escribí el título del evento'); return; }
+  const dias = Math.max(1, parseInt(document.getElementById('mev-dias').value,10) || 1);
+  const horaDesde = formatearHora(document.getElementById('mev-hora-desde').value);
+  const horaHasta = formatearHora(document.getElementById('mev-hora-hasta').value);
+  const detalle = document.getElementById('mev-detalle').value.trim();
+  const fechas = calcularFechasConsecutivas(fechaInicioCalculo, dias);
+  let a;
+  if(editandoAsignacionId){
+    a = ASIGNACIONES.find(x=>x.id===editandoAsignacionId);
+    if(!a) return;
+    if(!puedeGestionarEvento(a)){ toast('Solo puede editarlo quien lo cargó o Administración'); return; }
+    Object.assign(a, { titulo, detalle, fechas, horaDesde, horaHasta, tipo:'evento', avisarTodos:true });
+    a.vistoPor = [usuarioActual, operarioActual].filter(Boolean);   // al modificarlo se vuelve a avisar
+  } else {
+    a = { id: uid('pl'), tipo:'evento', titulo, detalle, fechas, horaDesde, horaHasta, creadoPor: usuarioActual, creadoPorOperario: operarioActual,
+      fechaCreacion: Date.now(), avisarTodos:true, vistoPor: [usuarioActual, operarioActual].filter(Boolean) };
+    ASIGNACIONES.push(a);
+  }
+  try{ if(window.db) await window.db.set('planificacion_bloques', a.id, a); }
+  catch(e){ console.warn(e); toast('No se pudo guardar en la nube'); }
+  cerrarModales();
+  renderCalendario();
+  actualizarBadgeNotificaciones();
+  toast('📌 Evento guardado — se avisó a todo el equipo');
+}
 function abrirModalAusencia(fecha, asignacionId){
   fechaModalYMD = fecha;
   editandoAsignacionId = asignacionId;
@@ -8313,7 +8505,7 @@ async function guardarAusencia(){
     const conflictosPorAsignacion = {};
     ASIGNACIONES.forEach(x=>{
       if(x.id===editandoAsignacionId) return;
-      if(x.tipo==='ausencia') return;
+      if(x.tipo==='ausencia' || x.tipo==='evento') return;
       if(!(x.operarios||[]).includes(operarioIdParaConflicto)) return;
       fechas.forEach(f=>{
         if(!(x.fechas||[]).includes(f)) return;
@@ -8426,7 +8618,7 @@ async function reabrirTrabajo(id, f){
   toast('Trabajo reabierto (' + fechaLegible(f) + ')');
 }
 function botonEstadoTrabajoHTML(a, f){
-  if(a.tipo==='ausencia') return '';
+  if(a.tipo==='ausencia' || a.tipo==='evento') return '';
   const e = estadoTrabajoDia(a, f);
   if(e && e.estado==='en_curso'){
     return `<button class="btn-trabajo finalizar" onclick="event.stopPropagation();finalizarTrabajo('${a.id}','${f}')">⏹ Finalizar trabajo de hoy</button>`;
